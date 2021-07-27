@@ -1,0 +1,5 @@
+type MediaFile @model {
+  id: ID!
+  name: String!
+  description: String
+}
