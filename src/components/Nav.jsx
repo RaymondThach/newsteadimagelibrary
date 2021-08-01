@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 
 //Creates a Navigation bar for use in header
 export default function Nav() {
@@ -11,6 +11,7 @@ export default function Nav() {
         <li><Link to="/page2"> Page 2</Link> </li>
         <li><Link to="/login"> Login</Link> </li>
       </ul>
+     
     </nav>
   );
 }
