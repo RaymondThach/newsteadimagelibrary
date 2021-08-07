@@ -11,7 +11,7 @@ Currently no gui prompts if succesfully or not.
 
 class UploadMediaFile extends React.Component {
 
-    //File stat management
+    //File state management
     constructor(props){
         super(props);
         this.state ={
@@ -34,11 +34,14 @@ class UploadMediaFile extends React.Component {
         const file = e.target.files[0];
         console.log(file);
 
+        //Uploads image to S3 bucket
         Storage.put(file.name, file, {
             contentType: 'media'
         }).then((result) => {
             this.setState({file: URL.createObjectURL(file)})
             console.log(result);
+
+            //creating media file object for Graphql storage
             const mediaFile ={
                 name: file.name,
                 file: {
@@ -50,6 +53,7 @@ class UploadMediaFile extends React.Component {
 
             console.log(mediaFile);
 
+            //pushes to graphql db
             this.addFileToDB(mediaFile);
             console.log('file added to database')
 

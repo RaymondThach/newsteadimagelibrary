@@ -1,0 +1,28 @@
+
+.header{
+    background: white;
+    position: relative;
+    overflow: hidden;
+    margin-left:250px;
+    
+    
+}
+
+.header-right{
+    float:right;
+
+}
+
+.header-center{
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+
+
+}
+
+
+

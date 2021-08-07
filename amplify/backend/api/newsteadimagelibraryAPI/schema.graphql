@@ -1,22 +1,17 @@
-type MediaFile @model {
-  id: ID!
-  name: String!
-  description: String
-}
-
 type S3Object{
   bucket: String!
   region: String!
   key: String!
 }
 
-type Picture @model @auth(rules: [{allow: owner}]){
+type MediaFile @model {
   id: ID!
   name: String
-  owner: String
   description: String
 
   # Reference the S3Object type from a field.
   file: S3Object
-
 }
+
+
+
