@@ -39,6 +39,7 @@ class Collections extends React.Component {
             </div>
         )
     }
+    //test
 }
 
 
