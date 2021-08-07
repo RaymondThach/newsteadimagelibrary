@@ -16,6 +16,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 
 
+<<<<<<< Updated upstream
 
 function App() {
   return (
@@ -23,6 +24,30 @@ function App() {
       <div className="App">
         <Header />
 
+=======
+import Sidebar from './components/Sidebar';
+import UploadMediaFile from './components/pages/UploadFile';
+import HomePage from './components/pages/HomePage';
+
+import Header from './components/Header';
+
+
+Amplify.configure(awsExports);
+
+
+const history = createHistory();
+
+function App() {
+  return (
+    //<AmplifyAuthenticator>
+    
+
+    <div className="App">
+      <img src='/test.png' width="300" height="200"></img>
+      <Header />
+      <Router history={history}>
+        <Sidebar/>
+>>>>>>> Stashed changes
         <Switch>
           <Route exact path="/">
             <Home />
@@ -37,6 +62,7 @@ function App() {
           </Route>
 
         </Switch>
+<<<<<<< Updated upstream
 
         <Footer />
       </div>
@@ -44,3 +70,13 @@ function App() {
   )}
 
   export default App;
+=======
+      </Router>
+    </div>
+    //</AmplifyAuthenticator>
+    
+  );
+}
+
+export default App;
+>>>>>>> Stashed changes
