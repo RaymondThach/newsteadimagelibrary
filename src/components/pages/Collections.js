@@ -6,6 +6,8 @@ import awsExports from '../../aws-exports.js';
 import { AmplifyS3Album } from '@aws-amplify/ui-react';
 
 class Collections extends React.Component {
+
+    /* Scraping this, code below creates a subfolder in s3 bucket. Will utitlize dynamodb for this functionality
     createCollection(collectionName){
         collectionName = collectionName.trim();
         // Add some constraints here e.g. name cant contain special characters
@@ -26,20 +28,23 @@ class Collections extends React.Component {
                 
             });
         });
-    }
+    }*/
     render(){
 
         return(
             <div className ="main_content">
                 <div class = "header"> 
                    <div class ="header-center">Collections</div>
-                   <div class = "header-right">+</div>
+                   <div class = "header-right" >
+                        <div class ="create-button"onClick={()=>{alert('clicked')}}> + </div>
+                    </div>
+
                 </div>
                 
             </div>
         )
     }
-    //test
+    
 }
 
 

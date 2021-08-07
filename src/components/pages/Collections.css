@@ -10,6 +10,7 @@
 
 .header-right{
     float:right;
+    padding:0 20px 0 20px;
 
 }
 
@@ -20,8 +21,24 @@
     left: 50%;
     transform: translate(-50%, -50%);
     
+}
 
+.modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
+.modal-button{
+    min-width: 100px;
+    padding: 16px 32px;
+    border-radius: 4px;
+    
+}
+
+.create-button{
+cursor: pointer;
 }
 
 
