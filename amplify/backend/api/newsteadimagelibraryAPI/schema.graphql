@@ -1,5 +1,17 @@
+type S3Object{
+  bucket: String!
+  region: String!
+  key: String!
+}
+
 type MediaFile @model {
   id: ID!
-  name: String!
+  name: String
   description: String
+
+  # Reference the S3Object type from a field.
+  file: S3Object
 }
+
+
+
