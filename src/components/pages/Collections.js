@@ -25,7 +25,7 @@ class Collections extends React.Component {
                     return alert ("There was an error creating this colllection: " + err.message);
                 }
                 alert("Successfully created collection.")
-                
+                hi
             });
         });
     }*/
@@ -46,7 +46,7 @@ class Collections extends React.Component {
     }
     
 }
-
+//
 
    
 
