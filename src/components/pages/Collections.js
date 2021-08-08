@@ -1,14 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Collections.css';
+import CreateCollection from '../Modal/CreateCollection';
 
 import {Storage, API, graphqlOperation } from 'aws-amplify';
 import awsExports from '../../aws-exports.js';
 import { AmplifyS3Album } from '@aws-amplify/ui-react';
 
+
+
 class Collections extends React.Component {
 
-    /* Scraping this, code below creates a subfolder in s3 bucket. Will utitlize dynamodb for this functionality
-    createCollection(collectionName){
+    constructor(props) {
+        super(props);
+        this.state = {
+          check: false
+        };
+        
+      }
+    
+  
+
+    
+    s3CreateCollection(collectionName){
         collectionName = collectionName.trim();
         // Add some constraints here e.g. name cant contain special characters
 
@@ -28,15 +41,29 @@ class Collections extends React.Component {
                 
             });
         });
-    }*/
-    render(){
+    }
 
+   
+
+   modalState = {showing: true};
+
+   
+    
+
+render(){
+    const { showing } = this.state;
+    
+        
         return(
             <div className ="main_content">
                 <div class = "header"> 
                    <div class ="header-center">Collections</div>
                    <div class = "header-right" >
-                        <div class ="create-button"onClick={()=>{alert('clicked')}}> + </div>
+                        <div class ="create-button"onClick={() => this.setState({ showing: !showing })}> + </div>
+                        { showing 
+                            ? <CreateCollection/>
+                            : null
+                }
                     </div>
 
                 </div>
