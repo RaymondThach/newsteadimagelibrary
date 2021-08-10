@@ -20,7 +20,7 @@ class Collections extends React.Component {
     
   
 
-    
+    /*
     s3CreateCollection(collectionName){
         collectionName = collectionName.trim();
         // Add some constraints here e.g. name cant contain special characters
@@ -41,7 +41,7 @@ class Collections extends React.Component {
                 
             });
         });
-    }
+    }*/
 
    
 
@@ -55,20 +55,26 @@ render(){
     
         
         return(
-            <div className ="main_content">
+            <div class = "page">
+            
+            <div class ="main-content">
                 <div class = "header"> 
                    <div class ="header-center">Collections</div>
                    <div class = "header-right" >
                         <div class ="create-button"onClick={() => this.setState({ showing: !showing })}> + </div>
-                        { showing 
-                            ? <CreateCollection/>
-                            : null
-                }
+                    
                     </div>
 
                 </div>
+               
                 
+                </div>
+                { showing 
+                                ? <CreateCollection/>
+                                : null
+                    }
             </div>
+            
         )
     }
     

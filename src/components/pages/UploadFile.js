@@ -63,7 +63,7 @@ class UploadMediaFile extends React.Component {
     render(){
 
         return(
-            <div>
+            <div class="main-content">
                 <p>Select Local File</p>
                 <input type="file" onChange={(evt) => this.onChange(evt)}/>
             </div>
