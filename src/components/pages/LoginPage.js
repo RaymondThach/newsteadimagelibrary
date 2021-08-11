@@ -3,16 +3,25 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './LoginPage.css';
 import Background from '../images/bg.jpg';
+import { useAppContext } from '../services/context.js';
 import { Auth } from 'aws-amplify';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  //Invoke submission for the sign-in form
+  const { userHasAuthenticated } = useAppContext();
+
+  //Invoke submission for the sign-in form, return errors
   let handleSubmit = async function (event) {
     event.preventDefault();
-    await Auth.signIn(username, password)
+    try {
+        await Auth.signIn(username, password);
+        userHasAuthenticated(true);
+    }
+    catch (e) {
+        alert(e.message);
+    }
   }
 
 //disabled={!validateForm()} <--- re-enable later add this to the button below.
