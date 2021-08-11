@@ -4,6 +4,14 @@
 
 /* Nav bar styling*/
 
+.logo{
+    display: inline-block;
+    vertical-align: top;
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+    margin-top: 15px;
+}
 
 .nav-menu
 {
@@ -12,6 +20,7 @@
     height: 100%;
     position: fixed;
     top: 0;
+    background-color:CornflowerBlue
    
    
 }
@@ -23,6 +32,7 @@
     align-items: center;
     list-style: none;
     height: 60px;
+    margin-top: 50px;
 }
 
 .nav-text a {
@@ -33,6 +43,5 @@
     display: flex;
     align-items: center;
     padding: 0 16px;
-
 
 }

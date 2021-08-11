@@ -12,13 +12,14 @@ function Sidebar() {
                 <link to="#" className="menu-bars"></link>
             </div>
             <nav className = 'nav-menu'>
+            <img class="logo" src="src\components\images\newsteadlogo.jpg">
+            </img>
                 {SidebarData.map((item, index) => {
                     return(
                         <li key={index} className={item.cName}>
                             <Link to={item.path}>
                                 {item.title}
                             </Link>
-
                         </li>
                     )
                    
