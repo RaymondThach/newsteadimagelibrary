@@ -14,7 +14,7 @@ export default class CreateCollection extends React.Component {
   s3CreateCollection(){
    
     //File needs to exist in directory, create temp file in no media file is uploaded during creation
-        Storage.put(this.state.value + '/temp.tmp',this.state.value)
+        Storage.put('Collections/'+ this.state.value + '/temp.tmp',this.state.value)
        
         
     }
