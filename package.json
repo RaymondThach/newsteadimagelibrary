@@ -13,6 +13,8 @@
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
     "react-dom": "^17.0.2",
+    "react-native-images-collage": "^3.3.5",
+    "react-photo-collage": "^1.0.9",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
@@ -40,18 +42,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "index.js",
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RaymondThach/newsteadimagelibrary.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/RaymondThach/newsteadimagelibrary/issues"
-  },
-  "homepage": "https://github.com/RaymondThach/newsteadimagelibrary#readme"
+  }
 }

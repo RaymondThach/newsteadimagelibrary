@@ -19,6 +19,8 @@ import Sidebar from './components/Sidebar'
 import UploadMediaFile from './components/pages/UploadFile';
 import HomePage from './components/pages/HomePage';
 import Collections from './components/pages/Collections';
+import Categories from './components/pages/Categories';
+
 
 Amplify.configure(awsExports);
 
@@ -32,14 +34,13 @@ function App() {
       <Router history={history}>
         <Sidebar/>
         <Switch>
-          <Route path="/" exact component = {HomePage}/>
+          <Route path="/" exact component = {Categories}/>
           <Route path="/upload-item" component={UploadMediaFile}/>
           <Route path="/collections" component={Collections}/>
         </Switch>
       </Router>
     </div>
     </AmplifyAuthenticator>
-    
   );
 }
 
