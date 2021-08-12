@@ -3,73 +3,50 @@ import './Categories.css';
 import Gallery from './gallery/Gallery'
 
 
-var CatNumber = 5;
-let CatName = ['beer', 'chair', 'computer', 'house', 'phone']
-let CatPhoto = ["https://cdn.iconscout.com/icon/free/png-256/beer-mug-glass-drink-cocktail-emoj-symbol-babr-30679.png",
-    "https://i.pinimg.com/600x315/b2/78/8b/b2788b326be16a5dc09dc9d255825e5f.jpg",
-    "https://cdn.iconscout.com/icon/free/png-256/computer-1751683-1489579.png",
-    "https://cdn.iconscout.com/icon/free/png-256/house-1495589-1267760.png",
-    "https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/256x256/plain/mobile_phone.png"]
-
 
     const getData = () => {
         let data = [
           {
             src: `https://source.unsplash.com/random/500x500?sig=${Math.floor(Math.random() * 999)}`,
             height: 500,
-            author: 'Awesome'
-          }, {
-            src: `https://source.unsplash.com/random/500x400?sig=${Math.floor(Math.random() * 999)}`,
-            height: 400,
-            author: 'Awesome'
-          }, {
-            src: `https://source.unsplash.com/random/500x700?sig=${Math.floor(Math.random() * 999)}`,
-            height: 700,
-            author: 'Awesome'
-          }, {
-            src: `https://source.unsplash.com/random/500x250?sig=${Math.floor(Math.random() * 999)}`,
-            height: 250,
-            author: 'Awesome'
-          }, {
-            src: `https://source.unsplash.com/random/500x800?sig=${Math.floor(Math.random() * 999)}`,
-            height: 800,
-            author: 'Awesome'
+            album: 'Album1',
+            pname:'Photo Name 1',
+            desc:'This is a really good description #1'
           }, {
             src: `https://source.unsplash.com/random/500x500?sig=${Math.floor(Math.random() * 999)}`,
             height: 500,
-            author: 'Awesome'
+            album: 'Album2',
+            pname:'Photo Name 2',
+            desc:'This is a really good description #2'
           }, {
-            src: `https://source.unsplash.com/random/500x400?sig=${Math.floor(Math.random() * 999)}`,
-            height: 400,
-            author: 'Awesome'
+            src: `https://source.unsplash.com/random/500x500?sig=${Math.floor(Math.random() * 999)}`,
+            height: 500,
+            album: 'Album3',
+            pname:'Photo Name 3',
+            desc:'This is a really good description #3'
           }, {
-            src: `https://source.unsplash.com/random/500x700?sig=${Math.floor(Math.random() * 999)}`,
-            height: 700,
-            author: 'Awesome'
+            src: `https://source.unsplash.com/random/500x500?sig=${Math.floor(Math.random() * 999)}`,
+            height: 500,
+            album: 'Album4',
+            pname:'Photo Name 4',
+            desc:'This is a really good description #4'
           }, {
-            src: `https://source.unsplash.com/random/500x250?sig=${Math.floor(Math.random() * 999)}`,
-            height: 250,
-            author: 'Awesome'
+            src: `https://source.unsplash.com/random/500x500?sig=${Math.floor(Math.random() * 999)}`,
+            height: 500,
+            album: 'Album5',
+            pname:'Photo Name 5',
+            desc:'This is a really good description #5'
           }, {
-            src: `https://source.unsplash.com/random/500x800?sig=${Math.floor(Math.random() * 999)}`,
-            height: 800,
-            author: 'Awesome'
+            src: `https://source.unsplash.com/random/500x500?sig=${Math.floor(Math.random() * 999)}`,
+            height: 500,
+            album: 'Album6',
+            pname:'Photo Name 6',
+            desc:'This is a really good description #6'
           }, {
-            src: `https://source.unsplash.com/random/500x400?sig=${Math.floor(Math.random() * 999)}`,
-            height: 400,
-            author: 'Awesome'
-          }, {
-            src: `https://source.unsplash.com/random/500x700?sig=${Math.floor(Math.random() * 999)}`,
-            height: 700,
-            author: 'Awesome'
-          }, {
-            src: `https://source.unsplash.com/random/500x250?sig=${Math.floor(Math.random() * 999)}`,
-            height: 250,
-            author: 'Awesome'
-          }, {
-            src: `https://source.unsplash.com/random/500x800?sig=${Math.floor(Math.random() * 999)}`,
-            height: 800,
-            author: 'Awesome'
+            src: `https://source.unsplash.com/random/500x500?sig=${Math.floor(Math.random() * 999)}`,
+            height: 500,
+            pname:'Photo Name 7',
+            desc:'This is a really good description #7'
           }
         ]
         return data;

@@ -1,9 +1,9 @@
 import React from 'react';
 import './Collections.css';
 
-import {Storage, API, graphqlOperation } from 'aws-amplify';
-import awsExports from '../../aws-exports.js';
-import { AmplifyS3Album } from '@aws-amplify/ui-react';
+import {Storage, /*API, graphqlOperation*/ } from 'aws-amplify';
+//import awsExports from '../../aws-exports.js';
+//import { AmplifyS3Album } from '@aws-amplify/ui-react';
 
 class Collections extends React.Component {
     createCollection(collectionName){

@@ -35,7 +35,7 @@
   
   .mainimg {
     position: absolute;
-    left: -50%;
+    left: 10%;
   }
   
   .actions {
@@ -80,7 +80,23 @@
     user-select: none;
     cursor: pointer;
   }
+
+  .showPhotoName {
+    display: block;
+    position: absolute;
+    top: 5%;
+    left: 65%;
+    font-weight: bold;
+    font-size: 50px;
+  }
   
+  .showdesc {
+    display: block;
+    position: absolute;
+    top: 15%;
+    left: 65%;
+    font-size: 20px;
+  }
   .close {
     display: none;
   }

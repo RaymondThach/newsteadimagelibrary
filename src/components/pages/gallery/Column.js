@@ -6,7 +6,7 @@ function Column({ images }) {
   return (
     <div className="column">
       {images.map((img, i) => {
-        return <ImgFrame key={i} src={img.src} h={img.height} author={img.author} />
+        return <ImgFrame key={i} src={img.src} h={img.height} album={img.album} desc={img.desc} pname={img.pname}/>
       })}
     </div>
   )

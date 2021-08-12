@@ -22,7 +22,7 @@ const getColumns = (imgarr, col) => {
   imgarr.forEach(img => {
     console.log(l)
     if ((current + img.height) >= threshold) {
-      if (l != col - 1) { l += 1 }
+      if (l !== col - 1) { l += 1 }
       current = img.height;
       images[l].push(img)
     } else {

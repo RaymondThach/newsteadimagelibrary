@@ -6,8 +6,8 @@ import { Router, Route, Switch } from "react-router-dom";
 import './App.css';
 
 import Amplify from "aws-amplify";
-import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
-
+import { AmplifyAuthenticator } from '@aws-amplify/ui-react';
+//import { AmplifySignOut } from '@aws-amplify/ui-react';
 
 import awsExports from "./aws-exports";
 
@@ -17,7 +17,7 @@ import { createBrowserHistory as createHistory } from 'history'
 //import Nav from 'react-bootstrap/Nav';
 import Sidebar from './components/Sidebar'
 import UploadMediaFile from './components/pages/UploadFile';
-import HomePage from './components/pages/HomePage';
+//import HomePage from './components/pages/HomePage';
 import Collections from './components/pages/Collections';
 import Categories from './components/pages/Categories';
 
