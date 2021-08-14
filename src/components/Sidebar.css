@@ -31,17 +31,22 @@
     padding: 8px 0px 8px 16px;
     align-items: center;
     list-style: none;
-    height: 60px;
+    height: 40px;
     margin-top: 50px;
+    background-color:white;
+    margin-right: 20px;
+    margin-left: 20px;
 }
 
 .nav-text a {
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     width: 95%;
     height: 100%;
     display: flex;
     align-items: center;
     padding: 0 16px;
-
+    margin-left: 20px;
+    color: black;
+    font-weight: bold;
 }
