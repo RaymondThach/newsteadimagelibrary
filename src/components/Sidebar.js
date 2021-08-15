@@ -14,14 +14,14 @@ function Sidebar() {
             <nav className = 'nav-menu'>
             <img class="logo" src="https://pbs.twimg.com/media/E8wDtRBUUAMgRPV?format=jpg&name=240x240">
             </img>
-            <div class="dropdownbtn">
-                <button class="dropdownbtn">Sort By</button>
-                <div class="dropdown-content">
-                    <a href="#">Alphabetically</a>
-                    <a href="#">Recently Added</a>
-                    <a href="#">Added Earliest</a>
-                    </div>
-                    </div>
+            <div class="dropdown">
+                <button class="dropbtn">Sort By</button>
+                 <div class="dropdown-content">
+                     <a href="#">Alphabetically</a>
+                     <a href="#">Recently Added</a>
+                     <a href="#">Earliest Added</a>
+                     </div>
+                     </div>
                 {SidebarData.map((item, index) => {
                     return(
                         <li key={index} className={item.cName}>
