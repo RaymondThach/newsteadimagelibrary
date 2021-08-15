@@ -1,28 +1,66 @@
 .Sign-Out-Button{
     width:100%;
+    margin-top: 320px;
 }
+
+.dropdownbtn {
+  position: relative;
+  color: black;
+  background-color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+  display: ;
+  justify-content: start;
+  padding: 0px 0px 40px 0px;
+  align-items: center;
+  list-style: none;
+  height: 30px;
+  margin: 25px 20px 0px 20px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: white;}
 
 /* Nav bar styling*/
 
 .logo{
     display: inline-block;
     vertical-align: top;
-    width: 50px;
-    height: 50px;
-    margin-right: 20px;
+    width: 120px;
+    height: 120px;
+    margin-right: 5px;
     margin-top: 15px;
+    background-image: url(https://pbs.twimg.com/media/E8wDtRBUUAMgRPV?format=jpg&name=240x240);
+    background-color: cornflowerblue;
+    background-blend-mode: multiply;
+
 }
 
 .nav-menu
-{
-    
+{  
     width: 250px;
     height: 100%;
     position: fixed;
     top: 0;
     background-color:CornflowerBlue
-   
-   
 }
 
 .nav-text{
@@ -32,21 +70,18 @@
     align-items: center;
     list-style: none;
     height: 40px;
-    margin-top: 50px;
+    margin: 50px 20px 0px 20px;
     background-color:white;
-    margin-right: 20px;
-    margin-left: 20px;
 }
 
 .nav-text a {
     text-decoration: none;
-    font-size: 16px;
+    font-size: 14px;
     width: 95%;
     height: 100%;
     display: flex;
     align-items: center;
-    padding: 0 16px;
-    margin-left: 20px;
+    padding: 0 50px;
     color: black;
     font-weight: bold;
 }
