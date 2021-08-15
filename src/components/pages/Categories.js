@@ -1,11 +1,15 @@
-import React from 'react';
-import './HomePage.css';
 
-class HomePage extends React.Component{
+import React from 'react';
+import './Categories.css';
+
+
+class Categories extends React.Component{
+    
+
     render(){
         return(
             <div>Hello World</div>
         )
     }
 }
-export default HomePage;
+export default Categories;

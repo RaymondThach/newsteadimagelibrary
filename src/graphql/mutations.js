@@ -10,6 +10,11 @@ export const createMediaFile = /* GraphQL */ `
       id
       name
       description
+      file {
+        bucket
+        region
+        key
+      }
       createdAt
       updatedAt
     }
@@ -24,6 +29,11 @@ export const updateMediaFile = /* GraphQL */ `
       id
       name
       description
+      file {
+        bucket
+        region
+        key
+      }
       createdAt
       updatedAt
     }
@@ -38,6 +48,50 @@ export const deleteMediaFile = /* GraphQL */ `
       id
       name
       description
+      file {
+        bucket
+        region
+        key
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createCollection = /* GraphQL */ `
+  mutation CreateCollection(
+    $input: CreateCollectionInput!
+    $condition: ModelCollectionConditionInput
+  ) {
+    createCollection(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateCollection = /* GraphQL */ `
+  mutation UpdateCollection(
+    $input: UpdateCollectionInput!
+    $condition: ModelCollectionConditionInput
+  ) {
+    updateCollection(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteCollection = /* GraphQL */ `
+  mutation DeleteCollection(
+    $input: DeleteCollectionInput!
+    $condition: ModelCollectionConditionInput
+  ) {
+    deleteCollection(input: $input, condition: $condition) {
+      id
+      name
       createdAt
       updatedAt
     }

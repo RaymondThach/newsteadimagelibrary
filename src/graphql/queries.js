@@ -7,6 +7,11 @@ export const getMediaFile = /* GraphQL */ `
       id
       name
       description
+      file {
+        bucket
+        region
+        key
+      }
       createdAt
       updatedAt
     }
@@ -23,6 +28,11 @@ export const listMediaFiles = /* GraphQL */ `
         id
         name
         description
+        file {
+          bucket
+          region
+          key
+        }
         createdAt
         updatedAt
       }
@@ -30,3 +40,32 @@ export const listMediaFiles = /* GraphQL */ `
     }
   }
 `;
+export const getCollection = /* GraphQL */ `
+  query GetCollection($id: ID!) {
+    getCollection(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listCollections = /* GraphQL */ `
+  query ListCollections(
+    $filter: ModelCollectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCollections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+
+

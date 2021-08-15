@@ -57,7 +57,7 @@ h1{
 }
 
 /* Image Gallery */
-.gallery img{
+.gallery a {
     padding: 10px 10px 10px 10px;
     
 }
@@ -94,6 +94,10 @@ div.desc {
     content: "";
     display: table;
     clear: both;
+  }
+
+  .items{
+    width: 15%;
   }
 
 

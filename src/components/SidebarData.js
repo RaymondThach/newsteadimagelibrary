@@ -4,7 +4,7 @@ export const SidebarData = [
    
     {
         title: 'Categories',
-        path: '/categories',
+        path: '/',
         cName: 'nav-text'
     },
     {

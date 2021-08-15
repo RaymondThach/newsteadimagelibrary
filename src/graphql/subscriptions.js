@@ -7,6 +7,11 @@ export const onCreateMediaFile = /* GraphQL */ `
       id
       name
       description
+      file {
+        bucket
+        region
+        key
+      }
       createdAt
       updatedAt
     }
@@ -18,6 +23,11 @@ export const onUpdateMediaFile = /* GraphQL */ `
       id
       name
       description
+      file {
+        bucket
+        region
+        key
+      }
       createdAt
       updatedAt
     }
@@ -29,6 +39,41 @@ export const onDeleteMediaFile = /* GraphQL */ `
       id
       name
       description
+      file {
+        bucket
+        region
+        key
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateCollection = /* GraphQL */ `
+  subscription OnCreateCollection {
+    onCreateCollection {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateCollection = /* GraphQL */ `
+  subscription OnUpdateCollection {
+    onUpdateCollection {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteCollection = /* GraphQL */ `
+  subscription OnDeleteCollection {
+    onDeleteCollection {
+      id
+      name
       createdAt
       updatedAt
     }
