@@ -73,12 +73,19 @@ class Collections extends React.Component {
 
     }
 
+     
+    componentDidMount(){
+        
+        this.fetchCollections();
+
+
+    }
+
 
     render() {
         const { showing } = this.state;
 
-        //fetch current collections
-        this.fetchCollections();
+       
 
         /* Grabs a list of files\folders from s3
 
