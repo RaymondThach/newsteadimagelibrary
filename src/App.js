@@ -46,7 +46,7 @@ function App() {
               <Switch>
               <Route path='/collections' component={Collections}/>
                 <Route path='/login' component={Login}/>
-                <Route path='/home' component={HomePage}/>
+                <Route path='/categories' component={Categories}/>
                 <Route path='/upload-item' component={UploadMediaFile}/>
                 <Route path='/' render= {() => {
                     return (
