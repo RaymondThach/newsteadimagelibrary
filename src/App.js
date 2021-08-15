@@ -51,7 +51,7 @@ function App() {
                 <Route path='/' render= {() => {
                     return (
                       isAuthenticated ? 
-                      <Redirect to='/home'/> :
+                      <Redirect to='/cateogries'/> :
                       <Redirect to='/login'/>
                     )
                   }}

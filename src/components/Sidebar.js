@@ -8,10 +8,16 @@ import { Auth } from 'aws-amplify';
 import './Sidebar.css'
 import { useHistory, useLocation } from 'react-router-dom';
 
+
+
+
+
+
 //Routes that don't render the Sidebar
 const noSidebarRoutes = ['/login', '/first-time-login'];
 
 function Sidebar() {
+    
     const { userHasAuthenticated } = useAppContext();
     const history = useHistory();
 
