@@ -12,6 +12,7 @@ import Categories from './components/pages/Categories';
 import Login from './components/pages/LoginPage'
 import Collections from './components/pages/Collections';
 import { Context } from './components/services/context';
+import CollectionItem from './components/pages/CollectionItem.js';
 
 Amplify.configure(awsExports);
 
@@ -44,6 +45,7 @@ function App() {
             <BrowserRouter history={history}>
               <Sidebar/>
               <Switch>
+              <Route path="/collections/:name" component={CollectionItem}/> 
               <Route path='/collections' component={Collections}/>
                 <Route path='/login' component={Login}/>
                 <Route path='/categories' component={Categories}/>

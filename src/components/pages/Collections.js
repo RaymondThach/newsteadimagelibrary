@@ -23,30 +23,7 @@ class Collections extends React.Component {
 
 
 
-    /*
-    s3CreateCollection(collectionName){
-        collectionName = collectionName.trim();
-        // Add some constraints here e.g. name cant contain special characters
-
-        var collectionKey = encodeURIComponent(collectionName);
-        Storage.headObject({key: collectionKey}, function(err, data){
-            if(!err){
-                return alert("Collection Already Exists: "+ err.message);
-            }
-            if (err.code !== "NotFound"){
-                return alert("There was an error creating this collection: " + err.message);
-            }
-            Storage.putObject({key: collectionKey}, function(err, data){
-                if (err){
-                    return alert ("There was an error creating this colllection: " + err.message);
-                }
-                alert("Successfully created collection.")
-
-            });
-        });
-    }*/
-
-    modalState = { showing: true };
+    modalState = { showing: false };
 
     //query to grab just the name in the collection
     fetchNames = /* GraphQL */ `
@@ -73,6 +50,7 @@ class Collections extends React.Component {
 
     }
 
+   
      
     componentDidMount(){
         
@@ -86,39 +64,6 @@ class Collections extends React.Component {
         const { showing } = this.state;
 
        
-
-        /* Grabs a list of files\folders from s3
-
-        function processStorageList(result) {
-            let files = []
-            let folders = new Set()
-            result.forEach(res => {
-              if (res.size) {
-                files.push(res)
-                // sometimes files declare a folder with a / within then
-                let possibleFolder = res.key.split('/').slice(0,-1).join('/')
-                if (possibleFolder) folders.add(possibleFolder)
-              } else {
-                folders.add(res.key)
-              }
-            })
-            console.log(files)
-            return {files, folders}
-          }
-
-
-          function listCollections(){
-            let files = []
-            let folders = new Set()
-
-            Storage.list('Collections/')
-            .then(result => processStorageList(result));
-            console.log(files);
-     
-        }*/
-
-
-
 
         return (
 
@@ -145,10 +90,12 @@ class Collections extends React.Component {
 
                                 this.state.list.map((listname, i) => (
 
-                                    <div class="items">
+        
+
+                                    <a href={'/collections/'+ listname.name.replace(/[ ]/g, '-')}class="items">
                                         <FcFolder size = {100}/>
                                         {listname.name}
-                                    </div>
+                                    </a>
                                     
 
                                     

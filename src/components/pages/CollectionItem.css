@@ -1,0 +1,22 @@
+.page{
+    height: 100vh;
+  }
+
+  
+.main-content{
+    margin-left: 250px;
+    clear:both;
+    height: 100%;
+    
+    
+    
+  }
+
+.gallery a {
+    padding: 10px 10px 10px 10px;
+    
+  }
+  
+  div.gallery:hover{
+    border: 1px solid #777
+  }
