@@ -30,8 +30,8 @@ export default class CreateCollection extends React.Component {
     
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+  
   //Add Collection name to table
-
   addToDb = async (collection) => {
     console.log('adding to DB')
     try{

@@ -106,3 +106,19 @@ export const listTags = /* GraphQL */ `
     }
   }
 `;
+export const tagByCatName = /* GraphQL */ `
+  query tagByCatName(
+    $categoryName: String
+  ) {
+    tagByCatName(
+      categoryName: $categoryName
+    ) {
+      items {
+        id
+        categoryName
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
