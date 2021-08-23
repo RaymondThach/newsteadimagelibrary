@@ -8,7 +8,7 @@ type MediaFile @model {
   id: ID!
   name: String
   description: String
-
+  tag: [Tag!]!
   # Reference the S3Object type from a field.
   file: S3Object
 }
@@ -18,4 +18,7 @@ type Collection @model{
   name: String!
 }
 
-
+type Tag @model{
+  id: ID!
+  categoryName: String!
+}

@@ -1,8 +1,109 @@
-import React from 'react';
 import './Categories.css';
 import Gallery from './gallery/Gallery'
+import React, { useState } from 'react';
+import './LoginPage.css';
+import { API, graphqlOperation } from 'aws-amplify';
+import CreateCategory from '../Modal/CreateCollection';
+
+// class Categories extends React.Component {
+
+//   constructor(props) {
+//       super(props);
+//       this.state = {
+//           list: []
+
+//       };
+
+//   }
+//   modalState = { showing: true };
+
+//   //query to grab just the name in the collection
+//   fetchNames = /* GraphQL */ `
+// query ListCollections {
+//   listCollections {
+//       items {
+//         name
+//       }
+//     }
+//   }
+// `;
 
 
+
+
+//   // Fetch collection names from DB and store into local array
+
+//   async fetchCollections() {
+//       console.log('test')
+
+//       const results = await API.graphql(graphqlOperation(this.fetchNames))
+//       this.setState({ list: results.data.listCollections.items })
+
+
+//   }
+
+   
+//   componentDidMount(){
+      
+//       this.fetchCollections();
+
+
+//   }
+
+
+//   render() {
+//       const { showing } = this.state;
+
+//       return (
+
+//           <div class="page">
+//               <div class="header">
+//                   <div class="header-center">Categories</div>
+//                   <div class="header-right" >
+//                       <div class="create-button" onClick={() => this.setState({ showing: !showing })}> + </div>
+
+//                   </div>
+//               </div>
+
+//               <div class="modal-overlay">
+
+//                   {showing
+//                       ? <CreateCategory />
+//                       : null
+//                   }
+//                   <div class="main-content">
+//                       <div class="gallery">
+
+//                           {
+
+
+//                               this.state.list.map((listname, i) => (
+
+//                                   <div class="items">
+                                      
+//                                       {listname.name}
+//                                   </div>
+                                  
+
+                                  
+
+
+//                               ))
+
+//                           }
+//                       </div>
+
+
+
+//                   </div>
+//               </div>
+//           </div>
+
+
+//       )
+//   }
+
+// }
 
     const getData = () => {
         let data = [
@@ -53,30 +154,6 @@ import Gallery from './gallery/Gallery'
       }
 
 let images = getData();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 class Categories extends React.Component {
     render() {
