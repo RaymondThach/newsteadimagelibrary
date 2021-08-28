@@ -71,7 +71,7 @@ class CollectionItem extends React.Component{
                    this.state.list.map((listname, i) => (
 
         
-                    <div>
+                    <div key={listname.key}>
                         <AmplifyS3Image imgKey={listname.key}/>
                     </div>
                     

@@ -4,6 +4,7 @@ import './UploadFile.css';
 import {Storage, API, graphqlOperation } from 'aws-amplify';
 import {createMediaFile } from '../../graphql/mutations';
 import awsExports from '../../aws-exports.js';
+import {getTag} from '../../graphql/queries';
 
 /*Once files finishes proccessing pushes to S3, will output message in console 
 Currently no gui prompts if succesfully or not.
@@ -44,6 +45,8 @@ class UploadMediaFile extends React.Component {
             //creating media file object for Graphql storage
             const mediaFile ={
                 name: file.name,
+                tags: 
+                    {categoryName: 'Hello?!?'},
                 file: {
                     bucket: awsExports.aws_user_files_s3_bucket,
                     region: awsExports.aws_user_files_s3_bucket_region,

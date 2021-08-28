@@ -92,7 +92,7 @@ class Collections extends React.Component {
 
         
 
-                                    <a href={'/collections/'+ listname.name.replace(/[ ]/g, '-')}class="items">
+                                    <a href={'/collections/'+ listname.name.replace(/[ ]/g, '-')}class="items" key={listname.name}>
                                         <FcFolder size = {100}/>
                                         {listname.name}
                                     </a>

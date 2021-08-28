@@ -4,11 +4,17 @@ type S3Object {
   key: String!
 }
 
+type Tag @model
+@key(name: "tagByCatName", fields: ["categoryName"], queryField: "tagByCatName") {
+  id: ID!
+  categoryName: String!
+}
+
 type MediaFile @model {
   id: ID!
   name: String
   description: String
-  tag: [Tag!]!
+  tags: [String!]!
   # Reference the S3Object type from a field.
   file: S3Object
 }
@@ -18,8 +24,3 @@ type Collection @model {
   name: String!
 }
 
-type Tag @model
-@key(name: "tagByCatName", fields: ["categoryName"], queryField: "tagByCatName") {
-  id: ID!
-  categoryName: String!
-}

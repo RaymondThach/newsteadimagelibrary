@@ -1,22 +1,31 @@
 import './Categories.css';
-import Gallery from './gallery/Gallery'
-import React, { useState } from 'react';
+//import Gallery from './gallery/Gallery'
+import React, { useState, useEffect } from 'react';
 import './Categories.css';
 import { API, graphqlOperation } from 'aws-amplify';
 import CreateCategory from '../Modal/CreateCategory';
+import { listTags } from '../../graphql/queries';
 
 export default function Categories() {
   const [showing, setShowing] = useState(false);
   
+  async function fetchCategories(){
+    console.log('thisisonlymeanttoprintonce')
+    const results = await API.graphql(graphqlOperation(listTags));
+    console.log(results);
+  }
+
+  //componentDidMount() for functional component
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <div class="page">
       <div class="header">
         <h1>
           Categories
         </h1>
-        <b1>
-          Below you will find created categories. Please click on one to reveal the whole category.
-        </b1>
         <div class="header-right" >
             <div class="create-button" onClick={() => {setShowing(!showing); }}> + </div>
         </div>

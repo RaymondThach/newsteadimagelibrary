@@ -3,7 +3,7 @@ import './CreateCollection.css'
 import {Storage, API, graphqlOperation, AWSCloudWatchProvider } from 'aws-amplify';
 import awsExports from '../../aws-exports.js';
 import { AmplifyS3Album } from '@aws-amplify/ui-react';
-import {createCollection } from '../../graphql/mutations';
+import { createCollection } from '../../graphql/mutations';
 
 
 
