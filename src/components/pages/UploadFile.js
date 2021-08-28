@@ -1,53 +1,70 @@
 import React from 'react';
 import './UploadFile.css';
 
-import {Storage, API, graphqlOperation } from 'aws-amplify';
-import {createMediaFile } from '../../graphql/mutations';
+import { Storage, API, graphqlOperation } from 'aws-amplify';
+import { createMediaFile } from '../../graphql/mutations';
 import awsExports from '../../aws-exports.js';
+import Select from 'react-select'
 
 /*Once files finishes proccessing pushes to S3, will output message in console 
 Currently no gui prompts if succesfully or not.
 */
 
+let tagOptions = []
+
 class UploadMediaFile extends React.Component {
 
     //File state management
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state ={
-            file : null
+        this.state = {
+            file: null,
+            desc: '',
+            tags: [''],
+            selectedTags:[''],
+            successs: false
+
+
         }
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    addFileToDB = async (mediaFile) =>{
+    // add data into db related to upload
+    addFileToDB = async (mediaFile) => {
         console.log('Adding file to DB')
-        try{
-            await API.graphql(graphqlOperation(createMediaFile, {input:mediaFile}));
+        try {
+            await API.graphql(graphqlOperation(createMediaFile, { input: mediaFile }));
 
-        } catch (error){
+        } catch (error) {
             console.log(error)
         }
 
     }
-    
-    onChange(e){
-        const file = e.target.files[0];
+
+    // Sends upload to s3 and dyanmodb on submit
+    handleSubmit(e) {
+        let file = this.uploadInput.files[0];
         console.log(file);
+        console.log('hi i am submitting')
 
         //Uploads image to S3 bucket
         Storage.put(file.name, file, {
             contentType: 'media'
         }).then((result) => {
-            this.setState({file: URL.createObjectURL(file)})
+            this.setState({ file: URL.createObjectURL(file) })
             console.log(result);
 
             //creating media file object for Graphql storage
-            const mediaFile ={
+            const mediaFile = {
                 name: file.name,
+                //description: descInput,
+                description: this.state.desc,
+                //tags:[tagInput],
+                tags: this.state.selectedTags,
                 file: {
                     bucket: awsExports.aws_user_files_s3_bucket,
                     region: awsExports.aws_user_files_s3_bucket_region,
-                    key: 'public/'+ file.name
+                    key: 'public/' + file.name
                 }
             }
 
@@ -60,12 +77,75 @@ class UploadMediaFile extends React.Component {
         })
     }
 
-    render(){
+    //grabs user input in textbox
+    myChangeHandler = (event) => {
+        this.setState({ desc: event.target.value });
+    }
 
-        return(
+    //grab dropdown box selection
+
+    dropdownHandler = (newValue) =>  {
+        console.log(newValue);
+        this.setState({selectedTags: newValue})
+        
+       
+    }
+
+
+    // grab the list of available categories
+    fetchNames = /*GraphQl*/
+        `query MyQuery {
+    listTags {
+      items {
+        categoryName
+      }
+    }
+  }
+  `
+
+    // Fetch category names for dropdown selection
+    async fetchCategory() {
+        console.log('fetching category names')
+
+        const results = await API.graphql(graphqlOperation(this.fetchNames))
+        this.setState({ tags: results.data.listTags.items })
+
+        this.state.tags.map((listname, i) => (
+            tagOptions = [{ value: listname.categoryName, label: listname.categoryName}]
+
+        )
+        )
+
+    }
+
+    handleChange = (e) => {
+        this.setState({success: false, url : ""});
+        
+      }
+
+
+    componentDidMount() {
+        this.fetchCategory()
+    }
+
+
+    render() {
+
+        return (
+
             <div class="main-content">
                 <p>Select Local File</p>
-                <input type="file" onChange={(evt) => this.onChange(evt)}/>
+                <form onSubmit={this.handleSubmit}>
+
+                    <input type="file" onChange={this.handleChange} ref={(ref) => { this.uploadInput = ref; }}/>
+                    <input type="text" value={this.state.desc} onChange={this.myChangeHandler} />
+
+                    <Select isMulti name='Category' options={tagOptions} className="basic-multi-select" classNamePrefix="select" onChange={this.dropdownHandler}/>
+
+
+
+                    <input type="submit" value="Submit" />
+                </form>
             </div>
         )
 
