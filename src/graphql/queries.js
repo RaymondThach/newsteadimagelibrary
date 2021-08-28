@@ -97,11 +97,19 @@ export const listCollections = /* GraphQL */ `
   }
 `;
 export const tagByCatName = /* GraphQL */ `
-  query tagByCatName(
+  query TagByCatName(
     $categoryName: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
   ) {
     tagByCatName(
       categoryName: $categoryName
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
     ) {
       items {
         id
@@ -109,6 +117,7 @@ export const tagByCatName = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      nextToken
     }
   }
 `;

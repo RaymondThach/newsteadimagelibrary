@@ -3,9 +3,6 @@ import './Collections.css';
 import CreateCollection from '../Modal/CreateCollection';
 
 import { Storage, API, graphq, graphqlOperation } from 'aws-amplify';
-import awsExports from '../../aws-exports.js';
-import { AmplifyS3Album, AmplifyS3Image } from '@aws-amplify/ui-react';
-import { listCollections } from '../../graphql/queries.js';
 import { FcFolder } from "react-icons/fc";
 //import { S3Image } from 'aws-amplify-react-native';
 
