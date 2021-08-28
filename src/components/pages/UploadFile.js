@@ -5,6 +5,7 @@ import { Storage, API, graphqlOperation } from 'aws-amplify';
 import { createMediaFile } from '../../graphql/mutations';
 import awsExports from '../../aws-exports.js';
 import Select from 'react-select'
+import {getTag} from '../../graphql/queries';
 
 let tagOptions = []
 //let file =[]
@@ -57,7 +58,7 @@ class UploadMediaFile extends React.Component {
             const mediaFile = {
                 name: file.name,
                 description: this.state.desc,
-                tag: this.state.selectedTags,
+                tags: this.state.selectedTags,
 
                 file: {
                     bucket: awsExports.aws_user_files_s3_bucket,

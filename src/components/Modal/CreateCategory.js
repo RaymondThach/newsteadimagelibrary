@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import './CreateCategory.css'
 import { API, graphqlOperation } from 'aws-amplify';
 import { createTag } from '../../graphql/mutations';
-import { tagByCatName} from '../../graphql/queries';
+import { tagByCatName } from '../../graphql/queries';
 
 export default function CreateCategory() {
     //String value of the input field for new category name

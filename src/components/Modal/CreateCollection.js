@@ -1,8 +1,6 @@
 import React from "react";
 import './CreateCollection.css'
-import {Storage, API, graphqlOperation, AWSCloudWatchProvider } from 'aws-amplify';
-import awsExports from '../../aws-exports.js';
-import { AmplifyS3Album } from '@aws-amplify/ui-react';
+import {Storage, API, graphqlOperation } from 'aws-amplify';
 import {createCollection } from '../../graphql/mutations';
 import { collectionName } from "../../graphql/queries";
 
