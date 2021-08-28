@@ -1,40 +1,13 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getTag = /* GraphQL */ `
-  query GetTag($id: ID!) {
-    getTag(id: $id) {
-      id
-      categoryName
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listTags = /* GraphQL */ `
-  query ListTags(
-    $filter: ModelTagFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        categoryName
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const getMediaFile = /* GraphQL */ `
   query GetMediaFile($id: ID!) {
     getMediaFile(id: $id) {
       id
       name
       description
-      tags
+      tag
       file {
         bucket
         region
@@ -56,7 +29,7 @@ export const listMediaFiles = /* GraphQL */ `
         id
         name
         description
-        tags
+        tag
         file {
           bucket
           region
@@ -86,6 +59,58 @@ export const listCollections = /* GraphQL */ `
     $nextToken: String
   ) {
     listCollections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getTag = /* GraphQL */ `
+  query GetTag($id: ID!) {
+    getTag(id: $id) {
+      id
+      categoryName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTags = /* GraphQL */ `
+  query ListTags(
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        categoryName
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const collectionName = /* GraphQL */ `
+  query CollectionName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelCollectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    CollectionName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         name

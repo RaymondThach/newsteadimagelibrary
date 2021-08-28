@@ -1,45 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTag = /* GraphQL */ `
-  mutation CreateTag(
-    $input: CreateTagInput!
-    $condition: ModelTagConditionInput
-  ) {
-    createTag(input: $input, condition: $condition) {
-      id
-      categoryName
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateTag = /* GraphQL */ `
-  mutation UpdateTag(
-    $input: UpdateTagInput!
-    $condition: ModelTagConditionInput
-  ) {
-    updateTag(input: $input, condition: $condition) {
-      id
-      categoryName
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteTag = /* GraphQL */ `
-  mutation DeleteTag(
-    $input: DeleteTagInput!
-    $condition: ModelTagConditionInput
-  ) {
-    deleteTag(input: $input, condition: $condition) {
-      id
-      categoryName
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createMediaFile = /* GraphQL */ `
   mutation CreateMediaFile(
     $input: CreateMediaFileInput!
@@ -49,7 +10,7 @@ export const createMediaFile = /* GraphQL */ `
       id
       name
       description
-      tags
+      tag
       file {
         bucket
         region
@@ -69,7 +30,7 @@ export const updateMediaFile = /* GraphQL */ `
       id
       name
       description
-      tags
+      tag
       file {
         bucket
         region
@@ -89,7 +50,7 @@ export const deleteMediaFile = /* GraphQL */ `
       id
       name
       description
-      tags
+      tag
       file {
         bucket
         region
@@ -134,6 +95,45 @@ export const deleteCollection = /* GraphQL */ `
     deleteCollection(input: $input, condition: $condition) {
       id
       name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createTag = /* GraphQL */ `
+  mutation CreateTag(
+    $input: CreateTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    createTag(input: $input, condition: $condition) {
+      id
+      categoryName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTag = /* GraphQL */ `
+  mutation UpdateTag(
+    $input: UpdateTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    updateTag(input: $input, condition: $condition) {
+      id
+      categoryName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTag = /* GraphQL */ `
+  mutation DeleteTag(
+    $input: DeleteTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    deleteTag(input: $input, condition: $condition) {
+      id
+      categoryName
       createdAt
       updatedAt
     }

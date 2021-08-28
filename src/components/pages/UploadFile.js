@@ -7,6 +7,9 @@ import awsExports from '../../aws-exports.js';
 import Select from 'react-select'
 
 let tagOptions = []
+//let file =[]
+//let desc =[]
+//let tagSelected =[]
 
 class UploadMediaFile extends React.Component {
 
@@ -14,10 +17,10 @@ class UploadMediaFile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: null,
-            desc: '',
+            file: [''],
+            desc: [''],
             tags: [''],
-            selectedTags:[''],
+            selectedTags: [''],
             successs: false
 
 
@@ -54,7 +57,7 @@ class UploadMediaFile extends React.Component {
             const mediaFile = {
                 name: file.name,
                 description: this.state.desc,
-                tags: this.state.selectedTags,
+                tag: this.state.selectedTags,
 
                 file: {
                     bucket: awsExports.aws_user_files_s3_bucket,
@@ -70,7 +73,7 @@ class UploadMediaFile extends React.Component {
             console.log('file added to database')
 
         })
-        
+
         e.preventDefault();
     }
 
@@ -81,11 +84,11 @@ class UploadMediaFile extends React.Component {
 
     //grab dropdown box selection
 
-    dropdownHandler = (newValue) =>  {
+    dropdownHandler = (newValue) => {
         console.log(newValue);
-        this.setState({selectedTags: newValue})
-        
-       
+        this.setState({ selectedTags: newValue })
+
+
     }
 
 
@@ -108,7 +111,8 @@ class UploadMediaFile extends React.Component {
         this.setState({ tags: results.data.listTags.items })
 
         this.state.tags.map((listname, i) => (
-            tagOptions = [{ value: listname.categoryName, label: listname.categoryName}]
+            tagOptions.push({ value: listname.categoryName, label: listname.categoryName })
+
 
         )
         )
@@ -116,9 +120,14 @@ class UploadMediaFile extends React.Component {
     }
 
     handleChange = (e) => {
-        this.setState({success: false, url : ""});
-        
-      }
+        this.setState({file: URL.createObjectURL(e.target.files[0])})
+
+    }
+
+
+    async renderThumbnail(e, readerEvt){
+
+    }
 
 
     componentDidMount() {
@@ -132,17 +141,22 @@ class UploadMediaFile extends React.Component {
 
             <div class="main-content">
                 <p>Select Local File</p>
-                <form onSubmit={this.handleSubmit}>
+                <div>
+                    <form onSubmit={this.handleSubmit}>
 
-                    <input type="file" onChange={this.handleChange} ref={(ref) => { this.uploadInput = ref; }}/>
-                    <input type="text" value={this.state.desc} onChange={this.myChangeHandler} />
+                        <img src={this.state.file} class="thumbnail"/>
+                        <input type="text" value={this.state.desc} onChange={this.myChangeHandler} />
 
-                    <Select isMulti name='Category' options={tagOptions} className="basic-multi-select" classNamePrefix="select" onChange={this.dropdownHandler}/>
+                        <Select isMulti name='Category' options={tagOptions} className="basic-multi-select" classNamePrefix="select" onChange={this.dropdownHandler} />
 
-
-
-                    <input type="submit" value="Submit" />
-                </form>
+                        <div>
+                            <input type="file" onChange={this.handleChange} ref={(ref) => { this.uploadInput = ref; }} />
+                            <input type="submit" value="Submit" />
+                        </div>
+                   
+                    </form>
+                </div>
+                
             </div>
         )
 
