@@ -6,10 +6,6 @@ import { createMediaFile } from '../../graphql/mutations';
 import awsExports from '../../aws-exports.js';
 import Select from 'react-select'
 
-/*Once files finishes proccessing pushes to S3, will output message in console 
-Currently no gui prompts if succesfully or not.
-*/
-
 let tagOptions = []
 
 class UploadMediaFile extends React.Component {
@@ -57,10 +53,9 @@ class UploadMediaFile extends React.Component {
             //creating media file object for Graphql storage
             const mediaFile = {
                 name: file.name,
-                //description: descInput,
                 description: this.state.desc,
-                //tags:[tagInput],
                 tags: this.state.selectedTags,
+
                 file: {
                     bucket: awsExports.aws_user_files_s3_bucket,
                     region: awsExports.aws_user_files_s3_bucket_region,
@@ -75,6 +70,8 @@ class UploadMediaFile extends React.Component {
             console.log('file added to database')
 
         })
+        
+        e.preventDefault();
     }
 
     //grabs user input in textbox
