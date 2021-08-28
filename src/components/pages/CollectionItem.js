@@ -10,7 +10,7 @@ class CollectionItem extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-           
+           list:[]
 
         };
 
@@ -28,26 +28,20 @@ class CollectionItem extends React.Component{
           }
         }
     `;
-    
 
-    async listItems (foldername){
-        console.log('CollectionItem.js ListItems')
-
-        const results = await API.graphql(graphqlOperation(this.fetchNames))
-        this.setState({ list: results.data.listCollections.items })
-    }
 
 
    
     fetchKeys(){
-        let list = []
-        Storage.list('Collections/Test Collection/' )
+        
+        Storage.list('Collections/'+this.foldername)
         .then((results)=>{
-            console.log(results)
-            list = results
+            console.log('test fetch keys')
+            this.setState({ list: results})
         })
 
-        console.log('test ' + list)
+        console.log(this.state.list)
+
         
     }
      
@@ -74,6 +68,21 @@ class CollectionItem extends React.Component{
                 {
                    
                     
+                   this.state.list.map((listname, i) => (
+
+        
+                    <div>
+                        <AmplifyS3Image imgKey={listname.key}/>
+                    </div>
+                    
+                        
+                    
+                    
+
+                    
+
+
+                ))
                 
                 }
             </div>

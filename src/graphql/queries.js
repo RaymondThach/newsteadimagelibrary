@@ -7,6 +7,12 @@ export const getMediaFile = /* GraphQL */ `
       id
       name
       description
+      tag {
+        id
+        categoryName
+        createdAt
+        updatedAt
+      }
       file {
         bucket
         region
@@ -28,6 +34,12 @@ export const listMediaFiles = /* GraphQL */ `
         id
         name
         description
+        tag {
+          id
+          categoryName
+          createdAt
+          updatedAt
+        }
         file {
           bucket
           region
@@ -67,5 +79,46 @@ export const listCollections = /* GraphQL */ `
     }
   }
 `;
-
-
+export const getTag = /* GraphQL */ `
+  query GetTag($id: ID!) {
+    getTag(id: $id) {
+      id
+      categoryName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTags = /* GraphQL */ `
+  query ListTags(
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        categoryName
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const tagByCatName = /* GraphQL */ `
+  query tagByCatName(
+    $categoryName: String
+  ) {
+    tagByCatName(
+      categoryName: $categoryName
+    ) {
+      items {
+        id
+        categoryName
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;

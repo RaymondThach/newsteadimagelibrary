@@ -1,4 +1,4 @@
-type S3Object{
+type S3Object {
   bucket: String!
   region: String!
   key: String!
@@ -8,14 +8,18 @@ type MediaFile @model {
   id: ID!
   name: String
   description: String
-
+  tag: [Tag!]!
   # Reference the S3Object type from a field.
   file: S3Object
 }
 
-type Collection @model{
+type Collection @model {
   id:ID!
   name: String!
 }
 
-
+type Tag @model
+@key(name: "tagByCatName", fields: ["categoryName"], queryField: "tagByCatName") {
+  id: ID!
+  categoryName: String!
+}

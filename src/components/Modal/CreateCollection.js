@@ -19,7 +19,6 @@ export default class CreateCollection extends React.Component {
    
     //File needs to exist in directory, create temp file in no media file is uploaded during creation
         Storage.put('Collections/'+ this.state.value + '/temp.tmp',this.state.value)
-       
         
     }
 
@@ -31,8 +30,8 @@ export default class CreateCollection extends React.Component {
     
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+  
   //Add Collection name to table
-
   addToDb = async (collection) => {
     console.log('adding to DB')
     try{
