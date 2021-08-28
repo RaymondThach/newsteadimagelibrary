@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Collections.css';
 import CreateCollection from '../Modal/CreateCollection';
 
-import { Storage, API, graphq, graphqlOperation } from 'aws-amplify';
+import {  API, graphqlOperation } from 'aws-amplify';
 import { FcFolder } from "react-icons/fc";
 //import { S3Image } from 'aws-amplify-react-native';
 
