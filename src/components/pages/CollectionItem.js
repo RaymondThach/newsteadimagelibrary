@@ -72,7 +72,7 @@ class CollectionItem extends React.Component{
 
         
                     <div>
-                        <AmplifyS3Image imgKey={listname.key}/>
+                        <AmplifyS3Image imgKey={listname.key} key={listname.key}/>
                     </div>
                     
                         
