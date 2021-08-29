@@ -20,7 +20,7 @@ class Collections extends React.Component {
 
 
 
-    modalState = { showing: false };
+    //modalState = { showing: false };
 
     //query to grab just the name in the collection
     fetchNames = /* GraphQL */ `

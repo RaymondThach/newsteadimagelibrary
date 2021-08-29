@@ -8,9 +8,14 @@ import Select from 'react-select'
 import {getTag} from '../../graphql/queries';
 
 let tagOptions = []
+let multipleFiles = []
 //let file =[]
 //let desc =[]
 //let tagSelected =[]
+
+
+//const { showStatus } = false;
+
 
 class UploadMediaFile extends React.Component {
 
@@ -22,12 +27,16 @@ class UploadMediaFile extends React.Component {
             desc: [''],
             tags: [''],
             selectedTags: [''],
-            successs: false
+            successs: false,
+            inputList:[]
+            
 
 
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+        
     }
+
 
     // add data into db related to upload
     addFileToDB = async (mediaFile) => {
@@ -67,6 +76,8 @@ class UploadMediaFile extends React.Component {
                 }
             }
 
+                
+
             console.log(mediaFile);
 
             //pushes to graphql db
@@ -76,6 +87,12 @@ class UploadMediaFile extends React.Component {
         })
 
         e.preventDefault();
+    }
+    //save each file into an array
+    saveFileDetails = () =>{
+
+        let file = this.uploadInput.files[0];
+
     }
 
     //grabs user input in textbox
@@ -122,13 +139,20 @@ class UploadMediaFile extends React.Component {
 
     handleChange = (e) => {
         this.setState({file: URL.createObjectURL(e.target.files[0])})
+        const inputList = this.state.inputList;
+        this.setState({
+            inputList: inputList.concat(<div>
+                <img src={URL.createObjectURL(e.target.files[0])} class="thumbnail"/>
+                
+                <input type="text" value={this.state.desc} onChange={this.myChangeHandler} />
+    
+                <Select isMulti name='Category' options={tagOptions} className="basic-multi-select" classNamePrefix="select" onChange={this.dropdownHandler} />
+            </div>)
+        })
+        
 
     }
 
-
-    async renderThumbnail(e, readerEvt){
-
-    }
 
 
     componentDidMount() {
@@ -138,17 +162,17 @@ class UploadMediaFile extends React.Component {
 
     render() {
 
+       
+
         return (
 
             <div class="main-content">
                 <p>Select Local File</p>
                 <div>
                     <form onSubmit={this.handleSubmit}>
-
-                        <img src={this.state.file} class="thumbnail"/>
-                        <input type="text" value={this.state.desc} onChange={this.myChangeHandler} />
-
-                        <Select isMulti name='Category' options={tagOptions} className="basic-multi-select" classNamePrefix="select" onChange={this.dropdownHandler} />
+                        
+                        {this.state.inputList}
+                        
 
                         <div>
                             <input type="file" onChange={this.handleChange} ref={(ref) => { this.uploadInput = ref; }} />
