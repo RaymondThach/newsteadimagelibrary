@@ -39,9 +39,6 @@ class CollectionItem extends React.Component {
 
     }
 
-
-
-
     render() {
 
 

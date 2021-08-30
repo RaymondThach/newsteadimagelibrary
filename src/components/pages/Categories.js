@@ -8,11 +8,13 @@ import { listTags } from '../../graphql/queries';
 
 export default function Categories() {
   const [showing, setShowing] = useState(false);
-  
+  const [categoryNames, setCategoryNames ] = useState([]);
+
   async function fetchCategories(){
     console.log('thisisonlymeanttoprintonce')
     const results = await API.graphql(graphqlOperation(listTags));
-    console.log(results);
+    setCategoryNames(results.data.listTags.items)
+    console.log(categoryNames);
   }
 
   //componentDidMount() for functional component
@@ -34,7 +36,15 @@ export default function Categories() {
               ? <CreateCategory/>
               : null
           }
-          
+          <div class="gallery">
+          {
+            categoryNames.map((listname, i) => (
+            <a href={'/categories/'+ listname.categoryName.replace(/[ ]/g, '-')} class="items" key={listname.categoryName}>
+              {listname.categoryName}
+            </a>
+            ))
+          }
+          </div>
         </div>
       </div>
     </div>

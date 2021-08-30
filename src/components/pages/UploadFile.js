@@ -4,7 +4,7 @@ import './UploadFile.css';
 import { Storage, API, graphqlOperation } from 'aws-amplify';
 import { createMediaFile } from '../../graphql/mutations';
 import awsExports from '../../aws-exports.js';
-import Select from 'react-select'
+import Select from 'react-select';
 
 let tagOptions = []
 
@@ -83,9 +83,9 @@ class UploadMediaFile extends React.Component {
 
     dropdownHandler = (newValue) =>  {
         console.log(newValue);
-        this.setState({selectedTags: newValue})
-        
-       
+        const selectedStrings = (newValue.map((obj => obj.value)));
+        console.log(selectedStrings);
+        this.setState({selectedTags: selectedStrings})  
     }
 
 
@@ -108,7 +108,7 @@ class UploadMediaFile extends React.Component {
         this.setState({ tags: results.data.listTags.items })
 
         this.state.tags.map((listname, i) => (
-            tagOptions = [{ value: listname.categoryName, label: listname.categoryName}]
+            tagOptions.push({ value: listname.categoryName, label: listname.categoryName })
 
         )
         )
