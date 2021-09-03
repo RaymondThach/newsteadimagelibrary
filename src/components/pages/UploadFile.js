@@ -35,13 +35,19 @@ class UploadMediaFile extends React.Component {
 
 
 
-
+/***********************************************************************************
+ *                                                                                  
+ * TEST BUTTON
+ * 
+ */
     addForm() {
         console.log(this.uploadInput.files.length)
         console.log(this.state.uploads);
         console.log(this.state.file)
         console.log(this.state.categories)
     }
+
+/**********************************************************************************/
 
    //grab dropdown box selection
 
@@ -67,6 +73,16 @@ class UploadMediaFile extends React.Component {
     // Removes Upload form
 
     handleRemove(index) {
+
+        this.state.uploads.splice(index,1)
+        this.state.file.splice(index,1)
+        this.state.descriptions.splice(index,1)
+        this.state.categories.splice(index,1)
+
+        this.setState({uploads: this.state.uploads})
+        this.setState({file: this.state.file})
+        this.setState({descriptions: this.state.descriptions})
+        this.setState({categories: this.state.categories})
 
         console.log(this.state.uploads);
         //console.log(this.state.file[0].name)
@@ -208,7 +224,7 @@ class UploadMediaFile extends React.Component {
                         })
                     }
                     <hr />
-                    <button onClick={(e) => this.addForm(e)}>Add Form</button>
+                    <button onClick={(e) => this.addForm(e)}>TEST BUTTON</button>
                     <hr />
                     <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
                 </div>
