@@ -121,6 +121,38 @@ export const tagByCatName = /* GraphQL */ `
     }
   }
 `;
+export const fileName = /* GraphQL */ `
+  query FileName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelMediaFileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    fileName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        description
+        tags
+        file {
+          bucket
+          region
+          key
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const collectionName = /* GraphQL */ `
   query CollectionName(
     $name: String

@@ -62,7 +62,7 @@ export const createMediaFile = /* GraphQL */ `
 `;
 export const updateMediaFile = /* GraphQL */ `
   mutation UpdateMediaFile(
-    $input: UpdateMediaFileInput
+    $input: UpdateMediaFileInput!
     $condition: ModelMediaFileConditionInput
   ) {
     updateMediaFile(input: $input, condition: $condition) {

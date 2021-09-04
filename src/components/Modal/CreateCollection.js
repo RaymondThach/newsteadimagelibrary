@@ -32,7 +32,7 @@ export default class CreateCollection extends React.Component {
   
   //Add Collection name to table
   addToDb = async (collection) => {
-    alert(this.state.value + 'has been added');
+    alert(this.state.value + ' has been added');
     try{
       await API.graphql(graphqlOperation(createCollection, {input:collection}))
     } catch (error){
@@ -44,7 +44,16 @@ export default class CreateCollection extends React.Component {
   addNewCollection = async(collection) =>{
     try{
       const arrResult = await API.graphql(graphqlOperation(collectionName, collection));
-      { arrResult.data.CollectionName.items.length === 0 ? this.addToDb(collection) : alert('Collection ' + this.state.value + ' already exists.') };
+      //{ arrResult.data.collectionName.items.length === 0 ? this.addToDb(collection) : alert('Collection ' + this.state.value + ' already exists.') };
+      if (arrResult.data.collectionName.items.length === 0){
+
+       this.addToDb(collection);
+       this.s3CreateCollection();
+
+
+      }else{
+        alert('Collection ' + this.state.value + ' already exists.') 
+      }
     }catch(error){
       console.log(error);
     }
@@ -52,7 +61,7 @@ export default class CreateCollection extends React.Component {
 
   //sends to s3 after hitting submit
   handleSubmit(event) {
-    this.s3CreateCollection()
+    //this.s3CreateCollection()
     
 
     
@@ -63,7 +72,7 @@ export default class CreateCollection extends React.Component {
 
     //push to db
     this.addNewCollection(collection)
-    console.log('added to database')
+    
     event.preventDefault();
   }
 
@@ -74,17 +83,6 @@ export default class CreateCollection extends React.Component {
 
 
  
-
- 
-
-
-  
-   
-
-  
-
-  
-
 
   render() {
     return (
@@ -98,7 +96,7 @@ export default class CreateCollection extends React.Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-    );
+    )
 
         </div>
 
