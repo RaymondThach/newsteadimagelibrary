@@ -6,20 +6,33 @@ import { createMediaFile } from '../../graphql/mutations';
 import awsExports from '../../aws-exports.js';
 import Select from 'react-select'
 import { fileName } from "../../graphql/queries";
+import ProgressBar from 'react-bootstrap/ProgressBar';
+
+
+
 
 let tagOptions = []
+let collectionOptions = []
 
 class UploadMediaFile extends React.Component {
 
-    state = {
-        uploads: [],
-        fileName: [],
-        descriptions: [],
-        categories: [],
-        list: [],
-        successs: [],
-        file: [],
-        tags: []
+    constructor(props) {
+        super(props)
+        this.state = {
+            uploads: [],
+            fileName: [],
+            descriptions: [],
+            categories: [],
+            list: [],
+            successs: [],
+            file: [],
+            tags: [],
+            collectionList: [],
+            collection: [],
+            progressBar: 0,
+            progress: 0,
+            mediaFiles: []
+        }
     }
 
     // grab the list of available categories
@@ -32,18 +45,31 @@ class UploadMediaFile extends React.Component {
     }
   }
   `
-
+    // grab the list of available collections
+    fetchCollectionNames = /*GraphQl*/
+        `query CollectionQuery {
+        listCollections {
+        items {
+        name
+            }
+        }
+    }
+    `
     /***********************************************************************************
      *                                                                                  
      * TEST BUTTON
      * 
      */
     addForm() {
-        console.log(this.uploadInput.files.length)
-        console.log(this.state.uploads);
-        console.log(this.state.file)
-        console.log(this.state.categories)
-        console.log("Filename: " + this.state.fileName)
+
+
+        console.log(this.state.uploads.length);
+        console.log(this.state.descriptions.length);
+        console.log(this.state.categories.length);
+        console.log(this.state.collection.length);
+        console.log(this.state.file.length)
+        console.log(this.state.progress)
+        this.progressBarFunctionality();
     }
 
     /**********************************************************************************/
@@ -64,15 +90,7 @@ class UploadMediaFile extends React.Component {
         this.state.fileName[index] = e.target.value
         this.setState({ fileName: this.state.fileName })
 
-        
-        
-
-        
-
     }
-
-
-
 
     //Handles user text input changes
 
@@ -97,7 +115,7 @@ class UploadMediaFile extends React.Component {
         this.setState({ descriptions: this.state.descriptions })
         this.setState({ categories: this.state.categories })
 
-        console.log(this.state.uploads);
+
         //console.log(this.state.file[0].name)
     }
 
@@ -114,6 +132,8 @@ class UploadMediaFile extends React.Component {
 
     }
 
+ 
+
 
 
     //Submission handling to S3 and dynamodb
@@ -121,7 +141,7 @@ class UploadMediaFile extends React.Component {
         //let files = this.state.list
 
 
-        for (var i = 0; i < this.state.list.length; i++) {
+        for (var i = 0; i < this.state.file.length; i++) {
 
             var fileExt = this.state.file[i].name.split('.').pop();
 
@@ -129,10 +149,7 @@ class UploadMediaFile extends React.Component {
                 name: this.state.fileName[i]+'.'+fileExt
             }
 
-            
             //let files = this.uploadInput.files[1]
-            
-
 
             //console.log(files.name)
             const mediaFile = {
@@ -147,45 +164,60 @@ class UploadMediaFile extends React.Component {
                 }
                
 
-                
-                   
-
             }
-            try{
-            const arrResult = await API.graphql(graphqlOperation(fileName, newFileName));
-            if(arrResult.data.fileName.items.length === 0 ){
-        
-            this.setState({ uploads: [...this.state.uploads, mediaFile] })
+            //this.setState({mediaFiles: [...this.state.mediaFiles, mediaFile]})
             try {
-                //Uploads image to S3 bucket
+                const arrResult = await API.graphql(graphqlOperation(fileName, newFileName));
+                if (arrResult.data.fileName.items.length === 0) {
+                    if (this.state.categories.length === 0) {
+                        alert("Please assign at least on category")
+                    } else {
 
-                await Storage.put(this.state.fileName[i]+'.'+fileExt, this.state.file[i], {
-                    contentType: 'media'
+                        try {
+                            this.setState({ uploads: [...this.state.uploads, mediaFile] })
+                            //Uploads image to S3 bucket
 
-                }).then((result) => {
+                            await Storage.put(this.state.fileName[i] + '.' + fileExt, this.state.file[i], {
+                                contentType: 'media',
+                                progressCallback: (progress) => {
 
-                    console.log('Uploading ' + this.state.fileName[i]+'.'+fileExt + " to s3");
-                    this.addFileToDB(this.state.uploads[i])
-                })
+                                    this.setState({progressBar: Math.round((100 * progress.loaded) / progress.total)})
+                                    //console.log(`${progress.loaded}/${progress.total}`)
+                                    //this.setState({})
+                                },
 
+                            }).then((result) => {
+
+                                console.log('Uploading ' + this.state.fileName[i] + '.' + fileExt + " to s3");
+                            
+                                this.addFileToDB(this.state.uploads[i])
+
+                                
+                                
+
+                            })
+                            
+
+                        }
+                        catch (error) {
+                            console.log('Error uploading file: ', error)
+                        }
+                    }
+
+                } else {
+                    alert(this.state.fileName[i] + '.' + fileExt + ' already exist. Please enter a different name')
+                }
+            } catch (error) {
+                console.log(error);
 
             }
-            catch (error) {
-                console.log('Error uploading file: ', error)
-            }
-        }else{
-            alert(this.state.fileName[i]+'.'+fileExt+' already exist. Please enter a different name')
-        }
-        }catch(error){
-            console.log(error);
-
-
-        }
+            
 
 
     }
 }
 
+    //Handle file uploads from upload button
 
     handleFile = (e) => {
         let fileNames = this.uploadInput.files
@@ -196,17 +228,8 @@ class UploadMediaFile extends React.Component {
             let newFile = fileNames.name
             this.setState({ list: [...this.state.list, newFile] })
 
-
-
-
-
-
         });
         this.setState({ file: [...this.state.file, ...e.target.files] })
-
-
-
-
     }
 
     // Fetch category names for dropdown selection
@@ -218,16 +241,26 @@ class UploadMediaFile extends React.Component {
 
         this.state.tags.map((listname, i) => (
             tagOptions.push({ value: listname.categoryName, label: listname.categoryName })
-
+            )
         )
-        )
+    }
 
+    // Fetch category names for dropdown selection
+    async fetchCollection() {
+        console.log('fetching collection names')
+
+        const results = await API.graphql(graphqlOperation(this.fetchCollectionNames))
+        this.setState({ collectionList: results.data.listCollections.items })
+
+        this.state.collectionList.map((listname, i) => (
+            collectionOptions.push({ value: listname.name, label: listname.name })
+            )
+        )
     }
 
     componentDidMount() {
         this.fetchCategory();
     }
-
 
     render() {
         return (
@@ -244,10 +277,17 @@ class UploadMediaFile extends React.Component {
                         return (
                             <div key={index}>
                                 {console.log(index)}
+                                <div class="thumbnail">
+                                    <img src={URL.createObjectURL(this.uploadInput.files[index])}/> 
+                                </div>
+                                
                                 <input onChange={(e) => this.handleFileNameChange(e, index)} value={this.state.fileName[index]} />
                                 <input onChange={(e) => this.handleChange(e, index)} value={this.state.descriptions[index]} />
                                 <button onClick={() => this.handleRemove(index)}>Remove</button>
                                 <Select isMulti name='Category' options={tagOptions} className="basic-multi-select" classNamePrefix="select" onChange={e => this.dropdownHandler(e, index)} />
+                                <Select isMulti name='Collection' options={collectionOptions} className="basic-multi-select" classNamePrefix="select" onChange={e => this.collectionDropdownHandler(e, index)} />
+                                
+                                <ProgressBar now={this.state.progressBar} label={`${this.state.progressBar}%`} />
                                 <hr />
                             </div>
                         )
