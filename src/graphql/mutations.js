@@ -50,6 +50,7 @@ export const createMediaFile = /* GraphQL */ `
       name
       description
       tags
+      collection
       file {
         bucket
         region
@@ -70,6 +71,7 @@ export const updateMediaFile = /* GraphQL */ `
       name
       description
       tags
+      collection
       file {
         bucket
         region
@@ -90,6 +92,7 @@ export const deleteMediaFile = /* GraphQL */ `
       name
       description
       tags
+      collection
       file {
         bucket
         region
