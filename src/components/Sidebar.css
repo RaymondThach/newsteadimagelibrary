@@ -48,7 +48,7 @@
 }
 
 .dropdown:hover .dropbtn {
-  background-color: cornflowerblue;
+  background-color: rgb(96, 143, 221) ;;
 }
 
 /* Nav bar styling*/
@@ -61,7 +61,7 @@
     margin-right: 5px;
     margin-top: 15px;
     background-image: url(https://pbs.twimg.com/media/E8wDtRBUUAMgRPV?format=jpg&name=240x240);
-    background-color: cornflowerblue;
+    background-color:rgb(96, 143, 221) ;
     background-blend-mode: multiply;
 
 }
@@ -72,7 +72,7 @@
     height: 100%;
     position: fixed;
     top: 0;
-    background-color:CornflowerBlue
+    background-color:rgb(96, 143, 221) ;
 }
 
 .nav-text{

@@ -1,3 +1,4 @@
+
 .background{
     width: 100%;
     height: 100%;
@@ -9,14 +10,70 @@
 }
 
 .container {
-    width: 800px;
-    height: 500px;
+    width: 1300px;
+    height: 800px;
     box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
     background: #fff;
     color: #000;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
+    position: absolute;
     z-index: 10;
     border-radius: 10px;
+    justify-content: center;
+    border-style: solid; 
+}
+
+.collectionName{
+    padding-top: 0px;
+    display: inline-block;
+    border-style: solid;
+    width: 1290px;
+    height: 200px;
+    text-align: center;
+    vertical-align:middle;
+}
+
+
+.thumbnail{
+    width: 120px;
+    height: 120px;
+    background-color:white ;
+    padding-left: auto ;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.heading{
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+}
+
+.text{
+    font-size:large;
+    font-weight: bold;
+}
+
+.submit{
+    background-color:rgb(96, 143, 221) ;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;  
+}
+
+.border2{
+    padding-top: 0px;
+    display: inline-block;
+    border-style: dotted;
+    width: 1290px;
+    height: 300px;
+    text-align: center;
+    vertical-align:middle;
 }

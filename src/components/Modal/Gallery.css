@@ -1,0 +1,118 @@
+.background {
+    position: fixed;
+    top: 0%;
+}
+
+.container {
+    position: absolute;
+    left: 10%
+}
+
+.imageName {
+    position: relative;
+    top: 0%; 
+    max-width: inherit;
+}
+
+.mediaContainer {
+    position: absolute;
+    outline-style: solid;
+    width: 81%;
+    left:1.5%;
+    top:3%;
+    height: 94%;
+    box-sizing: border-box;
+    text-align: center;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+amplify-s3-image {
+    --height: 100%;
+    --width: auto; 
+}
+
+.dataColumn {
+    position: absolute;
+    top: 3%;
+    right: 1.5%;
+    width: 200px;
+    height: 94%;
+    outline-style: solid;
+}
+
+.closeGalleryButton {
+    position: absolute;
+    top: -3%;
+    right: -10%;
+}
+
+.detailLabel {
+    position: absolute;
+    top: 0%;
+    max-width: inherit;
+    box-sizing: border-box;
+}
+
+textarea {
+    position: absolute;
+    top: 3%;
+    height: 65%;
+    width: 100%;
+    background-color: transparent;
+    resize: none;
+    border: none;
+    outline: none;
+    
+}
+
+.editButton {
+    position: absolute;
+    top: 0%;
+    right: 24%;
+}
+
+.downloadButton {
+    position: absolute;
+    top: 0%;
+    right: 12%;
+}
+
+.shareButton {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+}
+
+.confirmButton {
+    position: absolute;
+    top: 69%;
+    left: 25%;
+}
+
+.cancelButton {
+    position: absolute;
+    top: 69%;
+    right: 25%;
+}
+
+.tagsArea {
+    position: relative;
+    top: 73%;
+    max-width: inherit;
+    max-height: inherit;
+    box-sizing: border-box;
+    text-align: center;
+    outline-style: solid;
+}
+
+.tags {
+    position: relative;
+    display: inline-block;
+    margin: 1px;
+    border-radius: 25px;
+    padding-right: 5px;
+    border: solid; 
+    
+}

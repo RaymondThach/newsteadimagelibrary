@@ -82,19 +82,23 @@ export default class CreateCollection extends React.Component {
     <>
       <div class="background">
         <div class="container">
+        <h1>Create Collection<br></br></h1>
           <form onSubmit={this.handleSubmit}>
-          <label>
-            Name:
+          <label class="collectionName">
+            <h2>Collection Name:</h2>
             <input type="text" value={this.state.value} onChange={this.myChangeHandler} />
           </label>
-          <input type="submit" value="Submit" />
         </form>
-    );
-
+        <div class="heading">Select Collection Thumbnail</div>
+        <div class="border2">
+        <img class="thumbnail" src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png"></img>
+        <div class= "text">Drag and Drop to Upload Files</div>
+        <div class= "text">OR</div>
+        <input type="button" class="filebutton" value="Select Local File "></input>
         </div>
-
-      </div>
-    
+        <input type="submit" class="submit" value="Create" />
+  </div>
+  </div>
     </>
     )
   }

@@ -11,10 +11,8 @@ export default function Categories() {
   const [categoryNames, setCategoryNames ] = useState([]);
 
   async function fetchCategories(){
-    console.log('thisisonlymeanttoprintonce')
     const results = await API.graphql(graphqlOperation(listTags));
     setCategoryNames(results.data.listTags.items)
-    console.log(categoryNames);
   }
 
   //componentDidMount() for functional component
@@ -29,14 +27,14 @@ export default function Categories() {
           Categories
         </h1>
         <div class="header-right" >
-            <div class="create-button" onClick={() => {setShowing(!showing); }}> + </div>
+            <div class="create-button" onClick={() => {setShowing(!showing)}}> + </div>
         </div>
         <div class="modal-overlay">
           {showing
               ? <CreateCategory/>
               : null
           }
-          <div class="gallery">
+          <div class="categories">
           {
             categoryNames.map((listname, i) => (
             <a href={'/categories/'+ listname.categoryName.replace(/[ ]/g, '-')} class="items" key={listname.categoryName}>
