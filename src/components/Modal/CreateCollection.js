@@ -1,9 +1,8 @@
 import React from "react";
 import './CreateCollection.css'
-import {Storage, API, graphqlOperation, AWSCloudWatchProvider } from 'aws-amplify';
-import awsExports from '../../aws-exports.js';
-import { AmplifyS3Album } from '@aws-amplify/ui-react';
-import { createCollection } from '../../graphql/mutations';
+import {Storage, API, graphqlOperation } from 'aws-amplify';
+import {createCollection } from '../../graphql/mutations';
+import { collectionName } from "../../graphql/queries";
 
 
 
@@ -33,7 +32,7 @@ export default class CreateCollection extends React.Component {
   
   //Add Collection name to table
   addToDb = async (collection) => {
-    console.log('adding to DB')
+    alert(this.state.value + ' has been added');
     try{
       await API.graphql(graphqlOperation(createCollection, {input:collection}))
     } catch (error){
@@ -41,10 +40,29 @@ export default class CreateCollection extends React.Component {
     }
   }
 
+  //Query DB using input to check if name already exists, if not add to Collections table
+  addNewCollection = async(collection) =>{
+    try{
+      const arrResult = await API.graphql(graphqlOperation(collectionName, collection));
+      //{ arrResult.data.collectionName.items.length === 0 ? this.addToDb(collection) : alert('Collection ' + this.state.value + ' already exists.') };
+      if (arrResult.data.collectionName.items.length === 0){
+
+       this.addToDb(collection);
+       this.s3CreateCollection();
+
+
+      }else{
+        alert('Collection ' + this.state.value + ' already exists.') 
+      }
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   //sends to s3 after hitting submit
   handleSubmit(event) {
-    this.s3CreateCollection()
-    alert('A name was submitted: ' + this.state.value);
+    //this.s3CreateCollection()
+    
 
     
     const collection ={
@@ -53,8 +71,8 @@ export default class CreateCollection extends React.Component {
     console.log(collection)
 
     //push to db
-    this.addToDb(collection)
-    console.log('added to database')
+    this.addNewCollection(collection)
+    
     event.preventDefault();
   }
 
@@ -65,17 +83,6 @@ export default class CreateCollection extends React.Component {
 
 
  
-
- 
-
-
-  
-   
-
-  
-
-  
-
 
   render() {
     return (

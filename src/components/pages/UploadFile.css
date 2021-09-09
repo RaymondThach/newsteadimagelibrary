@@ -1,3 +1,13 @@
 .main-content{
     margin-left: 250px;
 }
+
+.thumbnail img{
+    height:200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 25px;
+
+
+}

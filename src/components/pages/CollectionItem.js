@@ -1,5 +1,6 @@
 import { Storage } from 'aws-amplify';
-
+import { listMediaFiles } from '../../graphql/queries';
+import { API, graphqlOperation } from 'aws-amplify';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import React from 'react';
 
@@ -15,18 +16,22 @@ class CollectionItem extends React.Component {
 
     }
 
-    foldername = this.props.match.params.name.replace('-', ' ',)
+
+    folderName = this.props.match.params.name.replace('-', ' ',)
 
 
-    fetchKeys() {
 
-        Storage.list('Collections/' + this.foldername)
-            .then((results) => {
-                console.log('test fetch keys')
-                this.setState({ list: results })
-            })
 
-        console.log(this.state.list)
+    fetchKeys = async () => {
+        const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { collection: { contains: this.folderName } } }));
+
+        console.log(results)
+
+        this.setState({ list: results.data.listMediaFiles.items })
+
+
+        console.log("Collection item fetch")
+
 
 
     }
@@ -54,8 +59,8 @@ class CollectionItem extends React.Component {
                             this.state.list.map((listname, i) => (
 
 
-                                <div>
-                                    <AmplifyS3Image imgKey={listname.key} key={listname.key} />
+                                <div key={listname.key}>
+                                    <AmplifyS3Image imgKey={listname.name} />
                                 </div>
 
 

@@ -1,26 +1,26 @@
 {
-  "nhbackend": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-newsteadimagelibrary-nhbackend-194108-authRole",
-      "UnauthRoleArn": "arn:aws:iam::965350275560:role/amplify-newsteadimagelibrary-nhbackend-194108-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::965350275560:role/amplify-newsteadimagelibrary-nhbackend-194108-authRole",
-      "Region": "ap-southeast-2",
-      "DeploymentBucketName": "amplify-newsteadimagelibrary-nhbackend-194108-deployment",
-      "UnauthRoleName": "amplify-newsteadimagelibrary-nhbackend-194108-unauthRole",
-      "StackName": "amplify-newsteadimagelibrary-nhbackend-194108",
-      "StackId": "arn:aws:cloudformation:ap-southeast-2:965350275560:stack/amplify-newsteadimagelibrary-nhbackend-194108/42d4ffd0-ff3f-11eb-a5df-0addd70d9a10",
-      "AmplifyAppId": "d17t75b7jvjqaz"
-    },
-    "categories": {
-      "auth": {
-        "newsteadimagelibrary648aa53a": {}
-      },
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d17t75b7jvjqaz",
-          "type": "manual"
+    "nhbackend": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-newsteadimagelibrary-nhbackend-194108-authRole",
+            "UnauthRoleArn": "arn:aws:iam::965350275560:role/amplify-newsteadimagelibrary-nhbackend-194108-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::965350275560:role/amplify-newsteadimagelibrary-nhbackend-194108-authRole",
+            "Region": "ap-southeast-2",
+            "DeploymentBucketName": "amplify-newsteadimagelibrary-nhbackend-194108-deployment",
+            "UnauthRoleName": "amplify-newsteadimagelibrary-nhbackend-194108-unauthRole",
+            "StackName": "amplify-newsteadimagelibrary-nhbackend-194108",
+            "StackId": "arn:aws:cloudformation:ap-southeast-2:965350275560:stack/amplify-newsteadimagelibrary-nhbackend-194108/42d4ffd0-ff3f-11eb-a5df-0addd70d9a10",
+            "AmplifyAppId": "d17t75b7jvjqaz"
+        },
+        "categories": {
+            "auth": {
+                "newsteadimagelibrary648aa53a": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d17t75b7jvjqaz",
+                    "type": "manual"
+                }
+            }
         }
-      }
     }
-  }
 }
