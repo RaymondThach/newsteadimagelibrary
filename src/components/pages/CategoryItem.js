@@ -5,6 +5,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import Gallery from '../Modal/Gallery';
 import './CategoryItem.css';
 
+
 export default function CategoryItem() {
     const { categoryName } = useParams();
     const [ catName, setCatName] = useState('');
@@ -12,6 +13,7 @@ export default function CategoryItem() {
     const [ item, setItem ] = useState();
 
     const [showGallery, setShowGallery] = useState(false);
+    
 
     const openGallery = () => {
         setShowGallery(true);
@@ -36,20 +38,21 @@ export default function CategoryItem() {
                 </h1> 
             </div>
             <div class="main-content">
-                <div class="categoryItems">
-                {
-                    items.map((item, i) => (
-                    <a class="items" key={item.name} onClick={() => {openGallery(); setItem(item);}}>
-                    {item.name}
-                    </a>
-                    ))
-                }   
-                </div>
-                <div class='modal-overlay'>
-                {
-                    (showGallery ? <Gallery showGallery={showGallery} setShowGallery={setShowGallery} item={item} fetchMediaFiles={fetchMediaFiles} /> : null)
-                }
-                </div> 
+                    <div class="categoryItems">
+                    {
+                        items.map((item, i) => (
+                        <a class="items" key={item.name} onClick={() => { openGallery(); setItem(item); }}>
+                        {item.name}
+                        </a>
+                        ))
+                    }   
+                    </div>
+                    
+                    <div class='modal-overlay'>
+                    {
+                        (showGallery ? <Gallery showGallery={showGallery} setShowGallery={setShowGallery} item={item} fetchMediaFiles={fetchMediaFiles} /> : null)
+                    }
+                    </div> 
             </div> 
         </div>   
     );

@@ -31,7 +31,7 @@ export default function Categories() {
         </div>
         <div class="modal-overlay">
           {showing
-              ? <CreateCategory/>
+              ? <CreateCategory setShowing={setShowing}/>
               : null
           }
           <div class="categories">

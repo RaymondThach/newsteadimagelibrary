@@ -23,10 +23,13 @@ function App() {
   //Tracks if the user is logged in
   const [isAuthenticated, userHasAuthenticated] = useState(false);
 
+  const [ galleryIsOpen, galleryHasOpened ] = useState(false);
+
   //sessionCheck() executes once on first render
   useEffect(() => {
     sessionCheck();
   }, []);
+  
   //Checks if a session with this user already exists on Amplify
   async function sessionCheck() {
     try {
@@ -42,9 +45,11 @@ function App() {
 
   return (
     <div className='App'>
-        <Context.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+        <Context.Provider value={{ isAuthenticated, userHasAuthenticated, galleryIsOpen, galleryHasOpened }}>
             <BrowserRouter history={history}>
-              <Sidebar/>
+              {
+                galleryIsOpen? null : <Sidebar/>
+              }
               <Switch>
                 <Route path='/categories/:categoryName' component={CategoryItem}/>
                 <Route path='/categories' component={Categories}/>

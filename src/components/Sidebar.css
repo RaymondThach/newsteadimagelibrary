@@ -1,6 +1,8 @@
 .Sign-Out-Button{
-    width:100%;
-    margin-top: 300px;
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-top: 90%;
 }
 
 .dropbtn {
@@ -54,50 +56,41 @@
 /* Nav bar styling*/
 
 .logo{
-    display: inline-block;
-    vertical-align: top;
-    width: 120px;
-    height: 120px;
-    margin-right: 5px;
-    margin-top: 15px;
-    background-image: url(https://pbs.twimg.com/media/E8wDtRBUUAMgRPV?format=jpg&name=240x240);
-    background-color:rgb(96, 143, 221) ;
-    background-blend-mode: multiply;
-
+  position: relative;
+  display: block;
+  height: 220px;
+  width: 220px;
+  margin: auto;
 }
 
 .nav-menu
 {  
-    width: 250px;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    background-color:rgb(96, 143, 221) ;
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  background-color:rgb(96, 143, 221);
 }
 
 .nav-text{
-    display: flex;
-    justify-content: start;
-    padding: 8px 0px 8px 16px;
-    align-items: center;
-    list-style: none;
-    height: 40px;
-    margin: 50px 20px 0px 20px;
-    background-color:white;
+  display: flex;
+  justify-content: start;
+  padding: 8px 0px 8px 16px;
+  align-items: center;
+  list-style: none;
+  height: 40px;
+  margin: 50px 20px 0px 20px;
+  background-color:white;
 }
 
 .nav-text a {
-    text-decoration: none;
-    font-size: 14px;
-    width: 95%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0 50px;
-    color: black;
-    font-weight: bold;
-}
-
-.logo{
-  margin-left: 25%;
+  text-decoration: none;
+  font-size: 14px;
+  width: 95%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 50px;
+  color: black;
+  font-weight: bold;
 }

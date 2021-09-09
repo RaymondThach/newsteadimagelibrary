@@ -1,4 +1,3 @@
-
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {SidebarData} from './SidebarData'
@@ -7,17 +6,12 @@ import Button from 'react-bootstrap/Button';
 import { Auth } from 'aws-amplify';
 import './Sidebar.css'
 import { useHistory, useLocation } from 'react-router-dom';
-
-
-
-
-
+import transparentLogo from './images/transparentLogo.png';
 
 //Routes that don't render the Sidebar
-const noSidebarRoutes = ['/login', '/first-time-login'];
+const noSidebarRoutes = ['/login'];
 
 function Sidebar() {
-    
     const { userHasAuthenticated } = useAppContext();
     const history = useHistory();
 
@@ -43,7 +37,7 @@ function Sidebar() {
                     <link to="#" className="menu-bars"></link>
                 </div>
                 <nav className = 'nav-menu'>
-                <img class="logo" src="https://pbs.twimg.com/media/E8wDtRBUUAMgRPV?format=jpg&name=240x240">
+                <img class="logo" src={transparentLogo}>
                 </img>
                 <div class="dropdown">
                     <button class="dropbtn">Sort By</button>
@@ -52,7 +46,7 @@ function Sidebar() {
                          <a href="#">Recently Added</a>
                          <a href="#">Earliest Added</a>
                          </div>
-                         </div>
+                </div>
                     {SidebarData.map((item, index) => {
                             return(
                                 <li key={index} className={item.cName}>
@@ -61,13 +55,12 @@ function Sidebar() {
                                     </Link>
                                 </li>
                             )
-                        
                         })
                     }
                     <div class='Sign-Out-Button'> 
                         <Button onClick={handleLogout}>Logout</Button>
-                    </div> 
-                </nav>
+                    </div>
+                </nav> 
             </>
         )
     }  

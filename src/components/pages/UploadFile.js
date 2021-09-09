@@ -4,7 +4,7 @@ import './UploadFile.css';
 import { Storage, API, graphqlOperation } from 'aws-amplify';
 import { createMediaFile } from '../../graphql/mutations';
 import awsExports from '../../aws-exports.js';
-import Select from 'react-select'
+import Select from 'react-select';
 import { fileName } from "../../graphql/queries";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 

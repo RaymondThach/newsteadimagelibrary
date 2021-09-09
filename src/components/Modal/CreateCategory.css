@@ -1,0 +1,8 @@
+.createCatContainer{
+    position: absolute;
+    height: 10%;
+    width: 20%;
+    left: 35%;
+    text-align: center;
+    background-color: white;
+}

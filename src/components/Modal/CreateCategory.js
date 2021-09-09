@@ -3,10 +3,13 @@ import './CreateCategory.css'
 import { API, graphqlOperation } from 'aws-amplify';
 import { createTag } from '../../graphql/mutations';
 import { tagByCatName } from '../../graphql/queries';
+import { useParams } from 'react-router-dom'; 
 
-export default function CreateCategory() {
+export default function CreateCategory({setCreateCategory, setShowing}) {
     //String value of the input field for new category name
     const [ inputValue, setInputValue] = useState("");
+
+    const { path } = useParams();
 
     //Update inputValue to user's input
     function myChangeHandler(event) {
@@ -22,6 +25,7 @@ export default function CreateCategory() {
         catch (error) {
             console.log(error);
         }
+        handleClose();
     }
 
     //Query DB using input category name to check if it already exists, if not add it to the Tag table
@@ -35,6 +39,7 @@ export default function CreateCategory() {
         }
     }
 
+    //Manage the flow of the Submission button
     function handleSubmit(event) {
         const tag = { 
             categoryName: inputValue 
@@ -45,16 +50,31 @@ export default function CreateCategory() {
         event.preventDefault();
     }
 
+    //Manage the flow of closing the create category modal of two different paths
+    function handleClose(){
+        if(!setCreateCategory) {
+            setShowing(false);
+        }
+        else {
+            setCreateCategory(false);
+        }
+    }
+
+    useEffect(() => {
+        console.log(path);
+    }, []);
+
     return (
         <>
         <div class="background">
-          <div class="container">
+          <div class="createCatContainer">
             <form onSubmit={ handleSubmit }>
                 <label>
                 New Category Name:
-                <input type="text" value={ inputValue } onChange={ myChangeHandler } />
                 </label>
+                <input type="text" value={ inputValue } onChange={ myChangeHandler } />
                 <input type="submit" value="Submit" />
+                <button class='cancelBtn' onClick={() => {handleClose();}}>Cancel</button>
             </form>
           </div>
         </div>
