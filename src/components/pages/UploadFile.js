@@ -10,6 +10,7 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 
 let tagOptions = [];
 let collectionOptions = [];
+let selectedCollection = [];
 
 class UploadMediaFile extends React.Component {
   constructor(props) {
@@ -57,10 +58,13 @@ class UploadMediaFile extends React.Component {
   addForm() {
     
     console.log(this.state.collection);
-    console.log(this.state.collection[0].map(String));
-    console.log(this.state.collection.length)
-    console.log(this.state.categories[0]);
-    console.log(this.state.categories.length)
+   
+    console.log(this.state.collection[0]);
+    console.log(this.state.collection[1]);
+    console.log(this.state.collection[2]);
+    
+
+ 
 
   }
 
@@ -69,21 +73,41 @@ class UploadMediaFile extends React.Component {
   //grab dropdown box selection
 
   dropdownHandler = (e, index) => {
-    
     const selectedStrings = e.map((obj) => obj.value);
     console.log("test" + selectedStrings);
     this.state.categories[index] = selectedStrings;
     console.log(selectedStrings);
     this.setState({ categories: this.state.categories});
+
+    
   };
 
   //grab dropdown box selection for collections
 
   collectionDropdownHandler = (e, index) => {
-    const selectedStrings = e.map((obj) => obj.value);
-    this.state.collection[index] = selectedStrings;
+
+    this.state.collection[index] = e
+    
+    this.setState({collection: this.state.collection})
+
+
+    /*e.map((obj,i)=>
+      selectedCollection.push({
+        value: obj.value,
+        label: obj.value
+      })
+
+    )*/
+    console.log(e)
+    console.log(selectedCollection)
+    console.log(tagOptions)
+    
+    /*selectedCollection.push(e)
+    console.log(selectedCollection)
+    const x = e.map((obj) => obj.value);
+    this.state.collection[index] = x;
     console.log(this.state.collection[index]);
-    this.setState({ collection: this.state.collection });
+    this.setState({ collection: x});*/
   };
 
  
@@ -105,21 +129,33 @@ class UploadMediaFile extends React.Component {
   // Removes Upload form
 
   handleRemove(index) {
+
+    
+
+    this.state.collection.splice(index, 1)
+    this.state.categories.splice(index, 1);
+
+
+    
+    
     this.state.uploads.splice(index, 1);
-    this.state.file.splice(index, 1);
+    
     this.state.descriptions.splice(index, 1);
-    this.state.categories.splice(index,1);
     this.state.fileName.splice(index,1);
-    this.state.collection.splice(index,1);
+    this.state.file.splice(index,1);
+ 
+
+    this.setState({ collection: this.state.collection });
+    this.setState({ categories: this.state.categories });
 
     this.setState({ uploads: this.state.uploads });
     this.setState({ file: this.state.file });
     this.setState({ descriptions: this.state.descriptions });
-    this.setState({ categories: this.state.categories });
     this.setState({ fileName: this.state.fileName });
-    this.setState({ collection: this.state.collection });
 
+  
     //console.log(this.state.file[0].name)
+    
   }
 
   //remove all file details after submit
@@ -219,7 +255,7 @@ class UploadMediaFile extends React.Component {
 
                 this.addFileToDB(this.state.uploads[i]);
                 if (
-                  !alert(
+                  !alert && i === this.state.file.length(
                     this.state.file.length + " files uploaded successfully"
                   )
                 ) {
@@ -314,23 +350,28 @@ class UploadMediaFile extends React.Component {
                 value={this.state.descriptions[index]}
               />
               <button onClick={() => this.handleRemove(index)}>Remove</button>
+             
               <Select
                 isMulti
                 name="Category"
-                value={this.state.categories[index]}
                 options={tagOptions}
                 className="basic-multi-select"
                 classNamePrefix="select"
                 onChange={(e) => this.dropdownHandler(e, index)}
               />
+              {
+                
+              }
+              
               <Select
                 isMulti
                 name="Collection"
-                
+                value={this.state.collection[index]}
                 options={collectionOptions}
                 className="basic-multi-select"
                 classNamePrefix="select"
                 onChange={(e) => this.collectionDropdownHandler(e, index)}
+                cache={false}
               />
 
               <ProgressBar
