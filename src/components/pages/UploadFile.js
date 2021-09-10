@@ -31,7 +31,8 @@ class UploadMediaFile extends React.Component {
             collection: [],
             progressBar: 0,
             progress: 0,
-            mediaFiles: []
+            mediaFiles: [],
+            imgThumbnails: []
         }
     }
 
@@ -69,7 +70,7 @@ class UploadMediaFile extends React.Component {
         console.log(this.state.collection.length);
         console.log(this.state.file.length)
         console.log(this.state.progress)
-        this.progressBarFunctionality();
+    
     }
 
     /**********************************************************************************/
@@ -278,7 +279,14 @@ class UploadMediaFile extends React.Component {
                             <div key={index}>
                                 {console.log(index)}
                                 <div class="thumbnail">
-                                    <img src={URL.createObjectURL(this.uploadInput.files[index])}/> 
+                                    
+                                        
+                                        <img src={URL.createObjectURL(this.state.file[index])} />
+                                        
+                                     
+
+                                    
+                              
                                 </div>
                                 
                                 <input onChange={(e) => this.handleFileNameChange(e, index)} value={this.state.fileName[index]} />
