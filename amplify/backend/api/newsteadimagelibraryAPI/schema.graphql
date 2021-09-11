@@ -11,11 +11,12 @@ type Tag @model
 }
 
 type MediaFile @model
-@key(name: "fileName", fields: ["name"], queryField: "fileName") {
+@key(name: "fileName", fields: ["name"], queryField: "fileName"){
   id: ID!
   name: String!
   description: String
   tags: [String!]!
+  collection: [String!]
   # Reference the S3Object type from a field.
   file: S3Object
 }
