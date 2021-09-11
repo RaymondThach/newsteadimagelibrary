@@ -4,11 +4,11 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/cli": "^5.5.0",
-    "@aws-amplify/ui-react": "^1.2.14",
+    "@aws-amplify/ui-react": "^1.2.15",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    "aws-amplify": "^4.2.8",
+    "aws-amplify": "^4.2.9",
     "aws-amplify-react-native": "^5.0.3",
     "history": "^5.0.1",
     "react": "^17.0.2",
