@@ -1,13 +1,80 @@
+:root{
+    height: 100%;
+
+}
 .main-content{
     margin-left: 250px;
+    height: 100px;
+    display: grid;
+    grid-template-rows:50px 50% 0 40%;
 }
 
 .thumbnail img{
-    height:200px;
-    width: 200px;
+    height:100px;
+    width: 100px;
     background-repeat: no-repeat;
     background-size: cover;
     margin-bottom: 25px;
 
 
+}
+
+.upload-forms{
+    display: grid;
+    top:0;
+    overflow: auto;
+    
+    
+   
+}
+
+.drop-area{
+    bottom: 0;
+    
+    
+    
+}
+.upload-button{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    padding-top: 250px;
+    z-index: 999;
+    
+
+}
+
+.upload-button img, svg{
+    height: 100px;
+    width: 100px;
+}
+
+
+
+
+h1{
+    height: 50px;
+}
+
+#inp{
+    text-align-last: center;
+    margin: auto;
+    text-decoration: none;
+    height: 100%;
+    position: absolute;
+    top:0; 
+    left:0;
+    padding-top: 400px;
+
+}
+
+
+
+.dropbox{
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    
+    
 }

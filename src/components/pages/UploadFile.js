@@ -7,7 +7,9 @@ import awsExports from "../../aws-exports.js";
 import Select from "react-select";
 import { fileName } from "../../graphql/queries";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BsCloudUpload } from "react-icons/bs";
+
 
 let tagOptions = [];
 let collectionOptions = [];
@@ -363,8 +365,8 @@ class UploadMediaFile extends React.Component {
     return (
       <div className="main-content">
         <h1>Upload Files</h1>
-        <hr />
-
+        
+      <div className="upload-forms">
         {this.state.file.map((f, index) => {
           
           return (
@@ -411,21 +413,30 @@ class UploadMediaFile extends React.Component {
                 now={this.state.progressBar[index]}
                 label={`${this.state.progressBar[index]}%`}
               />
-              <hr />
+              
             </div>
           );
         })}
-        <input
-          type="file"
-          onChange={this.handleFile}
-          multiple
-          ref={(ref) => {
-            this.uploadInput = ref;
-          }}
-        />
-        <hr />
-        <button onClick={(e) => this.addForm(e)}>TEST BUTTON</button>
-        <hr />
+        </div>
+        <hr/>
+        <div className="drop-area">
+          <div className="upload-button">
+          <BsCloudUpload />
+          <div class= "text">Drag and Drop to Upload Files</div>
+          <input
+            id="inp"
+            className="dropbox"
+            type="file"
+            onChange={this.handleFile}
+            multiple
+            ref={(ref) => {
+              this.uploadInput = ref;
+            }}
+          />
+          </div>
+          
+          
+        </div>
         <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
       </div>
     );
