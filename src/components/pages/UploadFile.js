@@ -7,9 +7,8 @@ import awsExports from "../../aws-exports.js";
 import Select from "react-select";
 import { fileName } from "../../graphql/queries";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import { BsCloudUpload } from "react-icons/bs";
-
 
 let tagOptions = [];
 let collectionOptions = [];
@@ -36,9 +35,9 @@ class UploadMediaFile extends React.Component {
   }
 
   /**
-   * 
+   *
    * GraphQl Query - grab the list of available categories
-   * 
+   *
    * **/
   fetchNames /*GraphQl*/ = `query MyQuery {
     listTags {
@@ -49,11 +48,11 @@ class UploadMediaFile extends React.Component {
   }
   `;
 
- /**
-  * 
-  * GraphQL Query - grab the list of available collections
-  * 
-  **/
+  /**
+   *
+   * GraphQL Query - grab the list of available collections
+   *
+   **/
   fetchCollectionNames /*GraphQl*/ = `query CollectionQuery {
         listCollections {
         items {
@@ -63,57 +62,46 @@ class UploadMediaFile extends React.Component {
     }
     `;
 
-
-/*****
- * 
- * Grab dropdown box selection
- * 
- *******/
+  /*****
+   *
+   * Grab dropdown box selection
+   *
+   *******/
   dropdownHandler = (e, index) => {
-    this.state.categories[index] = e
-    
-    this.setState({collection: this.state.collection})
+    this.state.categories[index] = e;
 
+    this.setState({ categories: this.state.categories });
     
   };
 
   /**
-   * 
+   *
    * Grab dropdown box selection for collections
-   * 
+   *
    * */
 
   collectionDropdownHandler = (e, index) => {
+    this.state.collection[index] = e;
 
-    this.state.collection[index] = e
+    this.setState({ collection: this.state.collection });
     
-    this.setState({collection: this.state.collection})
-
   };
 
- 
-
   /**
-   * 
+   *
    * Handles user text input changes for file names
-   * 
+   *
    * */
 
   async handleFileNameChange(e, index) {
-
-    
-
     this.state.fileName[index] = e.target.value;
     this.setState({ fileName: this.state.fileName });
-    
-
   }
 
-    
   /**
-   * 
+   *
    * Handles user text input changes
-   * 
+   *
    * */
 
   handleChange(e, index) {
@@ -122,20 +110,18 @@ class UploadMediaFile extends React.Component {
   }
 
   /***
-   * 
+   *
    * Removes Upload form
-   * 
-   *  */ 
+   *
+   *  */
 
   handleRemove(index) {
-
-    this.state.collection.splice(index, 1)
+    this.state.collection.splice(index, 1);
     this.state.categories.splice(index, 1);
     this.state.uploads.splice(index, 1);
     this.state.descriptions.splice(index, 1);
-    this.state.fileName.splice(index,1);
-    this.state.file.splice(index,1);
- 
+    this.state.fileName.splice(index, 1);
+    this.state.file.splice(index, 1);
 
     this.setState({ collection: this.state.collection });
     this.setState({ categories: this.state.categories });
@@ -143,15 +129,12 @@ class UploadMediaFile extends React.Component {
     this.setState({ file: this.state.file });
     this.setState({ descriptions: this.state.descriptions });
     this.setState({ fileName: this.state.fileName });
-
-  
-    
   }
 
   /**
-   * 
+   *
    * Remove all file details after submit
-   * 
+   *
    * */
 
   reset() {
@@ -163,10 +146,11 @@ class UploadMediaFile extends React.Component {
   }
 
   /***
-   * 
+   *
    * Add data into db related to upload
-   * 
-   ***/ 
+   *
+   ***/
+
   addFileToDB = async (mediaFile) => {
     console.log("Adding file to DB");
     try {
@@ -179,27 +163,22 @@ class UploadMediaFile extends React.Component {
     }
   };
 
-
   /**
-   * 
-   * 
+   *
+   *
    * Submission handling to S3 and dynamodb
-   * 
-   * 
+   *
+   *
    * **/
   handleSubmit = async (e) => {
-
     for (var i = 0; i < this.state.file.length; i++) {
       var fileExt = this.state.file[i].name.split(".").pop();
-
-      
-
 
       const newFileName = {
         name: this.state.fileName[i] + "." + fileExt,
       };
       const mediaFile = {
-        name: this.state.fileName[i]+ "." + fileExt,
+        name: this.state.fileName[i] + "." + fileExt,
         description: this.state.descriptions[i],
         tags: this.state.categories[i],
         collection: this.state.collection[i],
@@ -207,7 +186,7 @@ class UploadMediaFile extends React.Component {
         file: {
           bucket: awsExports.aws_user_files_s3_bucket,
           region: awsExports.aws_user_files_s3_bucket_region,
-          key: "public/" + this.state.fileName[i]+ "." + fileExt,
+          key: "public/" + this.state.fileName[i] + "." + fileExt,
         },
       };
       //this.setState({mediaFiles: [...this.state.mediaFiles, mediaFile]})
@@ -224,58 +203,60 @@ class UploadMediaFile extends React.Component {
             this.state.fileName[i] === undefined
           ) {
             alert("Please enter a file name for file #" + [i + 1]);
-            if (this.state.categories.length === 0 && this.state.categories[i] === undefined) {
-              alert("Please assign at least one category for file #" +[i+1]);
+            if (
+              this.state.categories.length === 0 &&
+              this.state.categories[i] === undefined
+            ) {
+              alert("Please assign at least one category for file #" + [i + 1]);
             }
           } else {
-            if (this.state.categories.length === 0 && this.state.categories[i] === undefined) {
-              alert("Please assign at least one category for file #" +[i+1]);
-            }else{
-            try {
-              this.setState({ uploads: [...this.state.uploads, mediaFile] });
-              //Uploads image to S3 bucket
+            if (
+              this.state.categories.length === 0 &&
+              this.state.categories[i] === undefined
+            ) {
+              alert("Please assign at least one category for file #" + [i + 1]);
+            } else {
+              try {
+                this.setState({ uploads: [...this.state.uploads, mediaFile] });
+                //Uploads image to S3 bucket
 
-              await Storage.put(
-                this.state.fileName[i] + "." + fileExt,
-                this.state.file[i],
-                {
-                  contentType: "media",
-                  progressCallback: (progress) => {
-                    this.state.progressBar[i] =Math.round(
-                      (100 * progress.loaded) / progress.total
-                    )
-                    this.setState({
-                      progressBar: this.state.progressBar
-                    });
-                  },
-                }
-              ).then((result) => {
-                console.log(
-                  "Uploading " +
-                    this.state.fileName[i] +
-                    "." +
-                    fileExt +
-                    " to s3"
-                );
+                await Storage.put(
+                  this.state.fileName[i] + "." + fileExt,
+                  this.state.file[i],
+                  {
+                    contentType: "media",
+                    progressCallback: (progress) => {
+                      this.state.progressBar[i] = Math.round(
+                        (100 * progress.loaded) / progress.total
+                      );
+                      this.setState({
+                        progressBar: this.state.progressBar,
+                      });
+                    },
+                  }
+                ).then((result) => {
+                  console.log(
+                    "Uploading " +
+                      this.state.fileName[i] +
+                      "." +
+                      fileExt +
+                      " to s3"
+                  );
 
-                this.addFileToDB(this.state.uploads[i]);
-                if (i === this.state.file.length - 1 ){
-
-                  alert(this.state.file.length + " files uploaded successfully")
-                  this.reset();
-                  window.location.reload();
-
-
-                } 
-                
-              });
-
-              
-            } catch (error) {
-              console.log("Error uploading file: ", error);
+                  this.addFileToDB(this.state.uploads[i]);
+                  if (i === this.state.file.length - 1) {
+                    alert(
+                      this.state.file.length + " files uploaded successfully"
+                    );
+                    this.reset();
+                    window.location.reload();
+                  }
+                });
+              } catch (error) {
+                console.log("Error uploading file: ", error);
+              }
             }
           }
-        }
         } else {
           alert(
             this.state.fileName[i] +
@@ -291,39 +272,36 @@ class UploadMediaFile extends React.Component {
   };
 
   /**
-   * 
-   * Handle file uploads from upload button 
-   * 
+   *
+   * Handle file uploads from upload button
+   *
    * */
   handleFile = (e) => {
     let fileNames = e.target.files;
-    const filesAdded =[]
-    const progress =[]
+    const filesAdded = [];
+    const progress = [];
 
-
-    Array.from(fileNames).forEach((file,i) => {
-    
-      let newFile = file.name.split('.').slice(0, -1).join('.');;
+    Array.from(fileNames).forEach((file, i) => {
+      let newFile = file.name
+        .split(".")
+        .slice(0, -1)
+        .join(".");
       filesAdded.push(newFile);
       progress.push(0);
-      
     });
 
-    this.setState({fileName: [...this.state.fileName, ...filesAdded]})
-    this.setState({progressBar: [...this.state.progressBar, ...progress]})
-    
+    this.setState({ fileName: [...this.state.fileName, ...filesAdded] });
+    this.setState({ progressBar: [...this.state.progressBar, ...progress] });
+
     this.setState({ file: [...this.state.file, ...e.target.files] });
-    
-    
-
-
   };
 
   /*
-  *
-  * Fetch category names for dropdown selection
-  * 
-  */ 
+   *
+   * Fetch category names for dropdown selection
+   *
+   */
+
   async fetchCategory() {
     console.log("fetching category names");
 
@@ -339,10 +317,11 @@ class UploadMediaFile extends React.Component {
   }
 
   /**
-   * 
+   *
    * Fetch category names for dropdown selection
-   * 
-   **/ 
+   *
+   **/
+
   async fetchCollection() {
     console.log("fetching collection names");
 
@@ -365,77 +344,71 @@ class UploadMediaFile extends React.Component {
     return (
       <div className="main-content">
         <h1>Upload Files</h1>
-        
-      <div className="upload-forms">
-        {this.state.file.map((f, index) => {
-          
-          return (
-            <div key={index}>
-              <div class="thumbnail">
-                <img src={URL.createObjectURL(this.state.file[index])} />
-              </div>
 
-              <input
-                onChange={(e) => this.handleFileNameChange(e, index)}
-                value={this.state.fileName[index]}
-                defaultValue={this.state.fileName[index]}
-              />
-              <input
-                onChange={(e) => this.handleChange(e, index)}
-                value={this.state.descriptions[index]}
-              />
-              <button onClick={() => this.handleRemove(index)}>Remove</button>
-             
-              <Select
-                isMulti
-                name="Category"
-                value={this.state.categories[index]}
-                options={tagOptions}
-                className="basic-multi-select"
-                classNamePrefix="select"
-                onChange={(e) => this.dropdownHandler(e, index)}
-              />
-              {
-                
-              }
-              
-              <Select
-                isMulti
-                name="Collection"
-                value={this.state.collection[index]}
-                options={collectionOptions}
-                className="basic-multi-select"
-                classNamePrefix="select"
-                onChange={(e) => this.collectionDropdownHandler(e, index)}
-                cache={false}
-              />
-              <ProgressBar
-                now={this.state.progressBar[index]}
-                label={`${this.state.progressBar[index]}%`}
-              />
-              
-            </div>
-          );
-        })}
+        <div className="upload-forms">
+          {this.state.file.map((f, index) => {
+            return (
+              <div key={index}>
+                <div class="thumbnail">
+                  <img src={URL.createObjectURL(this.state.file[index])} />
+                </div>
+
+                <input
+                  onChange={(e) => this.handleFileNameChange(e, index)}
+                  value={this.state.fileName[index]}
+                  defaultValue={this.state.fileName[index]}
+                />
+                <input
+                  onChange={(e) => this.handleChange(e, index)}
+                  value={this.state.descriptions[index]}
+                />
+                <button onClick={() => this.handleRemove(index)}>Remove</button>
+
+                <Select
+                  isMulti
+                  name="Category"
+                  value={this.state.categories[index]}
+                  options={tagOptions}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                  onChange={(e) => this.dropdownHandler(e, index)}
+                />
+                {}
+
+                <Select
+                  isMulti
+                  name="Collection"
+                  value={this.state.collection[index]}
+                  options={collectionOptions}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                  onChange={(e) => this.collectionDropdownHandler(e, index)}
+                  cache={false}
+                />
+                <ProgressBar
+                  now={this.state.progressBar[index]}
+                  label={`${this.state.progressBar[index]}%`}
+                />
+              </div>
+            );
+          })}
         </div>
-        <hr/>
+        <hr />
         <div className="drop-area">
           <div className="upload-button">
-          <BsCloudUpload />
-          <div class= "text">Drag and Drop to Upload Files</div>
-          <input
-            id="inp"
-            className="dropbox"
-            type="file"
-            onChange={this.handleFile}
-            multiple
-            ref={(ref) => {
-              this.uploadInput = ref;
-            }}
-          />
+            <BsCloudUpload id="bsIcon" />
+            <div class="text">Drag and Drop to Upload Files</div>
+            <input
+              id="inp"
+              className="dropbox"
+              type="file"
+              onChange={this.handleFile}
+              multiple
+              ref={(ref) => {
+                this.uploadInput = ref;
+              }}
+            />
           </div>
-          
-          
         </div>
         <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
       </div>
