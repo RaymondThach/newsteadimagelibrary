@@ -45,7 +45,7 @@
 
 }
 
-.upload-button img, svg{
+.upload-button #bsIcon{
     height: 100px;
     width: 100px;
 }
