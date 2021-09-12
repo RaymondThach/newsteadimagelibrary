@@ -6,6 +6,7 @@ import Background from '../images/bg.jpg';
 import { useAppContext } from '../services/context.js';
 import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
+import transparentLogo from '../images/transparentLogo.png';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -46,6 +47,7 @@ export default function Login() {
     //   }
 
     return (
+        <>
         <div className='Login' slot='sign-in' style={{
             display: 'flex',
             justifyContent: 'center',
@@ -55,13 +57,14 @@ export default function Login() {
             backgroundImage: `url(${Background})`,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
+            border:"20px solid rgb(96, 143, 221)"
         }}>
             <Form onSubmit={handleLogin}>
-                <label style={{ fontSize: 30, textAlign: 'center' }}>
+                <label style={{ fontSize: 30, textAlign: 'center', fontWeight:'bold'}}>
                     Newstead Image Library
                 </label>
                 <Form.Group size='lg' controlId='username'>
-                    <Form.Label style={{ fontSize: 30, textAlign: 'left' }}>
+                    <Form.Label style={{ fontSize: 30, textAlign: 'left',fontWeight:'bold' }}>
                         Username
                     </Form.Label>
                     <Form.Control
@@ -72,7 +75,7 @@ export default function Login() {
                     />
                 </Form.Group>
                 <Form.Group size='lg' controlId='password'>
-                    <Form.Label style={{ fontSize: 30, textAlign: 'left' }}>
+                    <Form.Label style={{ fontSize: 30, textAlign: 'left',fontWeight:'bold' }}>
                         Password
                     </Form.Label>
                     <Form.Control
@@ -84,7 +87,10 @@ export default function Login() {
                 <Button block size='lg' type='submit' style={{fontSize: 20}}>
                     Login
                 </Button>
+                <img class="loginlogo" src={transparentLogo}>
+                </img> 
             </Form>
         </div>
+      </>
     );
 }
