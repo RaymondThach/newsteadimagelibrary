@@ -68,13 +68,30 @@ export default function CreateCategory({setCreateCategory, setShowing}) {
         <>
         <div class="background">
           <div class="createCatContainer">
+          <h1>
+              Create Category<br></br>
+            </h1>
             <form onSubmit={ handleSubmit }>
-                <label>
-                New Category Name:
-                </label>
+                <label class="categoryName">
+             Category Name:
                 <input type="text" value={ inputValue } onChange={ myChangeHandler } />
-                <input type="submit" value="Submit" />
-                <button class='cancelBtn' onClick={() => {handleClose();}}>Cancel</button>
+                </label>
+            <div class="heading">Select Category Thumbnail</div>
+            <div class="border2">
+              <img
+                class="thumbnail"
+                src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png"
+              ></img>
+              <div class="text">Drag and Drop to Upload Files</div>
+              <div class="text">OR</div>
+              <input
+                type="button"
+                class="filebutton"
+                value="Select Local File "
+              ></input>
+            </div>
+            <input type="submit" value="Create" />
+            <button class='cancelBtn' onClick={() => {handleClose();}}>Cancel</button>
             </form>
           </div>
         </div>
