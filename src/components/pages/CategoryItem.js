@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { listMediaFiles } from '../../graphql/queries';
 import { API, graphqlOperation } from 'aws-amplify';
 import Gallery from '../Modal/Gallery';
+//import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import './CategoryItem.css';
 
 

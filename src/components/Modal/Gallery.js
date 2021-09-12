@@ -28,15 +28,21 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
   //Input for detailsTextbox to update description
   const [ details, setDetails ] = useState('');
 
-  //Close modal if background of modal is clicked.
+  //Close modal if background of modal is clicked. Fetch latest information.
   const closeGallery = event => {
     if (modalRef.current === event.target) {
       setShowGallery(false);
       galleryHasOpened(false);
+      fetchMediaFiles();
     }
   } 
 
-  const [tagOptions, setTagOptions] = useState([]);
+  //Options for the category selector
+  const [ tagOptions ] = useState([]);
+
+  //Selected options of the category selector
+  const [ selectedCategories, setSelectedCategories ] = useState();
+  
   const collectionOptions = [];
 
   //Generate and fetch signed URL for item in S3 bucket (24 hour expiry or 86,400 seconds).
@@ -49,7 +55,6 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
     const signedURL = await getSignedURL();
     navigator.clipboard.writeText(signedURL)
     .then(function() {alert('Copied link for "' + item.name + '" to clipboard - expires in 24 hours.');})
-  
   }
 
   //Download the currently viewed media file via the "Download" button.
@@ -85,7 +90,11 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
   function disableEdit() {
     setEdit(false);
     document.getElementById("detailTextbox").setAttribute("disabled", "disabled");
-    setDetails(item.description);
+    if (item.description != null) {
+      setDetails(item.description);
+    } else {
+      setDetails('');
+    }
   }
 
   //Enable confirmEdit, cancelEdit buttons, and detailTextbox.
@@ -99,33 +108,67 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
     await API.graphql(graphqlOperation(updateMediaFile, {input: {id: item.id, tags: tagArray}}));
   }
 
+  //Add a tag option back into the selector
+  function addOption(categoryName) {
+    tagOptions.push({ value: categoryName, label: categoryName })
+  }
+
   //Remove the tag from the selected media file then push the updated array to Dynamodb
-  //fetch the update media files from Dynamodb to update UI dynamically.
-  function removeTag(tag){
+  //fetch the update media files from Dynamodb to update UI dynamically. Add the tag option back into the selector array.
+  function removeTag(tag) {
     const currentTags = item.tags;
     var index = currentTags.indexOf(tag);
     if (index !== -1){
       currentTags.splice(index, 1);
       updateTags(currentTags);
       fetchMediaFiles();
+      addOption(tag);
     } 
   }
 
-  async function populateCatSelector(){
+  //Populate the category options, not including what the item is already tagged with
+  async function populateCatSelector() {
     const results = await API.graphql(graphqlOperation(listTags));
-    const items = results.data.listTags.items;
-    items.map((item) => tagOptions.push({ value: item.categoryName, label: item.categoryName }));
-    
+    const options = results.data.listTags.items;
+    options.map((option) => (item.tags.includes(option.categoryName) ? null : tagOptions.push({ value: option.categoryName, label: option.categoryName })));
+  }
+
+  //Get the values from the category selector
+  const handleCatSelect = (selectedCategories) => {
+    setSelectedCategories(selectedCategories);
+  }
+
+  //Remove tag options from selector upon tagging an image
+  function removeOption() {
+    selectedCategories.map((option) => {
+      const index = tagOptions.indexOf(option);
+      if (index !== -1) { (tagOptions.splice(index, 1)); }
+    })
+  }
+
+  //Add tags to selected catalogue item
+  function addTags(item) {
+    const selectedOptions = [];
+    if (selectedCategories) {
+      selectedCategories.map((option) => selectedOptions.push(option.value)); //Allow only category options the item is not tagged with
+      const combinedTags = selectedOptions.concat(item.tags);                 //Combine selected options with existing tags
+      item.tags = combinedTags;                                               //Assign to local data for dynamic rerender
+      updateTags(combinedTags);                                               //Assign data to server
+      fetchMediaFiles();                                                      //rerender
+      setSelectedCategories(null);                                            //Reset the field
+      removeOption();                                                         //Remove the selected options from selector
+      
+    }   
   }
 
   //On load get the initial description of selected item.
   useEffect(() => {
-    setDetails(item.description);
+    if (item.description != null) {
+      setDetails(item.description);
+    }
     galleryHasOpened(true);
     populateCatSelector();
   }, []); 
-
-  
 
   return (
       <>
@@ -133,17 +176,19 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
       (<div class='background' ref={modalRef} onClick={closeGallery}>
         <div class='leftMenu'>
           <img class='galleryLogo' src={transparentLogo}/>
-          <div class='categorySelection'>
-            <label class='tagLabel'>Tag by Category</label>
-            <AiOutlinePlus class='createCategoryBtn' onClick={() => setCreateCategory(true)}/>
-            <Select isMulti options={tagOptions} class='categorySelector'/>
-            <button class='tagCategoryBtn'>Tag</button>
-          </div>
-          <div class='collectionSelection'>
-            <label class='collectionLabel'>Add to Collection</label>
-            <AiOutlinePlus class='createCollectionBtn'/>
-            <Select isMulti options={collectionOptions} class='collectionSelector'/>
-            <button class='addCollectionBtn'>Add</button>
+          <div class='menu-wrapper'>
+            <div class='categorySelection'>
+              <label class='tagLabel'>Tag by Category</label>
+              <AiOutlinePlus class='createCategoryBtn' onClick={() => setCreateCategory(true)}/>
+              <Select isMulti options={tagOptions} class='categorySelector' value={selectedCategories} onChange={ handleCatSelect } closeMenuOnSelect={false}/>
+              <button class='tagCategoryBtn' onClick={() => {addTags(item);}}>Tag</button>
+            </div>
+            <div class='collectionSelection'>
+              <label class='collectionLabel'>Add to Collection</label>
+              <AiOutlinePlus class='createCollectionBtn'/>
+              <Select isMulti options={collectionOptions} class='collectionSelector'/>
+              <button class='addCollectionBtn'>Add</button>
+            </div>
           </div>
         </div>
         <div class='container'>
@@ -155,7 +200,7 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
           </div>
           <div class='dataColumn'>
             <div class='closeGalleryButton'>
-              <MdClose onClick={() => {setShowGallery(prev => !prev); galleryHasOpened(false);}} size={20}/>
+              <MdClose onClick={closeGallery} size={20}/>
             </div>
             <div class='detailLabel'>
               <label>Details:</label>
