@@ -138,8 +138,15 @@ textarea {
     margin: auto; 
 }
 
+.menu-wrapper {
+    position: relative;
+    max-height: 100%;
+    overflow: auto;
+}
+
 .categorySelection {
     display: block;
+    position: relative;
     padding-top: 15%;
     padding-left: 10%;
     padding-right: 10%;
@@ -147,46 +154,37 @@ textarea {
 }
 
 .tagLabel {
-    position: absolute;
-    top: 24.5%;
-    
+    position: relative;
 }
 
 .createCategoryBtn {
-    position: absolute;
-    top: 25%;
-    right: 10%;
+    position: relative;
+    left: 35%;
 }
 
 .tagCategoryBtn {
-    position: absolute;
-    top: 32%;
+    position: relative;
     left: 40%;
 }
 
 .collectionSelection {
     display: block;
-    padding-top: 10%;
     padding-left: 10%;
     padding-right: 10%;
     padding-bottom: 15%;
 }
 
 .collectionLabel {
-    position: absolute;
-    top: 35.5%;
-    
+    position: relative;  
 }
 
 .createCollectionBtn {
-    position: absolute;
-    top: 36%;
-    right: 10%;
+    position: relative;
+    left: 30%;
 }
 
 .addCollectionBtn {
-    position: absolute;
-    top: 42.5%;
+    position: relative;
     left: 40%;
 }
 
