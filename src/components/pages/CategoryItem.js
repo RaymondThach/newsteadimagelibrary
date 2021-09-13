@@ -21,13 +21,13 @@ export default function CategoryItem() {
     }
 
     async function fetchMediaFiles() {
-        const results = await API.graphql(graphqlOperation(listMediaFiles, {filter: {tags: {contains: (categoryName.replace('-', ' '))}}}));
+        const results = await API.graphql(graphqlOperation(listMediaFiles, {filter: {tags: {contains: (categoryName.replace(/-/g, ' '))}}}));
         setItems(results.data.listMediaFiles.items);
     };
 
     //componentDidMount() for functional component
     useEffect(() => {
-        setCatName(categoryName.replace('-', ' '));
+        setCatName(categoryName.replace(/-/g, ' '));
         fetchMediaFiles();
     }, []); 
 

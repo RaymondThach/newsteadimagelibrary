@@ -15,8 +15,8 @@ type MediaFile @model
   id: ID!
   name: String!
   description: String
-  tags: [String!]!
-  collection: [String!]
+  tags: [String]!
+  collection: [String]
   # Reference the S3Object type from a field.
   file: S3Object
 }

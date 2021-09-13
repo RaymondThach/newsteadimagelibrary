@@ -194,3 +194,9 @@ textarea {
     left: 0%;
     z-index: 1;
 }
+
+.createCollection {
+    position: absolute;
+    left: 0%;
+    z-index: 1;
+}
