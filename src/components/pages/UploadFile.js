@@ -12,7 +12,7 @@ import { BsCloudUpload } from "react-icons/bs";
 
 let tagOptions = [];
 let collectionOptions = [];
-let selectedCollection = [];
+
 
 class UploadMediaFile extends React.Component {
   constructor(props) {
@@ -31,6 +31,8 @@ class UploadMediaFile extends React.Component {
       progressBar: [],
       progress: [],
       mediaFiles: [],
+      selectedCollection: [],
+      selectedCategories: []
     };
   }
 
@@ -71,6 +73,10 @@ class UploadMediaFile extends React.Component {
     this.state.categories[index] = e;
 
     this.setState({ categories: this.state.categories });
+
+    const selectedStrings = (e.map((obj => obj.value)));
+        this.state.selectedCategories[index] = selectedStrings
+        this.setState({ selectedCategories: this.state.selectedCategories })
     
   };
 
@@ -84,6 +90,12 @@ class UploadMediaFile extends React.Component {
     this.state.collection[index] = e;
 
     this.setState({ collection: this.state.collection });
+
+    const selectedStrings = (e.map((obj => obj.value)));
+        this.state.selectedCollection[index] = selectedStrings
+        this.setState({ selectedCollection: this.state.selectedCollection })
+
+    
     
   };
 
@@ -174,14 +186,18 @@ class UploadMediaFile extends React.Component {
     for (var i = 0; i < this.state.file.length; i++) {
       var fileExt = this.state.file[i].name.split(".").pop();
 
+      const collectionName =[];
+
+   
+
       const newFileName = {
         name: this.state.fileName[i] + "." + fileExt,
       };
       const mediaFile = {
         name: this.state.fileName[i] + "." + fileExt,
         description: this.state.descriptions[i],
-        tags: this.state.categories[i],
-        collection: this.state.collection[i],
+        tags: this.state.selectedCategories[i],
+        collection: this.state.selectedCollection[i],
 
         file: {
           bucket: awsExports.aws_user_files_s3_bucket,

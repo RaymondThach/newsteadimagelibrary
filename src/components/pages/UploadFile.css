@@ -39,7 +39,7 @@
     width: 100%;
     text-align: center;
     position: relative;
-    padding-top: 250px;
+    padding-top: 100px;
     z-index: 999;
     
 
@@ -65,7 +65,7 @@ h1{
     position: absolute;
     top:0; 
     left:0;
-    padding-top: 400px;
+    padding-top: 250px;
 
 }
 
