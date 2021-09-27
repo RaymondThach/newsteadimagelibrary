@@ -32,7 +32,8 @@ class UploadMediaFile extends React.Component {
       progress: [],
       mediaFiles: [],
       selectedCollection: [],
-      selectedCategories: []
+      selectedCategories: [],
+      error:0
     };
   }
 
@@ -171,7 +172,7 @@ class UploadMediaFile extends React.Component {
       );
       console.log("file added to database");
     } catch (error) {
-      console.log("DB Error " + error);
+      alert("DB Error " + error);
     }
   };
 
@@ -269,7 +270,7 @@ class UploadMediaFile extends React.Component {
                   }
                 });
               } catch (error) {
-                console.log("Error uploading file: ", error);
+                alert("Error uploading file: ", error);
               }
             }
           }
