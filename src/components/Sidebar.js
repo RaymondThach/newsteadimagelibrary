@@ -2,7 +2,6 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {SidebarData} from './SidebarData'
 import { useAppContext } from './services/context.js';
-import Button from 'react-bootstrap/Button';
 import { Auth } from 'aws-amplify';
 import './Sidebar.css'
 import { useHistory, useLocation } from 'react-router-dom';
@@ -15,6 +14,9 @@ function Sidebar() {
     const { userHasAuthenticated } = useAppContext();
     const history = useHistory();
 
+    //Use declared context variables to track delete mode
+    const { deleteMode, setDeleteMode } = useAppContext();
+
     //Get the current URL route
     const { pathname } = useLocation();
 
@@ -23,6 +25,11 @@ function Sidebar() {
         await Auth.signOut();
         userHasAuthenticated(false);
         history.push('/login');
+    }
+
+    //Change the deleteMode from the previous state
+    function switchDeleteMode() {
+        setDeleteMode(!deleteMode);
     }
 
     //If the route is included in the noSidebarRoutes array return null instead of rendering the Sidebar
@@ -57,8 +64,11 @@ function Sidebar() {
                             )
                         })
                     }
-                    <div class='Sign-Out-Button'> 
-                        <Button onClick={handleLogout}>Logout</Button>
+                    <div class='Delete' > 
+                        <button onClick={handleLogout} onClick={switchDeleteMode} class='deleteBtn'>Delete Mode</button>
+                    </div>
+                    <div class='Sign-Out-Button' > 
+                        <button onClick={handleLogout} class='signOut'>Logout</button>
                     </div>
                 </nav> 
             </>
