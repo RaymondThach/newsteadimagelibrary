@@ -149,7 +149,6 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
   async function populateColSelector() {
     const results = await API.graphql(graphqlOperation(listCollections));
     const options = results.data.listCollections.items;
-    console.log(options);
     if (item.collection) {
       options.map((option) => (item.collection.includes(option.name) ? null : collectionOptions.push({ value: option.name, label: option.name })));
     } else {
@@ -165,7 +164,6 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
   //Get the values from the category selector
   const handleColSelect = (selectedCollections) => {
     setSelectedCollections(selectedCollections);
-    console.log(selectedCollections);
   }
 
   //Remove tag options from selector upon tagging an image

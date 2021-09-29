@@ -9,6 +9,7 @@ export default function CreateCategory({setCreateCategory, setShowing}) {
     //String value of the input field for new category name
     const [ inputValue, setInputValue] = useState("");
 
+    //Get the current path
     const { path } = useParams();
 
     //Update inputValue to user's input

@@ -6,7 +6,7 @@ import { API, graphqlOperation, Storage } from 'aws-amplify';
 import Gallery from '../Modal/Gallery';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import { useAppContext } from '../services/context.js';
-import { deleteMediaFile } from '../../graphql/mutations';
+import DeleteConfirmationBox from '../Modal/DeleteConfirmationBox.js';
 import './CategoryItem.css';
 
 export default function CategoryItem() {
@@ -19,10 +19,13 @@ export default function CategoryItem() {
     //State variable of selected item
     const [ item, setItem ] = useState();
     //State variable for showing the gallery
-    const [showGallery, setShowGallery] = useState(false);
+    const [ showGallery, setShowGallery ] = useState(false);
     //Use declared context variables to track delete mode
     const { deleteMode } = useAppContext();
-    
+    //State variable for showing a delete confirmation box when delete button is clicked
+    const [ delConfirmation, setDelConfirmation ] = useState(false);
+    //State variable of selected item for deletion
+    const [ delItem, setDelItem ] = useState();
     //Show gallery on click of an item
     const openGallery = () => {
         setShowGallery(true);
@@ -34,21 +37,17 @@ export default function CategoryItem() {
         setItems(results.data.listMediaFiles.items);
     };
 
-    //Delete the item from the S3 bucket and the DynamoDB, fetch media files again for dynamic refresh.
-    async function deleteItem(itemName, itemID) {
-        try {
-            await API.graphql(graphqlOperation(deleteMediaFile, {input: {id: itemID}}));
-            await Storage.remove(itemName);
-            fetchMediaFiles();
-        } catch (e) {
-            console.log(e);
-        }
+    //Handler for showing delete cofirmation and setting the selected item to pass to confirmation box.
+    function showDelConfirmation(selectedItem) {
+        setDelItem(selectedItem);
+        setDelConfirmation(true);
     }
 
     //componentDidMount() for functional component, fetch media files on mount and format the category name. 
     useEffect(() => {
         setCatName(categoryName.replace(/-/g, ' '));
         fetchMediaFiles();
+        console.log('im called');
     }, []); 
 
     return (
@@ -65,7 +64,7 @@ export default function CategoryItem() {
                             items.map((item, i) => (
                             <a class='items' key={item.name} >
                                 {
-                                    (deleteMode ? <MdClose id='deleteCatItem' onClick={() => { deleteItem(item.name, item.id); } }/> : null)
+                                    (deleteMode ? <MdClose id='deleteCatItem' onClick={() => { showDelConfirmation(item); } }/> : null)
                                 }
                                 <div class='item' onClick={() => { openGallery(); setItem(item); }}>
                                     <div class='catItem_tn' >
@@ -77,6 +76,9 @@ export default function CategoryItem() {
                             ))
                         }   
                         </div>
+                        {
+                            (delConfirmation ? <DeleteConfirmationBox delItem={delItem} setDelConfirmation={setDelConfirmation} fetchMediaFiles={fetchMediaFiles}/> : null)
+                        }
                     </div>
                     <div class='modal-overlay'>
                     {
