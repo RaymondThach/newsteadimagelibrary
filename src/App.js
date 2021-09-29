@@ -20,10 +20,14 @@ Amplify.configure(awsExports);
 const history = createHistory();
 
 function App() {
-  //Tracks if the user is logged in
+  //Context varaible that tracks if the user is logged in
   const [isAuthenticated, userHasAuthenticated] = useState(false);
 
+  //Context variable that tracks if gallery modal is open
   const [ galleryIsOpen, galleryHasOpened ] = useState(false);
+
+  //Context variable that tracks delete mode to show delete buttons or not for categories and items
+  const [ deleteMode, setDeleteMode ] = useState(false);
 
   //sessionCheck() executes once on first render
   useEffect(() => {
@@ -45,7 +49,7 @@ function App() {
 
   return (
     <div className='App'>
-        <Context.Provider value={{ isAuthenticated, userHasAuthenticated, galleryIsOpen, galleryHasOpened }}>
+        <Context.Provider value={{ isAuthenticated, userHasAuthenticated, galleryIsOpen, galleryHasOpened, deleteMode, setDeleteMode}}>
             <BrowserRouter history={history}>
               {
                 galleryIsOpen? null : <Sidebar/>

@@ -1,10 +1,3 @@
-.Sign-Out-Button{
-  position: relative;
-  display: block;
-  width: 100%;
-  margin-top: 90%;
-}
-
 .dropbtn {
   background-color: white;
   color: black;
@@ -93,4 +86,44 @@
   padding: 0 50px;
   color: black;
   font-weight: bold;
+}
+
+.Delete {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-top: 50%;
+}
+
+.deleteBtn {
+  background-color: white;
+  color: black;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  width: 210px;
+  margin-left: 20px;
+  height: 40px;
+}
+
+.Sign-Out-Button{
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.signOut {
+  background-color: white;
+  color: black;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin: 10px 0px 0px 0px;
+  width: 210px;
+  margin-left: 20px;
+  height: 40px;
 }
