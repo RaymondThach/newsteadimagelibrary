@@ -1,6 +1,5 @@
 import React from "react";
 import "./UploadFile.css";
-
 import { Storage, API, graphqlOperation } from "aws-amplify";
 import { createMediaFile } from "../../graphql/mutations";
 import awsExports from "../../aws-exports.js";
@@ -12,6 +11,8 @@ import { BsCloudUpload } from "react-icons/bs";
 
 let tagOptions = [];
 let collectionOptions = [];
+
+
 
 
 class UploadMediaFile extends React.Component {
@@ -73,8 +74,12 @@ class UploadMediaFile extends React.Component {
   dropdownHandler = (e, index) => {
     this.state.categories[index] = e;
 
+
+  //to keep dropdown box with latest selected labels and values
     this.setState({ categories: this.state.categories });
 
+
+    // For passing just value (no lable + value) to DB
     const selectedStrings = (e.map((obj => obj.value)));
         this.state.selectedCategories[index] = selectedStrings
         this.setState({ selectedCategories: this.state.selectedCategories })
@@ -90,8 +95,11 @@ class UploadMediaFile extends React.Component {
   collectionDropdownHandler = (e, index) => {
     this.state.collection[index] = e;
 
+    //to keep dropdown box with latest selected labels and values
+
     this.setState({ collection: this.state.collection });
 
+    // For passing just value (no lable + value) to DB
     const selectedStrings = (e.map((obj => obj.value)));
         this.state.selectedCollection[index] = selectedStrings
         this.setState({ selectedCollection: this.state.selectedCollection })

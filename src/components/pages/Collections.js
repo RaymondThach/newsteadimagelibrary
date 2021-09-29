@@ -1,84 +1,54 @@
-import React from "react";
 import "./Collections.css";
+import React, { useState, useEffect } from 'react';
 import CreateCollection from "../Modal/CreateCollection";
-
 import { API, graphqlOperation } from "aws-amplify";
 import { FcFolder } from "react-icons/fc";
-//import { S3Image } from 'aws-amplify-react-native';
+import { BsCameraVideo } from "react-icons/bs";
+import { listCollections } from '../../graphql/queries';
 
-class Collections extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      list: [],
-    };
+export default function Collections() {
+  const [showing, setShowing] = useState(false);
+  const [collectionNames, setCollectionNames ] = useState([]);
+
+  
+
+  async function fetchCollection(){
+    const results = await API.graphql(graphqlOperation(listCollections));
+    setCollectionNames(results.data.listCollections.items)
   }
 
-  //modalState = { showing: false };
+  //componentDidMount() for functional component
+  useEffect(() => {
+    fetchCollection();
+  }, []);
 
-  //query to grab just the name in the collection
-  fetchNames = /* GraphQL */ `
-    query ListCollections {
-      listCollections {
-        items {
-          name
-        }
-      }
-    }
-  `;
-
-  // Fetch collection names from DB and store into local array
-
-  async fetchCollections() {
-    console.log("test");
-
-    const results = await API.graphql(graphqlOperation(this.fetchNames));
-    this.setState({ list: results.data.listCollections.items });
-  }
-
-  componentDidMount() {
-    this.fetchCollections();
-  }
-
-  render() {
-    const { showing } = this.state;
-
-    return (
-      <div class="page">
-        <div class="header">
-          <div class="header-center">Collections</div>
-          <div class="header-right">
-            <div
-              class="create-button"
-              onClick={() => this.setState({ showing: !showing })}
-            >
-              {" "}
-              +{" "}
-            </div>
-          </div>
+  return (
+    <div class="page">
+      <div class="header">
+        <h1>
+          Collection
+        </h1>
+        <div class="header-right" >
+            <div class="create-button" onClick={() => {setShowing(!showing)}}> + </div>
         </div>
-
         <div class="modal-overlay">
-          {showing ? <CreateCollection /> : null}
-          <div class="main-content">
-            <div class="gallery">
-              {this.state.list.map((listname, i) => (
-                <a
-                  href={"/collections/" + listname.name.replace(/[ ]/g, "-")}
-                  class="items"
-                  key={listname.name}
-                >
-                  <FcFolder size={100} />
-                  {listname.name}
-                </a>
-              ))}
-            </div>
+          {showing
+              ? <CreateCollection setShowing={setShowing}/>
+              : null
+          }
+          <div class="categories">
+          {
+            collectionNames.map((listname, i) => (
+            <a href={'/collections/'+ listname.name.replace(/[ ]/g, '-')} class="items" key={listname.name}>
+              <FcFolder size={100} />
+              {listname.name}
+            </a>
+            ))
+          }
           </div>
         </div>
       </div>
-    );
-  }
-}
-//
+    </div>
+  );
+}          
 
-export default Collections;

@@ -8,21 +8,24 @@ import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import { useAppContext } from '../services/context.js';
 import { deleteMediaFile } from '../../graphql/mutations';
 import './CategoryItem.css';
+import { BsCameraVideo } from "react-icons/bs"
 
 export default function CategoryItem() {
     //Get the URL parameter to set the unformatted category name
     const { categoryName } = useParams();
     //State variable to store formatted category name
-    const [ catName, setCatName] = useState('');
+    const [catName, setCatName] = useState('');
     //State array of media files of selected category
-    const [ items, setItems ] = useState([]); 
+    const [items, setItems] = useState([]);
     //State variable of selected item
-    const [ item, setItem ] = useState();
+    const [item, setItem] = useState();
     //State variable for showing the gallery
     const [showGallery, setShowGallery] = useState(false);
     //Use declared context variables to track delete mode
     const { deleteMode } = useAppContext();
-    
+    // Accepted video extensions
+    const videoFormat = ['mp4', 'mov', 'wmv', 'avi', 'avchd', 'flv', 'f4v', 'swf', 'mkv']
+
     //Show gallery on click of an item
     const openGallery = () => {
         setShowGallery(true);
@@ -30,14 +33,14 @@ export default function CategoryItem() {
 
     //Fetch all media files of the selected category
     async function fetchMediaFiles() {
-        const results = await API.graphql(graphqlOperation(listMediaFiles, {filter: {tags: {contains: (categoryName.replace(/-/g, ' '))}}}));
+        const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: (categoryName.replace(/-/g, ' ')) } } }));
         setItems(results.data.listMediaFiles.items);
     };
 
     //Delete the item from the S3 bucket and the DynamoDB, fetch media files again for dynamic refresh.
     async function deleteItem(itemName, itemID) {
         try {
-            await API.graphql(graphqlOperation(deleteMediaFile, {input: {id: itemID}}));
+            await API.graphql(graphqlOperation(deleteMediaFile, { input: { id: itemID } }));
             await Storage.remove(itemName);
             fetchMediaFiles();
         } catch (e) {
@@ -49,41 +52,45 @@ export default function CategoryItem() {
     useEffect(() => {
         setCatName(categoryName.replace(/-/g, ' '));
         fetchMediaFiles();
-    }, []); 
+    }, []);
 
     return (
         <div class='page'>
             <div class='header'>
                 <h1>
                     {catName}
-                </h1> 
+                </h1>
             </div>
             <div class='main-content'>
-                    <div class='catItemGrid'>
-                        <div class='categoryItems'>
+                <div class='catItemGrid'>
+                    <div class='categoryItems'>
                         {
                             items.map((item, i) => (
-                            <a class='items' key={item.name} >
-                                {
-                                    (deleteMode ? <MdClose id='deleteCatItem' onClick={() => { deleteItem(item.name, item.id); } }/> : null)
-                                }
-                                <div class='item' onClick={() => { openGallery(); setItem(item); }}>
-                                    <div class='catItem_tn' >
-                                        <AmplifyS3Image imgKey={item.name}/>
+                                <a class='items' key={item.name} >
+                                    {
+                                        (deleteMode ? <MdClose id='deleteCatItem' onClick={() => { deleteItem(item.name, item.id); }} /> : null)
+                                    }
+                                    <div class='item' onClick={() => { openGallery(); setItem(item); }}>
+                                        <div class='catItem_tn' >
+                                            {
+                                                videoFormat.indexOf(item.name.split('.').pop()) > -1
+                                                    ? <BsCameraVideo id="video-thumbnail" />
+                                                    : <AmplifyS3Image imgKey={item.name} />
+                                            }
+                                        </div>
+                                        <label class='catItem_name'>{item.name}</label>
                                     </div>
-                                    <label class='catItem_name'>{item.name}</label>
-                                </div>
-                            </a>
+                                </a>
                             ))
-                        }   
-                        </div>
+                        }
                     </div>
-                    <div class='modal-overlay'>
+                </div>
+                <div class='modal-overlay'>
                     {
                         (showGallery ? <Gallery showGallery={showGallery} setShowGallery={setShowGallery} item={item} fetchMediaFiles={fetchMediaFiles} /> : null)
                     }
-                    </div> 
-            </div> 
-        </div>   
+                </div>
+            </div>
+        </div>
     );
-  }      
+}
