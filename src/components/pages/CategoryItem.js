@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { MdClose } from 'react-icons/md';
 import { listMediaFiles } from '../../graphql/queries';
-import { API, graphqlOperation, Storage } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import Gallery from '../Modal/Gallery';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import { useAppContext } from '../services/context.js';
