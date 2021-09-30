@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { MdClose, MdEdit, MdFileDownload, MdShare } from 'react-icons/md';
 import { AiFillTag, AiOutlinePlus } from 'react-icons/ai';
 import { FcOk, FcCancel } from 'react-icons/fc';
@@ -11,38 +11,45 @@ import Select from 'react-select';
 import CreateCategory from '../Modal/CreateCategory';
 import { listTags, listCollections } from '../../graphql/queries';
 import CreateCollection from '../Modal/CreateCollection';
+import Videojs from '../services/video.js';
 import './Gallery.css';
 
-export default function Gallery({showGallery, setShowGallery, item, fetchMediaFiles}) {
+export default function Gallery({ showGallery, setShowGallery, item, fetchMediaFiles }) {
   //Reference to modal's background
   let modalRef = useRef();
-  
+
   //Context object to keep track of whether gallery modal is open in App.js
   const { galleryHasOpened } = useAppContext();
 
   //State for showing the create category modal
-  const [ createCategory, setCreateCategory ] = useState(false);
+  const [createCategory, setCreateCategory] = useState(false);
 
   //State for showing the create collection modal
-  const [ createCollection, setCreateCollection ] = useState(false);
+  const [createCollection, setCreateCollection] = useState(false);
 
   //State for edit button to hide/show confirmEdit and cancelEdit buttons for detailTextbox
-  const [ edit, setEdit ] = useState(false);
+  const [edit, setEdit] = useState(false);
 
   //Input for detailsTextbox to update description
-  const [ details, setDetails ] = useState('');
+  const [details, setDetails] = useState('');
 
   //Options for the category selector
-  const [ tagOptions ] = useState([]);
+  const [tagOptions] = useState([]);
 
   //Selected options of the category selector
-  const [ selectedCategories, setSelectedCategories ] = useState();
-  
+  const [selectedCategories, setSelectedCategories] = useState();
+
   //Options for the collection selector
-  const [ collectionOptions ] = useState([]);
+  const [collectionOptions] = useState([]);
 
   //Selected options of the collection selector
-  const [selectedCollections, setSelectedCollections ] = useState(); 
+  const [selectedCollections, setSelectedCollections] = useState();
+
+  //Video signed url
+  const [videoUrl, setVideoUrl] = useState();
+
+  //File Extensions
+  const [fileExt, setFileExt] = useState();
 
   //Close modal if background of modal is clicked. Fetch latest information.
   const closeGallery = event => {
@@ -51,25 +58,31 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
       galleryHasOpened(false);
       fetchMediaFiles();
     }
-  } 
+  }
+
+  // Accepted video extensions
+  const videoFormat = ['mp4', 'mov', 'wmv', 'avi', 'avchd', 'flv', 'f4v', 'swf', 'mkv']
 
   //Generate and fetch signed URL for item in S3 bucket (24 hour expiry or 86,400 seconds).
   async function getSignedURL() {
+    setVideoUrl(Storage.get(item.name, { expires: 86400 }))
     return await Storage.get(item.name, { expires: 86400 });
   }
-  
+
   //Functionality for 'Share' button. Fetch generated signed URL for item in S3 bucket (24 hour expiry) and copy to clipboard.
   async function copyToClipboard() {
     const signedURL = await getSignedURL();
     navigator.clipboard.writeText(signedURL)
-    .then(function() {alert('Copied link for "' + item.name + '" to clipboard - expires in 24 hours.');})
+      .then(function () { alert('Copied link for "' + item.name + '" to clipboard - expires in 24 hours.'); })
   }
 
   //Download the currently viewed media file via the "Download" button.
   async function download() {
-    const blob = await Storage.get(item.name, { download: true, progressCallback(progress){
-      console.log(`Downloaded: ${progress.loaded}/${progress.total}`)
-    }});
+    const blob = await Storage.get(item.name, {
+      download: true, progressCallback(progress) {
+        console.log(`Downloaded: ${progress.loaded}/${progress.total}`)
+      }
+    });
     const url = URL.createObjectURL(blob.Body);
     const a = document.createElement('a');
     a.href = url;
@@ -87,7 +100,7 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
 
   //Push updated description to Dynamodb for selected item.
   async function updateDescription() {
-    await API.graphql(graphqlOperation(updateMediaFile, {input: {id: item.id, description: details}}));
+    await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, description: details } }));
     alert('Updated description for ' + item.name + '.');
     setEdit(false);
     document.getElementById("detailTextbox").setAttribute("disabled", "disabled");
@@ -112,8 +125,8 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
   }
 
   //Update the array of tags for selected media file on DynamoDB.
-  async function updateTags(tagArray){
-    await API.graphql(graphqlOperation(updateMediaFile, {input: {id: item.id, tags: tagArray}}));
+  async function updateTags(tagArray) {
+    await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, tags: tagArray } }));
   }
 
   //Add a tag option back into the selector
@@ -126,12 +139,12 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
   function removeTag(tag) {
     const currentTags = item.tags;
     var index = currentTags.indexOf(tag);
-    if (index !== -1){
+    if (index !== -1) {
       currentTags.splice(index, 1);
       updateTags(currentTags);
       fetchMediaFiles();
       addOption(tag);
-    } 
+    }
   }
 
   //Populate the category options, not including what the item is already tagged with
@@ -185,7 +198,7 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
       fetchMediaFiles();                                                      //rerender
       setSelectedCategories(null);                                            //Reset the field
       removeOption(selectedCategories, tagOptions);                           //Remove the selected options from selector
-    }   
+    }
   }
 
   //Add selected item to the collections via Gallery
@@ -195,104 +208,139 @@ export default function Gallery({showGallery, setShowGallery, item, fetchMediaFi
       const currentCol = item.collection;
       selectedCollections.map((option) => selectedCol.push(option.value));
       const combinedCol = currentCol.concat(selectedCol);
-      await API.graphql(graphqlOperation(updateMediaFile, {input: {id: item.id, collection: combinedCol}}));
+      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, collection: combinedCol } }));
       setSelectedCollections(null);
       removeOption(selectedCollections, collectionOptions);
       alert(item.name + ' has been added to collections.');
-    } 
+    }
   }
+
+
+  //Video Player 
+  const videoJsOptions = {
+    autoplay: false,
+    playbackRates: [0.5, 1, 1.25, 1.5, 2],
+    width: 720,
+    height: 300,
+    controls: true,
+    sources: [
+      {
+        src: videoUrl,
+        
+      },
+    ],
+
+  };
+
+  //Generate and fetch signed URL for item in S3 bucket (24 hour expiry or 86,400 seconds).
+  async function getVideoObject() {
+    const result = await (Storage.get(item.name, { expires: 86400 }))
+    setVideoUrl(result) //Sign URL for video player
+  }
+
+
+
 
   //On load get the details of the selected item.
   useEffect(() => {
+    
+    setFileExt((item.name.split('.').pop()))
+    getVideoObject()
     if (item.description != null) {
       setDetails(item.description);
     }
     galleryHasOpened(true);
     populateCatSelector();
     populateColSelector();
-  }, []); 
+  }, []);
 
   return (
-      <>
+    <>
       {showGallery ?
-      (<div class='background' ref={modalRef} onClick={closeGallery}>
-        <div class='leftMenu'>
-          <img class='galleryLogo' src={transparentLogo}/>
-          <div class='menu-wrapper'>
-            <div class='categorySelection'>
-              <label class='tagLabel'>Tag by Category</label>
-              <AiOutlinePlus class='createCategoryBtn' onClick={() => setCreateCategory(true)}/>
-              <Select isMulti options={tagOptions} class='categorySelector' value={ selectedCategories } onChange={ handleCatSelect } closeMenuOnSelect={false}/>
-              <button class='tagCategoryBtn' onClick={() => {addTags(item);}}>Tag</button>
-            </div>
-            <div class='collectionSelection'>
-              <label class='collectionLabel'>Add to Collection</label>
-              <AiOutlinePlus class='createCollectionBtn' onClick= {() => {setCreateCollection(true);}}/>
-              <Select isMulti options={collectionOptions} class='collectionSelector' value={ selectedCollections } onChange={ handleColSelect } closeMenuOnSelect={false}/>
-              <button class='addCollectionBtn' onClick={() => {addCollection();}}>Add</button>
+        (<div class='background' ref={modalRef} onClick={closeGallery}>
+          <div class='leftMenu'>
+            <img class='galleryLogo' src={transparentLogo} />
+            <div class='menu-wrapper'>
+              <div class='categorySelection'>
+                <label class='tagLabel'>Tag by Category</label>
+                <AiOutlinePlus class='createCategoryBtn' onClick={() => setCreateCategory(true)} />
+                <Select isMulti options={tagOptions} class='categorySelector' value={selectedCategories} onChange={handleCatSelect} closeMenuOnSelect={false} />
+                <button class='tagCategoryBtn' onClick={() => { addTags(item); }}>Tag</button>
+              </div>
+              <div class='collectionSelection'>
+                <label class='collectionLabel'>Add to Collection</label>
+                <AiOutlinePlus class='createCollectionBtn' onClick={() => { setCreateCollection(true); }} />
+                <Select isMulti options={collectionOptions} class='collectionSelector' value={selectedCollections} onChange={handleColSelect} closeMenuOnSelect={false} />
+                <button class='addCollectionBtn' onClick={() => { addCollection(); }}>Add</button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class='container'>
-          <div class='imageName'>
-            <label>{item.name}</label>
-          </div>
-          <div class= 'mediaContainer'>
-            <AmplifyS3Image imgKey={item.name} class='image'/>
-          </div>
-          <div class='dataColumn'>
-            <div class='closeGalleryButton'>
-              <MdClose onClick={() => {setShowGallery(false); galleryHasOpened(false); fetchMediaFiles();}}/>
+          <div class='container'>
+            <div class='imageName'>
+              <label>{item.name}</label>
             </div>
-            <div class='detailLabel'>
-              <label>Details:</label>
+            <div class='mediaContainer'>
+              {
+                videoFormat.indexOf(fileExt) > -1
+                  ? videoUrl !== undefined ? <Videojs {...videoJsOptions} /> : null
+                  : <AmplifyS3Image imgKey={item.name} class='image' />
+              }
+              
+
             </div>
-            <div class='detailText'>
-              <textarea id="detailTextbox" value={details} onChange={(e) => setDetails(e.target.value)} disabled></textarea>
-            </div>
-            <div class='editButton'>
-              <MdEdit size={20} onClick={enableEdit}/>
-            </div>
-            <div class='downloadButton'>
-              <MdFileDownload size={20} onClick={download}/>
-            </div>
-            <div class='shareButton'>
-              <MdShare size={20} onClick={copyToClipboard}/>
-            </div>
-            <>
-            {edit ? (
+            <div class='dataColumn'>
+              <div class='closeGalleryButton'>
+                <MdClose onClick={() => { setShowGallery(false); galleryHasOpened(false); fetchMediaFiles(); }} />
+              </div>
+              <div class='detailLabel'>
+                <label>Details:</label>
+              </div>
+              <div class='detailText'>
+                <textarea id="detailTextbox" value={details} onChange={(e) => setDetails(e.target.value)} disabled></textarea>
+              </div>
+              <div class='editButton'>
+                <MdEdit size={20} onClick={enableEdit} />
+              </div>
+              <div class='downloadButton'>
+                <MdFileDownload size={20} onClick={download} />
+              </div>
+              <div class='shareButton'>
+                <MdShare size={20} onClick={copyToClipboard} />
+              </div>
               <>
-              <FcOk class='confirmButton' size={20} onClick={updateDescription}/>
-              <FcCancel class='cancelButton' size={20} onClick={disableEdit} />
+                {edit ? (
+                  <>
+                    <FcOk class='confirmButton' size={20} onClick={updateDescription} />
+                    <FcCancel class='cancelButton' size={20} onClick={disableEdit} />
+                  </>
+                )
+                  : null}
               </>
-            )
-            : null}
-            </>
-            <div class='tagsArea'>
-            {
-              item.tags.map((tag) => (
-              <label class="tags" key={tag}>
-                <AiFillTag size={15}/>
-                {tag}
-                <MdClose onClick={() => removeTag(tag)}/>
-              </label>
-              ))
-            }
+              <div class='tagsArea'>
+                {
+                  item.tags.map((tag) => (
+                    <label class="tags" key={tag}>
+                      <AiFillTag size={15} />
+                      {tag}
+                      <MdClose onClick={() => removeTag(tag)} />
+                    </label>
+                  ))
+                }
+              </div>
             </div>
           </div>
-        </div>
-        <div class='createCat'>
-        {
-          createCategory ? <CreateCategory class='createCatModal' setCreateCategory={setCreateCategory}/> : null
-        }
-        </div>
-        <div class='createCollection'>
-        {
-          createCollection ? <CreateCollection class= 'createColModal' setCreateCollection={setCreateCollection}/> : null
-        }
-        </div>
-      </div>)
-      : null }
+          <div class='createCat'>
+            {
+              createCategory ? <CreateCategory class='createCatModal' setCreateCategory={setCreateCategory} /> : null
+            }
+          </div>
+          <div class='createCollection'>
+            {
+              createCollection ? <CreateCollection class='createColModal' setCreateCollection={setCreateCollection} /> : null
+            }
+          </div>
+        </div>)
+        : null}
     </>
   );
-}      
+}

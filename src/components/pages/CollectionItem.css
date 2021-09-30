@@ -1,28 +1,38 @@
-.page{
-    height: 100vh;
-  }
+.itemGrid {
+  margin-left: 2%;
+}
 
-  
-.main-content{
-    margin-left: 250px;
-    clear:both;
-    height: 100%;
-    
-    
-    
-  }
+.collectionItems {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 80px;
+}
 
-.gallery a {
-    padding: 10px 10px 10px 10px;
-    
-  }
-  
-  div.gallery:hover{
-    border: 1px solid #777
-  }
+.items{
+  position: relative;
+}
 
-  amplify-s3-image {
-    --height: 200px;
-    --width: 200px;
-  
-  }
+.item {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.item_tn {
+  height: 200px;
+  width: 300px;
+}
+
+#deleteCollectionItem {
+  position: absolute;
+  stroke-width: 2px;
+  stroke:red;
+  z-index: 0;
+  right: -29%;
+  top: -5%;
+  font-size: 25px;
+}
+
+#video-thumbnail{
+  height: 200px;
+  width: 300px;
+}
