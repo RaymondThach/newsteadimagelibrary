@@ -76,7 +76,6 @@ export default function CategoryItem() {
                                                 videoFormat.indexOf(item.name.split('.').pop()) > -1
                                                     ? <BsCameraVideo id="video-thumbnail" />
                                                     : <AmplifyS3Image imgKey={item.name} />
-
                                             }
                                         </div>
                                         <label class='catItem_name'>{item.name}</label>
