@@ -25,11 +25,11 @@ export default function CategoryItem() {
     const { deleteMode } = useAppContext();
     // Accepted video extensions
     const videoFormat = ['mp4', 'mov', 'wmv', 'avi', 'avchd', 'flv', 'f4v', 'swf', 'mkv']
-
     //State variable for showing a delete confirmation box when delete button is clicked
     const [delConfirmation, setDelConfirmation] = useState(false);
     //State variable of selected item for deletion
     const [delItem, setDelItem] = useState();
+    
     //Show gallery on click of an item
     const openGallery = () => {
         setShowGallery(true);
