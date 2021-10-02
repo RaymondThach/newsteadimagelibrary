@@ -151,10 +151,8 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
   async function populateCatSelector() {
     const results = await API.graphql(graphqlOperation(listTags));
     const options = results.data.listTags.items;
-    if (item.collection) {
+    if (item.tags) {
       options.map((option) => (item.tags.includes(option.categoryName) ? null : tagOptions.push({ value: option.categoryName, label: option.categoryName })));
-    } else {
-      options.map((option) => tagOptions.push({ value: option.categoryName, label: option.categoryName }));
     }
   }
 
@@ -215,7 +213,6 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
     }
   }
 
-
   //Video Player 
   const videoJsOptions = {
     autoplay: false,
@@ -226,10 +223,8 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
     sources: [
       {
         src: videoUrl,
-        
       },
     ],
-
   };
 
   //Generate and fetch signed URL for item in S3 bucket (24 hour expiry or 86,400 seconds).
@@ -237,9 +232,6 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
     const result = await (Storage.get(item.name, { expires: 86400 }))
     setVideoUrl(result) //Sign URL for video player
   }
-
-
-
 
   //On load get the details of the selected item.
   useEffect(() => {
@@ -285,8 +277,6 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
                   ? videoUrl !== undefined ? <Videojs {...videoJsOptions} /> : null
                   : <AmplifyS3Image imgKey={item.name} class='image' />
               }
-              
-
             </div>
             <div class='dataColumn'>
               <div class='closeGalleryButton'>
@@ -331,7 +321,7 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
           </div>
           <div class='createCat'>
             {
-              createCategory ? <CreateCategory class='createCatModal' setCreateCategory={setCreateCategory} /> : null
+              createCategory ? <CreateCategory class='createCatModal' setCreateCategory={setCreateCategory} tagOptions={tagOptions}/> : null
             }
           </div>
           <div class='createCollection'>

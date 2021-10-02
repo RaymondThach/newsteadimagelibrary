@@ -46,3 +46,20 @@
   height: 200px;
   width: 300px;
 }
+
+#deleteCat {
+  position: absolute;
+  stroke-width: 2px;
+  stroke:red;
+  z-index: 0;
+  right: -29%;
+  top: -5%;
+  font-size: 25px;
+}
+
+/* Popups */
+.createCat {
+    position: absolute;
+    left: 0%;
+    z-index: 1;
+}

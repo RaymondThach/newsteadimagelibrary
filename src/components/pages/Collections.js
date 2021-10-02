@@ -39,7 +39,7 @@ export default function Collections() {
           <div class="categories">
           {
             collectionNames.map((listname, i) => (
-            <a href={'/collections/'+ listname.name.replace(/[ ]/g, '-')} class="items" key={listname.name}>
+            <a href={'/collections/'+ listname.name.replace(/[ ]/g, '-') + '/' + listname.id} class="items" key={listname.name}>
               <FcFolder size={100} />
               {listname.name}
             </a>

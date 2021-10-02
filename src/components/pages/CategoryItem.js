@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { MdClose } from 'react-icons/md';
-import { listMediaFiles } from '../../graphql/queries';
+import { listMediaFiles, getTag } from '../../graphql/queries';
 import { API, graphqlOperation } from 'aws-amplify';
 import Gallery from '../Modal/Gallery';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
@@ -11,10 +11,12 @@ import './CategoryItem.css';
 import { BsCameraVideo } from "react-icons/bs";
 
 export default function CategoryItem() {
-    //Get the URL parameter to set the unformatted category name
+    //Get the URL parameter to set the original category name
+    const { id } = useParams();
+    //URL categoryName parameter
     const { categoryName } = useParams();
-    //State variable to store formatted category name
-    const [catName, setCatName] = useState('');
+    //State variable to store category name from DynamoDB or for 'Uncategorised' page
+    const [catName, setCatName ] = useState('');
     //State array of media files of selected category
     const [items, setItems] = useState([]);
     //State variable of selected item
@@ -22,7 +24,7 @@ export default function CategoryItem() {
     //State variable for showing the gallery
     const [showGallery, setShowGallery] = useState(false);
     //Use declared context variables to track delete mode
-    const { deleteMode } = useAppContext();
+    const { deleteMode, setDeleteMode } = useAppContext();
     // Accepted video extensions
     const videoFormat = ['mp4', 'mov', 'wmv', 'avi', 'avchd', 'flv', 'f4v', 'swf', 'mkv']
     //State variable for showing a delete confirmation box when delete button is clicked
@@ -47,10 +49,13 @@ export default function CategoryItem() {
                     }
                 })
                 setItems(uncategorised);
+                setCatName(categoryName);
             }
         }
         else {
-            const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: (categoryName.replace(/-/g, ' ')) } } }));
+            const categoryObj = await API.graphql(graphqlOperation(getTag, {id: id}));
+            setCatName(categoryObj.data.getTag.categoryName);
+            const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName } } }));
             setItems(results.data.listMediaFiles.items);
         }
     };
@@ -61,10 +66,11 @@ export default function CategoryItem() {
         setDelConfirmation(true);
     }
 
-    //componentDidMount() for functional component, fetch media files on mount and format the category name. 
+    //componentDidMount() for functional component, fetch media files on mount and format the category name.
+    //Return deleteMode back to default false value.
     useEffect(() => {
-        setCatName(categoryName.replace(/-/g, ' '));
         fetchMediaFiles();
+        setDeleteMode(false);
     }, []);
 
     return (
@@ -108,6 +114,5 @@ export default function CategoryItem() {
                 }
             </div>
         </div>
-
     );
 }
