@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 export default function CreateCategory({setCreateCategory, setShowing}) {
     //String value of the input field for new category name
-    const [ inputValue, setInputValue] = useState("");
+    const [ inputValue, setInputValue] = useState('');
 
     //Get the current path
     const { path } = useParams();

@@ -8,7 +8,7 @@ import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import { useAppContext } from '../services/context.js';
 import DeleteConfirmationBox from '../Modal/DeleteConfirmationBox.js';
 import './CategoryItem.css';
-import { BsCameraVideo } from "react-icons/bs"
+import { BsCameraVideo } from "react-icons/bs";
 
 export default function CategoryItem() {
     //Get the URL parameter to set the unformatted category name
@@ -35,10 +35,24 @@ export default function CategoryItem() {
         setShowGallery(true);
     }
 
-    //Fetch all media files of the selected category
+    //Fetch all media files of the selected category accounting for uncategorised items in uncategorised page
     async function fetchMediaFiles() {
-        const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: (categoryName.replace(/-/g, ' ')) } } }));
-        setItems(results.data.listMediaFiles.items);
+        if (categoryName === 'Uncategorised') {
+            const uncategorised = [];
+            const results = await API.graphql(graphqlOperation(listMediaFiles));
+            if (results.data.listMediaFiles.items.length > 0){
+                results.data.listMediaFiles.items.map((item) => {
+                    if (item.tags.length === 0){
+                        uncategorised.push(item);
+                    }
+                })
+                setItems(uncategorised);
+            }
+        }
+        else {
+            const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: (categoryName.replace(/-/g, ' ')) } } }));
+            setItems(results.data.listMediaFiles.items);
+        }
     };
 
     //Handler for showing delete cofirmation and setting the selected item to pass to confirmation box.
@@ -51,7 +65,6 @@ export default function CategoryItem() {
     useEffect(() => {
         setCatName(categoryName.replace(/-/g, ' '));
         fetchMediaFiles();
-        console.log('im called');
     }, []);
 
     return (

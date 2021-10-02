@@ -244,8 +244,8 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
   //On load get the details of the selected item.
   useEffect(() => {
     
-    setFileExt((item.name.split('.').pop()))
-    getVideoObject()
+    setFileExt((item.name.split('.').pop()));
+    getVideoObject();
     if (item.description != null) {
       setDetails(item.description);
     }

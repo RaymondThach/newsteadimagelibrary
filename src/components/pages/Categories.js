@@ -1,11 +1,11 @@
 import './Categories.css';
 import React, { useState, useEffect } from 'react';
-import './Categories.css';
 import { API, graphqlOperation } from 'aws-amplify';
 import CreateCategory from '../Modal/CreateCategory';
 import { listTags } from '../../graphql/queries';
 import { listMediaFiles } from '../../graphql/queries';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
+import { HiOutlinePhotograph } from "react-icons/hi";
 
 export default function Categories() {
   //State variable for showing the create category modal
@@ -29,17 +29,28 @@ export default function Categories() {
   }
 
   //Fetch photos for each category and select a random one to represent that category
-  //Return the modified object with the random photo's name attached.
+  //Return the modified object with the random photo's name attached.  WHAT HAPPENS WHEN A VIDEO IS SELECTED?????????????????????????????????????????????????????????????????????
   function fetchRandPhoto(results){
     const array = results.data.listTags.items.map(async (catObj) => {
       const categoryObjects = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: (catObj.categoryName.replace(/-/g, ' ')) } } }));
       const randCategoryObject = categoryObjects.data.listMediaFiles.items[Math.floor(Math.random()*categoryObjects.data.listMediaFiles.items.length)];
-      return {
-        id: catObj.id,
-        categoryName: catObj.categoryName,
-        createdAt: catObj.createdAt,
-        updatedAt: catObj.updatedAt,
-        randPhoto: randCategoryObject.name
+      if (randCategoryObject){
+        return {
+          id: catObj.id,
+          categoryName: catObj.categoryName,
+          createdAt: catObj.createdAt,
+          updatedAt: catObj.updatedAt,
+          randPhoto: randCategoryObject.name
+        }
+      }
+      else {
+        return {
+          id: catObj.id,
+          categoryName: catObj.categoryName,
+          createdAt: catObj.createdAt,
+          updatedAt: catObj.updatedAt,
+          randPhoto: null
+        }
       }
     })
     return array;
@@ -51,26 +62,29 @@ export default function Categories() {
   }, []);
 
   return (
-    <div class="page">
-      <div class="header">
-        <h1>
+    <div class='page'>
+      <div class='header'>
+        <h1 class='title'>
           Categories
         </h1>
-        <div class="header-right" >
-            <div class="create-button" onClick={() => {setShowing(!showing)}}> + </div>
+        <div class='header-menu'>
+          <a href={'/categories/Uncategorised' } class='uncategorisedBtn'>Uncategorised</a>
+          <div class='create-button' onClick={() => {setShowing(!showing)}}> + </div>
         </div>
-        <div class="categoryGrid">
+        <div class='categoryGrid'>
           {showing
               ? <CreateCategory setShowing={setShowing}/>
               : null
           }
-          <div class="categories">
+          <div class='categories'>
           {
             categories.map((listname, i) => (
-            <a href={'/categories/'+ listname.categoryName.replace(/[ ]/g, '-')} class="items" key={listname.categoryName}>
+            <a href={'/categories/'+ listname.categoryName.replace(/[ ]/g, '-')} class='items' key={listname.categoryName}>
               <div class='item'>
                 <div class='cat_tn'>
-                  <AmplifyS3Image imgKey={listname.randPhoto} /> 
+                  {
+                    (listname.randPhoto !== null ? <AmplifyS3Image imgKey={listname.randPhoto} /> : <HiOutlinePhotograph class='defaultImgIcon'/>)
+                  }
                 </div>
                 {listname.categoryName}
               </div>
