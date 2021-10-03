@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "newsteadimagelibrary648aa53a": {}
+        "newsteadimagelibrary648aa53a": {},
+        "userPoolGroups": {}
       },
       "hosting": {
         "amplifyhosting": {

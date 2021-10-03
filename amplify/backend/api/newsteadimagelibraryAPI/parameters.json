@@ -1,5 +1,11 @@
 {
   "AppSyncApiName": "newsteadimagelibraryAPI",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authnewsteadimagelibrary648aa53a",
+      "Outputs.UserPoolId"
+    ]
+  }
 }

@@ -28,6 +28,31 @@ export const listTags = /* GraphQL */ `
     }
   }
 `;
+export const tagByCatName = /* GraphQL */ `
+  query TagByCatName(
+    $categoryName: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    tagByCatName(
+      categoryName: $categoryName
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        categoryName
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getMediaFile = /* GraphQL */ `
   query GetMediaFile($id: ID!) {
     getMediaFile(id: $id) {
@@ -71,58 +96,6 @@ export const listMediaFiles = /* GraphQL */ `
     }
   }
 `;
-export const getCollection = /* GraphQL */ `
-  query GetCollection($id: ID!) {
-    getCollection(id: $id) {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listCollections = /* GraphQL */ `
-  query ListCollections(
-    $filter: ModelCollectionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCollections(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const tagByCatName = /* GraphQL */ `
-  query TagByCatName(
-    $categoryName: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelTagFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    tagByCatName(
-      categoryName: $categoryName
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        categoryName
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const fileName = /* GraphQL */ `
   query FileName(
     $name: String
@@ -149,6 +122,33 @@ export const fileName = /* GraphQL */ `
           region
           key
         }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getCollection = /* GraphQL */ `
+  query GetCollection($id: ID!) {
+    getCollection(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listCollections = /* GraphQL */ `
+  query ListCollections(
+    $filter: ModelCollectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCollections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
         createdAt
         updatedAt
       }

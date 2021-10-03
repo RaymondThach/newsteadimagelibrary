@@ -1,1 +1,8 @@
-{}
+{
+    "groupPermissionMap": {
+        "addCat": [
+            "create/update",
+            "read"
+        ]
+    }
+}
