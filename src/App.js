@@ -4,8 +4,6 @@ import { Redirect, BrowserRouter, Route, Switch } from 'react-router-dom';
 import Amplify, { Auth } from 'aws-amplify';
 import awsExports from './aws-exports';
 import { createBrowserHistory as createHistory } from 'history'
-//import Navbar from 'react-bootstrap/Navbar';
-//import Nav from 'react-bootstrap/Nav';
 import Sidebar from './components/Sidebar'
 import UploadMediaFile from './components/pages/UploadFile';
 import Categories from './components/pages/Categories';
@@ -20,10 +18,14 @@ Amplify.configure(awsExports);
 const history = createHistory();
 
 function App() {
-  //Tracks if the user is logged in
+  //Context varaible that tracks if the user is logged in
   const [isAuthenticated, userHasAuthenticated] = useState(false);
 
+  //Context variable that tracks if gallery modal is open
   const [ galleryIsOpen, galleryHasOpened ] = useState(false);
+
+  //Context variable that tracks delete mode to show delete buttons or not for categories and items
+  const [ deleteMode, setDeleteMode ] = useState(false);
 
   //sessionCheck() executes once on first render
   useEffect(() => {
@@ -45,15 +47,15 @@ function App() {
 
   return (
     <div className='App'>
-        <Context.Provider value={{ isAuthenticated, userHasAuthenticated, galleryIsOpen, galleryHasOpened }}>
+        <Context.Provider value={{ isAuthenticated, userHasAuthenticated, galleryIsOpen, galleryHasOpened, deleteMode, setDeleteMode}}>
             <BrowserRouter history={history}>
               {
-                galleryIsOpen? null : <Sidebar/>
+                galleryIsOpen ? null : <Sidebar/>
               }
               <Switch>
-                <Route path='/categories/:categoryName' component={CategoryItem}/>
+                <Route path='/categories/:categoryName/:id' component={CategoryItem}/>
                 <Route path='/categories' component={Categories}/>
-                <Route path="/collections/:name" component={CollectionItem}/> 
+                <Route path="/collections/:name/:id" component={CollectionItem}/> 
                 <Route path='/collections' component={Collections}/>
                 <Route path='/login' component={Login}/>
                 <Route path='/upload-item' component={UploadMediaFile}/>

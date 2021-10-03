@@ -1,6 +1,5 @@
 import React from "react";
 import "./UploadFile.css";
-
 import { Storage, API, graphqlOperation } from "aws-amplify";
 import { createMediaFile } from "../../graphql/mutations";
 import awsExports from "../../aws-exports.js";
@@ -12,7 +11,6 @@ import { BsCloudUpload } from "react-icons/bs";
 
 let tagOptions = [];
 let collectionOptions = [];
-let selectedCollection = [];
 
 class UploadMediaFile extends React.Component {
   constructor(props) {
@@ -31,6 +29,9 @@ class UploadMediaFile extends React.Component {
       progressBar: [],
       progress: [],
       mediaFiles: [],
+      selectedCollection: [],
+      selectedCategories: [],
+      error:0
     };
   }
 
@@ -70,7 +71,15 @@ class UploadMediaFile extends React.Component {
   dropdownHandler = (e, index) => {
     this.state.categories[index] = e;
 
+
+  //to keep dropdown box with latest selected labels and values
     this.setState({ categories: this.state.categories });
+
+
+    // For passing just value (no lable + value) to DB
+    const selectedStrings = (e.map((obj => obj.value)));
+        this.state.selectedCategories[index] = selectedStrings
+        this.setState({ selectedCategories: this.state.selectedCategories })
     
   };
 
@@ -83,7 +92,16 @@ class UploadMediaFile extends React.Component {
   collectionDropdownHandler = (e, index) => {
     this.state.collection[index] = e;
 
+    //to keep dropdown box with latest selected labels and values
+
     this.setState({ collection: this.state.collection });
+
+    // For passing just value (no lable + value) to DB
+    const selectedStrings = (e.map((obj => obj.value)));
+        this.state.selectedCollection[index] = selectedStrings
+        this.setState({ selectedCollection: this.state.selectedCollection })
+
+    
     
   };
 
@@ -159,7 +177,7 @@ class UploadMediaFile extends React.Component {
       );
       console.log("file added to database");
     } catch (error) {
-      console.log("DB Error " + error);
+      alert("DB Error " + error);
     }
   };
 
@@ -174,14 +192,18 @@ class UploadMediaFile extends React.Component {
     for (var i = 0; i < this.state.file.length; i++) {
       var fileExt = this.state.file[i].name.split(".").pop();
 
+      const collectionName =[];
+
+   
+
       const newFileName = {
         name: this.state.fileName[i] + "." + fileExt,
       };
       const mediaFile = {
         name: this.state.fileName[i] + "." + fileExt,
         description: this.state.descriptions[i],
-        tags: this.state.categories[i],
-        collection: this.state.collection[i],
+        tags: this.state.selectedCategories[i],
+        collection: this.state.selectedCollection[i],
 
         file: {
           bucket: awsExports.aws_user_files_s3_bucket,
@@ -253,7 +275,7 @@ class UploadMediaFile extends React.Component {
                   }
                 });
               } catch (error) {
-                console.log("Error uploading file: ", error);
+                alert("Error uploading file: ", error);
               }
             }
           }

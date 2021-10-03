@@ -1,0 +1,14 @@
+.background {
+    position: fixed;
+    top: 0%;
+    left: 13.1%;
+}
+
+.delConfirmContainer{
+    position: absolute;
+    height: 10%;
+    width: 20%;
+    left: 35%;
+    text-align: center;
+    background-color: white;
+}

@@ -1,3 +1,33 @@
-.modal-overlay {
-  
+.catItemGrid {
+    margin-left: 2%;
+}
+
+.categoryItems {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 80px;
+}
+
+.items{
+    position: relative;
+}
+
+.item {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.catItem_tn {
+    height: 200px;
+    width: 300px;
+}
+
+#deleteCatItem {
+    position: absolute;
+    stroke-width: 2px;
+    stroke:red;
+    z-index: 0;
+    right: -29%;
+    top: -5%;
+    font-size: 25px;
 }

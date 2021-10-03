@@ -1,13 +1,7 @@
-.Sign-Out-Button{
-  position: relative;
-  display: block;
-  width: 100%;
-  margin-top: 90%;
-}
-
 .dropbtn {
   background-color: white;
   color: black;
+  padding: 16px;
   font-size: 14px;
   font-weight: bold;
   border: none;
@@ -16,7 +10,6 @@
   width: 210px;
   margin-left: 20px;
   height: 40px;
-  border-radius: 15px 15px;
 }
 
 .dropdown {
@@ -55,6 +48,13 @@
 
 /* Nav bar styling*/
 
+.logo{
+  position: relative;
+  display: block;
+  height: 220px;
+  width: 220px;
+  margin: auto;
+}
 
 .nav-menu
 {  
@@ -65,7 +65,7 @@
   background-color:rgb(96, 143, 221);
 }
 
-.nav-text{ 
+.nav-text{
   display: flex;
   justify-content: start;
   padding: 8px 0px 8px 16px;
@@ -74,7 +74,6 @@
   height: 40px;
   margin: 50px 20px 0px 20px;
   background-color:white;
-  border-radius: 15px 15px;
 }
 
 .nav-text a {
@@ -88,11 +87,43 @@
   color: black;
   font-weight: bold;
 }
-.logo{
-  position: relative;
-  display: block;
-  height: 220px;
-  width: 220px;
-  margin:auto;
 
+.Delete {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-top: 50%;
+}
+
+.deleteBtn {
+  background-color: white;
+  color: black;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  width: 210px;
+  margin-left: 20px;
+  height: 40px;
+}
+
+.Sign-Out-Button{
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.signOut {
+  background-color: white;
+  color: black;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin: 10px 0px 0px 0px;
+  width: 210px;
+  margin-left: 20px;
+  height: 40px;
 }

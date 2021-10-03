@@ -14,9 +14,6 @@
     position: relative;
     top: 0%; 
     max-width: inherit;
-    font-weight: bold;
-    margin-left: 950px;
-    font-size: 16px;
 }
 
 .mediaContainer {
@@ -40,10 +37,11 @@ amplify-s3-image {
 
 .dataColumn {
     position: absolute;
-    top: 7%;
+    top: 3%;
     right: 1.5%;
     width: 200px;
     height: 94%;
+    outline-style: solid;
 }
 
 .closeGalleryButton {
@@ -157,25 +155,16 @@ textarea {
 
 .tagLabel {
     position: relative;
-    font-weight: bold;
-    font: Monospace;
-    left: 10%;
 }
 
 .createCategoryBtn {
     position: relative;
-    left: 25%;
+    left: 35%;
 }
 
 .tagCategoryBtn {
-    margin-top: 10px;
     position: relative;
-    background-color: whitesmoke;
-    padding: 5px 85px 5px 85px;
-    font-weight: bold;
-    border:none;
-    border-radius: 15px 15px;
-
+    left: 40%;
 }
 
 .collectionSelection {
@@ -186,29 +175,27 @@ textarea {
 }
 
 .collectionLabel {
-    position: relative;
-    font-weight: bold;
-    font: Monospace;
-    left: 10%;  
+    position: relative;  
 }
 
 .createCollectionBtn {
     position: relative;
-    left: 20%;
+    left: 30%;
 }
 
 .addCollectionBtn {
-    margin-top: 10px;
     position: relative;
-    background-color: whitesmoke;
-    padding: 5px 85px 5px 85px;
-    font-weight: bold;
-    border:none;
-    border-radius: 15px 15px;
+    left: 40%;
 }
 
 /* Other layer of popups */
 .createCat {
+    position: absolute;
+    left: 0%;
+    z-index: 1;
+}
+
+.createCollection {
     position: absolute;
     left: 0%;
     z-index: 1;
