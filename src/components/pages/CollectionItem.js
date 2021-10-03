@@ -11,12 +11,12 @@ import { useAppContext } from '../services/context.js';
 import { BsCameraVideo } from "react-icons/bs";
 
 export default function CollectionItem() {
-    //Get the URL parameter to set the unformatted category name
+    //Get the URL parameter to set the unformatted collection name
     const { id } = useParams();
     //State variable to store formatted Collection name
     const [collectionName, setCollectionName] = useState('');
-    //State array of media files of selected collection
-    const [items, setItems] = useState([]);
+    //Context state array for items of a selected category lifted to App.js
+    const { items, setItems } = useAppContext();
     //State variable of selected item
     const [item, setItem] = useState();
     //State variable for showing the gallery

@@ -3,14 +3,14 @@ import React, { useState, useEffect } from 'react';
 import CreateCollection from "../Modal/CreateCollection";
 import { API, graphqlOperation } from "aws-amplify";
 import { FcFolder } from "react-icons/fc";
-import { BsCameraVideo } from "react-icons/bs";
 import { listCollections } from '../../graphql/queries';
+import { useAppContext } from '../services/context.js';
 
 export default function Collections() {
   const [showing, setShowing] = useState(false);
-  const [collectionNames, setCollectionNames ] = useState([]);
-
   
+  //Context state array for storing all collections
+  const { collectionNames, setCollectionNames } = useAppContext();
 
   async function fetchCollection(){
     const results = await API.graphql(graphqlOperation(listCollections));

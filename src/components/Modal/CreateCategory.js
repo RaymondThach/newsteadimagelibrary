@@ -67,10 +67,6 @@ export default function CreateCategory({ setCreateCategory, setShowing, fetchCat
         }
     }
 
-    useEffect(() => {
-        console.log(galleryIsOpen);
-    }, []);
-
     return (
         <>
         <div class="background">

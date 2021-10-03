@@ -11,7 +11,8 @@ type Tag @model
 }
 
 type MediaFile @model
-@key(name: "fileName", fields: ["name"], queryField: "fileName"){
+@key(name: "fileName", fields: ["name"], queryField: "fileName")
+  {
   id: ID!
   name: String!
   description: String
