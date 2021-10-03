@@ -201,9 +201,12 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
 
   //Add selected item to the collections via Gallery
   async function addCollection() {
+    let currentCol = [];
     if (selectedCollections) {
       const selectedCol = [];
-      const currentCol = item.collection;
+      if (item.collection !== null) {
+        currentCol = item.collection;
+      }
       selectedCollections.map((option) => selectedCol.push(option.value));
       const combinedCol = currentCol.concat(selectedCol);
       await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, collection: combinedCol } }));

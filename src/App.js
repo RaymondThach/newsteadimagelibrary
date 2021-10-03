@@ -27,6 +27,15 @@ function App() {
   //Context variable that tracks delete mode to show delete buttons or not for categories and items
   const [ deleteMode, setDeleteMode ] = useState(false);
 
+  //State array for storing all categories and their random photo
+  const [ categories, setCategories ] = useState([]);
+
+  //State array of media files of selected category
+  const [ items, setItems ] = useState([]);
+
+  //State array of collections 
+  const [ collectionNames, setCollectionNames ] = useState([]);
+
   //sessionCheck() executes once on first render
   useEffect(() => {
     sessionCheck();
@@ -47,7 +56,7 @@ function App() {
 
   return (
     <div className='App'>
-        <Context.Provider value={{ isAuthenticated, userHasAuthenticated, galleryIsOpen, galleryHasOpened, deleteMode, setDeleteMode}}>
+        <Context.Provider value={{ isAuthenticated, userHasAuthenticated, categories, setCategories, items, setItems, collectionNames, setCollectionNames, galleryIsOpen, galleryHasOpened, deleteMode, setDeleteMode}}>
             <BrowserRouter history={history}>
               {
                 galleryIsOpen ? null : <Sidebar/>

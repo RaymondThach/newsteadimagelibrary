@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import CreateCollection from "../Modal/CreateCollection";
 import { API, graphqlOperation } from "aws-amplify";
 import { FcFolder } from "react-icons/fc";
-import { BsCameraVideo } from "react-icons/bs";
 import { listCollections } from '../../graphql/queries';
 import { listMediaFiles } from '../../graphql/queries';
 import { useAppContext } from '../services/context.js';
@@ -13,7 +12,7 @@ import DeleteCollectionConfirmation from "../Modal/DeleteCollectionConfirmation"
 
 export default function Collections() {
   const [showing, setShowing] = useState(false);
-  const [collectionNames, setCollectionNames ] = useState([]);
+ const { collectionNames, setCollectionNames } = useAppContext();
   //Use declared context variables to track delete mode
   const { deleteMode, setDeleteMode } = useAppContext();
 
@@ -27,6 +26,7 @@ export default function Collections() {
   const [ delCollection, setDelCollection ] = useState();
 
   
+ 
 
   async function fetchCollection(){
     const collectionsArr = [];
