@@ -7,7 +7,8 @@
       "useexperimentalpipelinedtransformer": false,
       "enableiterativegsiupdates": true,
       "secondarykeyasgsi": true,
-      "skipoverridemutationinputtypes": true
+      "skipoverridemutationinputtypes": true,
+      "enableIterativeGsiUpdates": true
     },
     "frontend-ios": {
       "enablexcodeintegration": true

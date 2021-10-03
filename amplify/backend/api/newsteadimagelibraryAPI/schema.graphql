@@ -5,13 +5,14 @@ type S3Object {
 }
 
 type Tag @model
-@key(name: "tagByCatName", fields: ["categoryName"], queryField: "tagByCatName") {
+@key(name: "tagByCatName", fields: ["categoryName"], queryField: "tagByCatName"){
   id: ID!
   categoryName: String!
 }
 
 type MediaFile @model
-@key(name: "fileName", fields: ["name"], queryField: "fileName"){
+@key(name: "fileName", fields: ["name"], queryField: "fileName")
+@key(name: "getFileByTags", fields: ["tags"], queryField: "getFileByTags"){
   id: ID!
   name: String!
   description: String
