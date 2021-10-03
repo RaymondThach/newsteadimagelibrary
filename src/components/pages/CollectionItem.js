@@ -1,5 +1,4 @@
-import { Storage } from "aws-amplify";
-import { listMediaFiles } from "../../graphql/queries";
+import { listMediaFiles, getCollection, getMediaFile } from "../../graphql/queries";
 import { API, graphqlOperation } from "aws-amplify";
 import { AmplifyS3Image } from "@aws-amplify/ui-react";
 import Gallery from '../Modal/Gallery';
@@ -7,13 +6,13 @@ import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import './CollectionItem.css';
 import { MdClose } from 'react-icons/md';
-import { deleteMediaFile } from '../../graphql/mutations';
+import { updateMediaFile } from '../../graphql/mutations';
 import { useAppContext } from '../services/context.js';
 import { BsCameraVideo } from "react-icons/bs";
 
 export default function CollectionItem() {
     //Get the URL parameter to set the unformatted category name
-    const { name } = useParams();
+    const { id } = useParams();
     //State variable to store formatted Collection name
     const [collectionName, setCollectionName] = useState('');
     //State array of media files of selected collection
@@ -34,16 +33,23 @@ export default function CollectionItem() {
 
     //Fetch all media files of the selected collection
     async function fetchMediaFiles() {
-        const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { collection: { contains: (name.replace(/-/g, ' ')) } } }));
+        const collectionObj = await API.graphql(graphqlOperation(getCollection, {id: id}));
+        setCollectionName(collectionObj.data.getCollection.name);
+        const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { collection: { contains: collectionObj.data.getCollection.name } } }));
         setItems(results.data.listMediaFiles.items);
     };
 
-    //Delete the item from the S3 bucket and the DynamoDB, fetch media files again for dynamic refresh.
-    async function deleteItem(itemName, itemID) {
+    //Delete the collection from the item in DynamoDB, fetch media files again for dynamic refresh.
+    async function deleteFromCollection(itemID) {
         try {
-            await API.graphql(graphqlOperation(deleteMediaFile, {input: {id: itemID}}));
-            await Storage.remove(itemName);
-            fetchMediaFiles();
+            const selectedItem = await API.graphql(graphqlOperation(getMediaFile, {id: itemID}));
+            const collectionArr = selectedItem.data.getMediaFile.collection;
+            var index = collectionArr.indexOf(collectionName);
+            if (index !== -1) {
+                collectionArr.splice(index, 1);
+                await API.graphql(graphqlOperation(updateMediaFile, { input: { id: itemID, collection: collectionArr } }));
+                fetchMediaFiles();
+            }
         } catch (e) {
             console.log(e);
         }
@@ -51,8 +57,6 @@ export default function CollectionItem() {
 
     //componentDidMount() for functional component
     useEffect(() => {
-        
-        setCollectionName(name.replace(/-/g, ' '));
         fetchMediaFiles();
     }, []);
 
@@ -70,7 +74,7 @@ export default function CollectionItem() {
                         items.map((item, i) => (
                             <a class='items' key={item.name} >
                                 {
-                                    (deleteMode ? <MdClose id='deleteCollectionItem' onClick={() => { deleteItem(item.name, item.id); }} /> : null)
+                                    (deleteMode ? <MdClose id='deleteCollectionItem' onClick={() => { deleteFromCollection(item.id); }} /> : null)
                                 }
                                 <div class='item' onClick={() => { openGallery(); setItem(item); }}>
                                     <div class='item_tn' >
@@ -78,8 +82,7 @@ export default function CollectionItem() {
                                              videoFormat.indexOf(item.name.split('.').pop()) > -1
                                              ? <BsCameraVideo id="video-thumbnail"/>
                                              :<AmplifyS3Image imgKey={item.name} />
-                                        }
-                                        
+                                        }     
                                     </div>
                                     <label class='collectionItem_name'>{item.name}</label>
                                 </div>

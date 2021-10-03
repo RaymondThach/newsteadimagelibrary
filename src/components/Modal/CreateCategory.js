@@ -3,26 +3,32 @@ import './CreateCategory.css'
 import { API, graphqlOperation } from 'aws-amplify';
 import { createTag } from '../../graphql/mutations';
 import { tagByCatName } from '../../graphql/queries';
-import { useParams } from 'react-router-dom'; 
+import { useAppContext } from '../services/context.js';
 
-export default function CreateCategory({setCreateCategory, setShowing}) {
+export default function CreateCategory({ setCreateCategory, setShowing, fetchCategories, tagOptions }) {
     //String value of the input field for new category name
-    const [ inputValue, setInputValue] = useState("");
-
-    //Get the current path
-    const { path } = useParams();
+    const [ inputValue, setInputValue] = useState('');
 
     //Update inputValue to user's input
     function myChangeHandler(event) {
         setInputValue(event.target.value);
     }
 
-    //Create a new category name in the Tag table
+    //Context object to keep track of whether gallery modal is open from App.js
+    const { galleryIsOpen } = useAppContext();
+
+    //Create a new category name in the Tag table, refresh the category page.
     async function addToDB(tag){
         try {
             await API.graphql(graphqlOperation(createTag, {input:tag}));
             alert('A new category was created: ' + inputValue);
-        } 
+            if (galleryIsOpen === false) {
+                fetchCategories();     
+            } 
+            else {
+                tagOptions.push({ value: tag.categoryName, label: tag.categoryName });
+            }
+        }
         catch (error) {
             console.log(error);
         }
@@ -62,7 +68,7 @@ export default function CreateCategory({setCreateCategory, setShowing}) {
     }
 
     useEffect(() => {
-        console.log(path);
+        console.log(galleryIsOpen);
     }, []);
 
     return (

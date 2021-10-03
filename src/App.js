@@ -4,8 +4,6 @@ import { Redirect, BrowserRouter, Route, Switch } from 'react-router-dom';
 import Amplify, { Auth } from 'aws-amplify';
 import awsExports from './aws-exports';
 import { createBrowserHistory as createHistory } from 'history'
-//import Navbar from 'react-bootstrap/Navbar';
-//import Nav from 'react-bootstrap/Nav';
 import Sidebar from './components/Sidebar'
 import UploadMediaFile from './components/pages/UploadFile';
 import Categories from './components/pages/Categories';
@@ -52,12 +50,12 @@ function App() {
         <Context.Provider value={{ isAuthenticated, userHasAuthenticated, galleryIsOpen, galleryHasOpened, deleteMode, setDeleteMode}}>
             <BrowserRouter history={history}>
               {
-                galleryIsOpen? null : <Sidebar/>
+                galleryIsOpen ? null : <Sidebar/>
               }
               <Switch>
-                <Route path='/categories/:categoryName' component={CategoryItem}/>
+                <Route path='/categories/:categoryName/:id' component={CategoryItem}/>
                 <Route path='/categories' component={Categories}/>
-                <Route path="/collections/:name" component={CollectionItem}/> 
+                <Route path="/collections/:name/:id" component={CollectionItem}/> 
                 <Route path='/collections' component={Collections}/>
                 <Route path='/login' component={Login}/>
                 <Route path='/upload-item' component={UploadMediaFile}/>

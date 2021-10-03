@@ -5,7 +5,7 @@ type S3Object {
 }
 
 type Tag @model
-@key(name: "tagByCatName", fields: ["categoryName"], queryField: "tagByCatName") {
+@key(name: "tagByCatName", fields: ["categoryName"], queryField: "tagByCatName"){
   id: ID!
   categoryName: String!
 }

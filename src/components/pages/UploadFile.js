@@ -14,9 +14,6 @@ import { BsCloudUpload } from "react-icons/bs";
 let tagOptions = [];
 let collectionOptions = [];
 
-
-
-
 class UploadMediaFile extends React.Component {
   constructor(props) {
     super(props);
