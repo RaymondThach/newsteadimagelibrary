@@ -1,0 +1,30 @@
+[
+  {
+    "groupName": "Admin",
+    "precedence": 1
+  },
+  {
+    "groupName": "addItem",
+    "precedence": 2
+  },
+  {
+    "groupName": "removeItem",
+    "precedence": 3
+  },
+  {
+    "groupName": "addCat",
+    "precedence": 4
+  },
+  {
+    "groupName": "removeCat",
+    "precedence": 5
+  },
+  {
+    "groupName": "addCollection",
+    "precedence": 6
+  },
+  {
+    "groupName": "removeCollection",
+    "precedence": 7
+  }
+]

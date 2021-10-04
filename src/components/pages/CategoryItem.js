@@ -16,22 +16,22 @@ export default function CategoryItem() {
     //URL categoryName parameter
     const { categoryName } = useParams();
     //State variable to store category name from DynamoDB or for 'Uncategorised' page
-    const [catName, setCatName ] = useState('');
-    //State array of media files of selected category
-    const [items, setItems] = useState([]);
+    const [ catName, setCatName ] = useState('');
+    //Context state array for items of a selected category lifted to App.js
+    const { items, setItems } = useAppContext();
     //State variable of selected item
-    const [item, setItem] = useState();
+    const [ item, setItem ] = useState();
     //State variable for showing the gallery
-    const [showGallery, setShowGallery] = useState(false);
+    const [ showGallery, setShowGallery ] = useState(false);
     //Use declared context variables to track delete mode
     const { deleteMode, setDeleteMode } = useAppContext();
     // Accepted video extensions
     const videoFormat = ['mp4', 'mov', 'wmv', 'avi', 'avchd', 'flv', 'f4v', 'swf', 'mkv']
     //State variable for showing a delete confirmation box when delete button is clicked
-    const [delConfirmation, setDelConfirmation] = useState(false);
+    const [ delConfirmation, setDelConfirmation ] = useState(false);
     //State variable of selected item for deletion
-    const [delItem, setDelItem] = useState();
-    
+    const [ delItem, setDelItem ] = useState();
+
     //Show gallery on click of an item
     const openGallery = () => {
         setShowGallery(true);

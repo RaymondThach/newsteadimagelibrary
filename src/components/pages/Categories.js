@@ -14,8 +14,9 @@ export default function Categories() {
   //State variable for showing the create category modal
   const [ showing, setShowing ] = useState(false);
 
-  //State array for storing all categories and their random photo
-  const [ categories, setCategories ] = useState([]);
+  //Context State array for storing all categories and their random photo, lifted to App.js level
+  const { categories, setCategories } = useAppContext();
+  // const [ categories, setCategories ] = useState([]);
 
   //Use declared context variables to track delete mode
   const { deleteMode, setDeleteMode } = useAppContext();
