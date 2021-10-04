@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import "./AddUser.css";
 import "../pages/UserManagement.css"
+import { useAppContext } from "../lib/contextLib";
+import { useFormFields } from "../lib/hooksLib";
 
 
 
 export default function AddUser() {
 
+    const [newUser, setNewUser] = useState(null);
+    const { userHasAuthenticated } = useAppContext();
+    const [isLoading, setIsLoading] = useState(false);
+    
+
+    async  function handleSubmit(e){
+        e.preventDefault();
+        setIsLoading(true)
+    }
 
 
     return (

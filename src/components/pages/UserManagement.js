@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import './UserManagement.css';
 import "amazon-cognito-identity-js";
 import AddUser from '../Modal/AddUser';
+import {listUsers} from '../../../amplify/backend/function/AdminQueries10f5143c/src/cognitoActions';
 
 
 
