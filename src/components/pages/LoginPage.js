@@ -48,7 +48,7 @@ export default function Login() {
 
     return (
         <>
-        <div className='Login' slot='sign-in' style={{
+        <div className='Login' className ="loginBorder" slot='sign-in' style={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -57,7 +57,8 @@ export default function Login() {
             backgroundImage: `url(${Background})`,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
-            border:"20px solid rgb(96, 143, 221)"
+            borderTop:"20px solid rgb(96, 143, 221)",
+            borderBottom:"20px solid rgb(96, 143, 221)"
         }}>
             <Form onSubmit={handleLogin}>
                 <label style={{ fontSize: 30, textAlign: 'center', fontWeight:'bold'}}>
