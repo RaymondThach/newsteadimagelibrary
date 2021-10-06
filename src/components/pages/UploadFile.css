@@ -15,8 +15,6 @@
     background-repeat: no-repeat;
     background-size: cover;
     margin-bottom: 25px;
-
-
 }
 
 .upload-forms{
@@ -26,13 +24,18 @@
     border:black;
     border-radius: 3px;
     border-style: solid;
+    width: 1500px;
+    margin-left: 75px;
 }
 
 .drop-area{
     bottom: 0;
-
-    
-    
+    border:black;
+    border-radius: 3px;
+    border-style: dotted;
+    width: 1500px;
+    margin-left: 75px;
+    margin-top:10px;
 }
 .upload-button{
     height: 100%;
@@ -41,9 +44,6 @@
     position: relative;
     padding-top: 100px;
     z-index: 999;
-    
-    
-
 }
 
 .upload-button #bsIcon{
