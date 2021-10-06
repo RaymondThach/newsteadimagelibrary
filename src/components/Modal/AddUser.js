@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./AddUser.css";
 import "../pages/UserManagement.css";
-import { useAppContext } from "../services/context.js";
-import { Auth } from "aws-amplify";
+import { Auth, API } from "aws-amplify";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
@@ -18,6 +17,40 @@ export default function AddUser() {
   const [lastname, setLastname] = useState(null);
   const [jobRole, setJobRole] = useState("");
   const [email, setEmail] = useState("");
+
+ 
+
+  //Handler for mutliple checkboxes
+  const [checkedState, setCheckedState] = useState(
+    [false,false,false,false,false,false,false]
+);
+
+
+/*
+  //Handler for checkbox changes
+  const handleOnChange = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+
+    setCheckedState(updatedCheckedState);
+*/
+  // Admin query to add user to default permission group
+  async function addRoAccess() {
+    let apiName = 'AdminQueries';
+    let path = '/addUserToGroup';
+    let myInit = {
+      body: {
+        "username": username,
+        "groupname": "everyone"
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+      }
+    }
+    return await API.post(apiName, path, myInit);
+  }
 
   // Handle submission to coginito for user account creation
   async function handleSubmit(event) {
@@ -41,6 +74,7 @@ export default function AddUser() {
           alert("Account has been created for " + firstname + " " + lastname);
         });
         setNewUser(newUser);
+        addRoAccess();
       }
     } catch (e) {
       console.log(e);
@@ -50,6 +84,7 @@ export default function AddUser() {
   // Handler for firtname userinput
   async function handleFirstname(e) {
     try {
+      setFirstname(e);
       //Auto populates username to firstname.last
       lastname.length !== 0 ? setUsername(e + "." + lastname) : setUsername(e);
 
@@ -152,6 +187,36 @@ export default function AddUser() {
               />{" "}
             </Form.Group>{" "}
           </div>{" "}
+         
+            <div class="form-group col-2">
+              <label class="">Add Item</label><br/>
+              <input type="checkbox" value="addItem" />
+            </div>
+            <div class="form-group col-2">
+              <label>Remove Item</label><br/>
+              <input type="checkbox" value="removeItem" />
+            </div>
+            <div class="form-group col-2">
+              <label>Add Category</label><br/>
+              <input type="checkbox" value="addCat" />
+            </div>
+            <div class="form-group col-2">
+              <label>Remove Category</label><br/>
+              <input type="checkbox" value="removeCat" />
+            </div>
+            <div class="form-group col-2">
+              <label>Add Collection</label><br/>
+              <input type="checkbox" value="addCollection" />
+            </div>
+            <div class="form-group col-2">
+              <label>Remove Collection</label><br/>
+              <input type="checkbox" value="removeCollection" />
+            </div>
+            <div class="form-group col-2">
+              <label>Admin</label><br/>
+              <input type="checkbox" value="Admin" />
+            </div>
+          
         </div>
         <Button
           block
@@ -169,7 +234,7 @@ export default function AddUser() {
 
   return (
     <div class="background">
-      <div class="container">
+      <div id="add-user">
         <h1> Create a New User </h1>{" "}
         <p>
           Please enter credentials for new user and set their permissions below.{" "}
