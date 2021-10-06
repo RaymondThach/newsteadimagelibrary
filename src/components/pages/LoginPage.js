@@ -65,7 +65,7 @@ export default function Login() {
                     Newstead Image Library
                 </label>
                 <Form.Group size='lg' controlId='username'>
-                    <Form.Label style={{ fontSize: 30, textAlign: 'left',fontWeight:'bold',color:'black' }}>
+                    <Form.Label style={{ fontSize: 25, textAlign: 'center',fontWeight:'bold',color:'black'}}>
                         Username
                     </Form.Label>
                     <Form.Control
@@ -76,7 +76,7 @@ export default function Login() {
                     />
                 </Form.Group>
                 <Form.Group size='lg' controlId='password'>
-                    <Form.Label style={{ fontSize: 30, textAlign: 'left',fontWeight:'bold',color:'black' }}>
+                    <Form.Label style={{ fontSize: 25, textAlign: 'left',fontWeight:'bold',color:'black' }}>
                         Password
                     </Form.Label>
                     <Form.Control

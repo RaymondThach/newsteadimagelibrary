@@ -24,10 +24,8 @@
     top:0;
     overflow: auto;
     border:black;
-    border-radius: 10px;
+    border-radius: 3px;
     border-style: solid;
-
-
 }
 
 .drop-area{

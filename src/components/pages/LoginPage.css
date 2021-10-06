@@ -2,8 +2,14 @@
     position: absolute;
     display: block;
     height: 220px;
-    width: 300px;
-    margin-left: 43%;
+    width: 350px;
+    margin-left: 40%;
     margin-top: 5%;
   }
 
+.loginIcons{
+    position: absolute;
+    display: block;
+    height: 50px;
+    width: 50px;
+  }
