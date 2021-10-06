@@ -23,14 +23,16 @@
     display: grid;
     top:0;
     overflow: auto;
-    
-    
-   
+    border:black;
+    border-radius: 10px;
+    border-style: solid;
+
+
 }
 
 .drop-area{
     bottom: 0;
-    
+
     
     
 }
@@ -41,6 +43,7 @@
     position: relative;
     padding-top: 100px;
     z-index: 999;
+    
     
 
 }
@@ -75,4 +78,18 @@ h1{
     text-align: center;
     
     
+}
+
+.submitButton{
+    background-color:rgb(96, 143, 221) ;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer; 
+    border-radius: 15px 15px; 
 }

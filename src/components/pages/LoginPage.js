@@ -56,16 +56,16 @@ export default function Login() {
             width: '100vw',
             backgroundImage: `url(${Background})`,
             backgroundPosition: 'center',
-            backgroundSize: 'cover',
+            backgroundSize: '2000px 1000px',
             borderTop:"20px solid rgb(96, 143, 221)",
             borderBottom:"20px solid rgb(96, 143, 221)"
         }}>
             <Form onSubmit={handleLogin}>
-                <label style={{ fontSize: 30, textAlign: 'center', fontWeight:'bold'}}>
+                <label style={{ fontSize: 30, textAlign: 'center', fontWeight:'bold', color:'black'}}>
                     Newstead Image Library
                 </label>
                 <Form.Group size='lg' controlId='username'>
-                    <Form.Label style={{ fontSize: 30, textAlign: 'left',fontWeight:'bold' }}>
+                    <Form.Label style={{ fontSize: 30, textAlign: 'left',fontWeight:'bold',color:'black' }}>
                         Username
                     </Form.Label>
                     <Form.Control
@@ -76,7 +76,7 @@ export default function Login() {
                     />
                 </Form.Group>
                 <Form.Group size='lg' controlId='password'>
-                    <Form.Label style={{ fontSize: 30, textAlign: 'left',fontWeight:'bold' }}>
+                    <Form.Label style={{ fontSize: 30, textAlign: 'left',fontWeight:'bold',color:'black' }}>
                         Password
                     </Form.Label>
                     <Form.Control
@@ -85,7 +85,7 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     />
                 </Form.Group>
-                <Button block size='lg' type='submit' style={{fontSize: 20}}>
+                <Button block size='lg' type='submit' style={{fontSize: 20, marginLeft:'130px', marginTop:'10px'}}>
                     Login
                 </Button>
                 <img class="loginlogo" src={transparentLogo}>

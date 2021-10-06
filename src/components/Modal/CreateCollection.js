@@ -99,7 +99,7 @@ export default class CreateCollection extends React.Component {
               <div class="text">OR</div>
               <input
                 type="button"
-                class="filebutton"
+                class='collectionfileButton'
                 value="Select Local File "
               ></input>
             </div>

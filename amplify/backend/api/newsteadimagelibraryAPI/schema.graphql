@@ -4,15 +4,44 @@ type S3Object {
   key: String!
 }
 
-type Tag @model
-@key(name: "tagByCatName", fields: ["categoryName"], queryField: "tagByCatName"){
+type Tag
+  @model
+  @key(
+    name: "tagByCatName"
+    fields: ["categoryName"]
+    queryField: "tagByCatName"
+  )
+  @auth(
+    rules: [
+      # allow admin full access
+      { allow: groups, groups: ["Admin"] },
+      #Allow user to add\edit category
+      { allow: groups, groups: ["addCat"], operations: [read, create, update] },
+      #Allow user to removecategory
+      { allow: groups, groups: ["removeCat"], operations: [read, delete] },
+      #Allow read access
+      { allow: groups, groups: ["everyone"], operations: [read] }
+    ]
+  ) {
   id: ID!
   categoryName: String!
 }
 
-type MediaFile @model
-@key(name: "fileName", fields: ["name"], queryField: "fileName")
-  {
+type MediaFile
+  @model
+  @key(name: "fileName", fields: ["name"], queryField: "fileName")
+  @auth(
+    rules: [
+      # allow admin full access
+      { allow: groups, groups: ["Admin"] },
+      # allow user to add\edit file
+      { allow: groups, groups: ["addItem"], operations: [read, create, update] },
+      #allow user to delete file
+      { allow: groups, groups: ["removeItem"], operations: [read, delete] },
+       #Allow read access
+      { allow: groups, groups: ["everyone"], operations: [read] }
+    ]
+  ) {
   id: ID!
   name: String!
   description: String
@@ -22,9 +51,29 @@ type MediaFile @model
   file: S3Object
 }
 
-type Collection @model
-@key(name:"collectionName", fields:["name"], queryField:"collectionName"){
-  id:ID!
+type Collection
+  @model
+  @key(name: "collectionName", fields: ["name"], queryField: "collectionName")
+  @auth(
+    rules: [
+      # allow admin full access
+      { allow: groups, groups: ["Admin"] },
+      #Allow user to add\edit Collection
+      {
+        allow: groups
+        groups: ["addCollection"]
+        operations: [read, create, update]
+      },
+      #Allow user to removeCollection
+      {
+        allow: groups
+        groups: ["removeCollection"]
+        operations: [read, delete]
+      },
+      #Allow read access
+      { allow: groups, groups: ["everyone"], operations: [read] }
+    ]
+  ) {
+  id: ID!
   name: String!
 }
-

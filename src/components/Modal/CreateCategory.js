@@ -89,11 +89,11 @@ export default function CreateCategory({ setCreateCategory, setShowing, fetchCat
               <div class="text">OR</div>
               <input
                 type="button"
-                class="filebutton"
-                value="Select Local File "
+                class='categoryfileButton'
+                value="Select Local File"
               ></input>
             </div>
-            <input type="submit" value="Create" />
+            <input class="submit" value="Create" />
             <button class='cancelBtn' onClick={() => {handleClose();}}>Cancel</button>
             </form>
           </div>
