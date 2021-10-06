@@ -135,9 +135,8 @@ textarea {
 .galleryLogo {
     position: relative;
     display: block;
-    height: 220px;
-    width: 220px;
-    margin: auto; 
+    height: 20%;
+    width: 100%; 
 }
 
 .menu-wrapper {
