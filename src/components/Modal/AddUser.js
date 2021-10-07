@@ -5,7 +5,7 @@ import { Auth, API } from "aws-amplify";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-export default function AddUser() {
+export default function AddUser({ showAddUser, setShowAddUser }) {
   // User Creation object to be passed to cognito
   const [newUser, setNewUser] = useState(null);
 
@@ -13,36 +13,23 @@ export default function AddUser() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [firstname, setFirstname] = useState(null);
-  const [lastname, setLastname] = useState(null);
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [jobRole, setJobRole] = useState("");
   const [email, setEmail] = useState("");
 
- 
-
-  //Handler for mutliple checkboxes
-  const [checkedState, setCheckedState] = useState(
-    [false,false,false,false,false,false,false]
-);
+  // Default group, use to store permission for created user acount
+  const group = ['everyone']
 
 
-/*
-  //Handler for checkbox changes
-  const handleOnChange = (position) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item
-    );
-
-    setCheckedState(updatedCheckedState);
-*/
-  // Admin query to add user to default permission group
-  async function addRoAccess() {
+  async function addAccess(groupName) {
     let apiName = 'AdminQueries';
     let path = '/addUserToGroup';
     let myInit = {
       body: {
         "username": username,
-        "groupname": "everyone"
+        "groupname": groupName,
+
       },
       headers: {
         'Content-Type': 'application/json',
@@ -55,6 +42,8 @@ export default function AddUser() {
   // Handle submission to coginito for user account creation
   async function handleSubmit(event) {
     event.preventDefault();
+    console.log(group.toString())
+    console.log(group)
 
     try {
       //Check if confirmation password matches
@@ -70,14 +59,17 @@ export default function AddUser() {
             "custom:lastname": lastname,
             "custom:jobRole": jobRole,
           },
-        }).then((e) => {
-          alert("Account has been created for " + firstname + " " + lastname);
-        });
+        })
         setNewUser(newUser);
-        addRoAccess();
+        // eslint-disable-next-line array-callback-return
+        group.map((name) => {
+          addAccess((name))
+        })
+        alert("Account has been created for " + firstname + " " + lastname);
+        setShowAddUser(false);
       }
     } catch (e) {
-      console.log(e);
+      alert(e.message)
     }
   }
 
@@ -104,6 +96,22 @@ export default function AddUser() {
         : setUsername(e);
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  //Handler for checkbox value
+  async function handleCheckbox(checked, value) {
+    try {
+      if (checked) {
+        group.push(value)
+        console.log(group)
+      } else {
+        group.splice(group.indexOf(value), 1);
+        console.log(group)
+      }
+
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -187,36 +195,36 @@ export default function AddUser() {
               />{" "}
             </Form.Group>{" "}
           </div>{" "}
-         
-            <div class="form-group col-2">
-              <label class="">Add Item</label><br/>
-              <input type="checkbox" value="addItem" />
-            </div>
-            <div class="form-group col-2">
-              <label>Remove Item</label><br/>
-              <input type="checkbox" value="removeItem" />
-            </div>
-            <div class="form-group col-2">
-              <label>Add Category</label><br/>
-              <input type="checkbox" value="addCat" />
-            </div>
-            <div class="form-group col-2">
-              <label>Remove Category</label><br/>
-              <input type="checkbox" value="removeCat" />
-            </div>
-            <div class="form-group col-2">
-              <label>Add Collection</label><br/>
-              <input type="checkbox" value="addCollection" />
-            </div>
-            <div class="form-group col-2">
-              <label>Remove Collection</label><br/>
-              <input type="checkbox" value="removeCollection" />
-            </div>
-            <div class="form-group col-2">
-              <label>Admin</label><br/>
-              <input type="checkbox" value="Admin" />
-            </div>
-          
+
+          <div class="form-group col-2">
+            <label class="">Add Item</label><br />
+            <input type="checkbox" value="addItem" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+          </div>
+          <div class="form-group col-2">
+            <label>Remove Item</label><br />
+            <input type="checkbox" value="removeItem" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+          </div>
+          <div class="form-group col-2">
+            <label>Add Category</label><br />
+            <input type="checkbox" value="addCat" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+          </div>
+          <div class="form-group col-2">
+            <label>Remove Category</label><br />
+            <input type="checkbox" value="removeCat" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+          </div>
+          <div class="form-group col-2">
+            <label>Add Collection</label><br />
+            <input type="checkbox" value="addCollection" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+          </div>
+          <div class="form-group col-2">
+            <label>Remove Collection</label><br />
+            <input type="checkbox" value="removeCollection" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+          </div>
+          <div class="form-group col-2">
+            <label>Admin</label><br />
+            <input type="checkbox" value="Admin" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+          </div>
+
         </div>
         <Button
           block
@@ -228,19 +236,42 @@ export default function AddUser() {
         >
           Create Account{" "}
         </Button>{" "}
+
+        <Button
+          block
+          size="lg"
+          type="reset"
+          onClick={() => { setShowAddUser(false); }}
+          style={{
+            fontSize: 20,
+          }
+          }
+
+        >
+          Cancel{" "}
+        </Button>{" "}
       </Form>
     );
   }
 
+
   return (
-    <div class="background">
-      <div id="add-user">
-        <h1> Create a New User </h1>{" "}
-        <p>
-          Please enter credentials for new user and set their permissions below.{" "}
-        </p>{" "}
-        <p> These will be able to be edited later. </p> {renderForm()}{" "}
-      </div>{" "}
-    </div>
+    <>
+    { showAddUser?
+        <div class= "background" >
+          <div id="add-user">
+            <h1> Create a New User </h1>{" "}
+            <p>
+              Please enter credentials for new user and set their permissions below.{" "}
+            </p>{" "}
+            <p> These will be able to be edited later. </p> {renderForm()}{" "}
+          </div>{ " " }
+    </div >
+    : null
+    
+}
+</>
   );
+    
+    
 }

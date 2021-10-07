@@ -4,26 +4,16 @@ import "amazon-cognito-identity-js";
 import AddUser from '../Modal/AddUser';
 
 
-
-var AWS = require('aws-sdk/dist/aws-sdk-react-native');
-
-
-var authParams =
-{
-  region: "ap-southeast-2",
-  accessKeyId: "AKIA6BQ24HHUGMT6TRNP",
-  secretAccessKey: `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`
-};
-
-
-
-
-
-
 export default function UserMangement() {
-  console.log("inside function");
+
   const [selected, setSelected] = useState('');
+
   const [showing, setShowing] = useState(false);
+
+     //Show gallery on click of an item
+     const openAddUser = () => {
+      setShowing(true);
+  }
 
   
 
@@ -49,7 +39,7 @@ export default function UserMangement() {
           <option value="user 5">user 5</option>
           <option value="user 6">user 6</option>
         </select>&nbsp;&nbsp;&nbsp;
-        <button onClick={() => { setShowing(!showing); }}>Add User...</button>
+        <button onClick={() => { openAddUser();}}>Add User...</button>
         <p>Selected: {selected}</p>
         <div className="buttons">
           <label id="labelSpacing">Add Item</label>
@@ -120,7 +110,7 @@ export default function UserMangement() {
       </div>
       <div class="modal-overlay">
         {showing
-          ? <AddUser/>
+          ? <AddUser showAddUser={showing} setShowAddUser={setShowing}/>
           : null
         }
       </div>
