@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import './CreateCategory.css'
 import { API, graphqlOperation } from 'aws-amplify';
 import { createTag } from '../../graphql/mutations';

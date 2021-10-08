@@ -9,6 +9,7 @@ import { useAppContext } from '../services/context.js';
 import DeleteConfirmationBox from '../Modal/DeleteConfirmationBox.js';
 import './CategoryItem.css';
 import { BsCameraVideo } from "react-icons/bs";
+import { useHistory } from 'react-router-dom';
 
 export default function CategoryItem() {
     //Get the URL parameter to set the original category name
@@ -31,6 +32,8 @@ export default function CategoryItem() {
     const [ delConfirmation, setDelConfirmation ] = useState(false);
     //State variable of selected item for deletion
     const [ delItem, setDelItem ] = useState();
+    //Track history, used to redirect on error catch
+    const history = useHistory();
 
     //Show gallery on click of an item
     const openGallery = () => {
@@ -53,10 +56,14 @@ export default function CategoryItem() {
             }
         }
         else {
-            const categoryObj = await API.graphql(graphqlOperation(getTag, {id: id}));
-            setCatName(categoryObj.data.getTag.categoryName);
-            const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName } } }));
-            setItems(results.data.listMediaFiles.items);
+            try {
+                const categoryObj = await API.graphql(graphqlOperation(getTag, {id: id}));
+                setCatName(categoryObj.data.getTag.categoryName);
+                const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName } } }));
+                setItems(results.data.listMediaFiles.items);
+            } catch (e) {
+                history.push('/categories');
+            }
         }
     };
 

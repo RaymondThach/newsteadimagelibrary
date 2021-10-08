@@ -16,7 +16,6 @@ export default function Categories() {
 
   //Context State array for storing all categories and their random photo, lifted to App.js level
   const { categories, setCategories } = useAppContext();
-  // const [ categories, setCategories ] = useState([]);
 
   //Use declared context variables to track delete mode
   const { deleteMode, setDeleteMode } = useAppContext();
@@ -102,7 +101,7 @@ export default function Categories() {
               {
                 (deleteMode ? <MdClose id='deleteCat' onClick={() => { showDelConfirmation(listname); }} /> : null)
               }
-              <a class='item' href={'/categories/'+ listname.categoryName.replace(/[ ]/g, '-') + '/' + listname.id}>
+              <a class='item' href={'/categories/'+ encodeURIComponent(listname.categoryName.replace(/[ ]/g, '-')) + '/' + listname.id}>
                 <div class='cat_tn'>
                   {
                     (listname.randPhoto !== null ? <AmplifyS3Image imgKey={listname.randPhoto} /> : <HiOutlinePhotograph class='defaultImgIcon'/>)

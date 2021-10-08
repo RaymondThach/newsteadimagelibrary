@@ -6,16 +6,15 @@
   font-weight: bold;
   border: none;
   cursor: pointer;
-  margin: 50px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
   width: 210px;
-  margin-left: 20px;
   height: 40px;
 }
 
 .dropdown {
   position: relative;
   display: inline-block;
-  
+  left: 8%;
 }
 
 .dropdown-content {
@@ -86,6 +85,29 @@
   padding: 0 50px;
   color: black;
   font-weight: bold;
+}
+
+.searchBar {
+  display: flex;
+  width: 100%;
+  padding-bottom: 20%;
+}
+
+#searchBtn {
+  position: relative;
+  left: 8%;
+  background-color: white;
+  border-top: solid;
+  border-right: solid;
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: grey;
+}
+
+#searchField {
+  position: relative;
+  left: 8%;
+  width: 72%;
 }
 
 .Delete {

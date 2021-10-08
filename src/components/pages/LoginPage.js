@@ -27,11 +27,11 @@ export default function Login() {
                         user,
                         password
                     )
-                    history.push('/home')
+                    history.push('/')
                 }
                 else {
                     userHasAuthenticated(true);
-                    history.push('/home')
+                    history.push('/')
                 }
             }); 
         }

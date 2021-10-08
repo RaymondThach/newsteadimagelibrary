@@ -9,6 +9,7 @@ import { MdClose } from 'react-icons/md';
 import { updateMediaFile } from '../../graphql/mutations';
 import { useAppContext } from '../services/context.js';
 import { BsCameraVideo } from "react-icons/bs";
+import { useHistory } from 'react-router-dom';
 
 export default function CollectionItem() {
     //Get the URL parameter to set the unformatted collection name
@@ -25,6 +26,8 @@ export default function CollectionItem() {
     const { deleteMode } = useAppContext();
     // Accepted video extensions
     const videoFormat = ['mp4', 'mov', 'wmv', 'avi', 'avchd', 'flv', 'f4v', 'swf', 'mkv']
+    //Track history, used to redirect on error catch
+    const history = useHistory();
 
     //Show gallery on click of an item
     const openGallery = () => {
@@ -33,10 +36,15 @@ export default function CollectionItem() {
 
     //Fetch all media files of the selected collection
     async function fetchMediaFiles() {
-        const collectionObj = await API.graphql(graphqlOperation(getCollection, {id: id}));
-        setCollectionName(collectionObj.data.getCollection.name);
-        const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { collection: { contains: collectionObj.data.getCollection.name } } }));
-        setItems(results.data.listMediaFiles.items);
+        try {
+            const collectionObj = await API.graphql(graphqlOperation(getCollection, {id: id}));
+            setCollectionName(collectionObj.data.getCollection.name);
+            const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { collection: { contains: collectionObj.data.getCollection.name } } }));
+            setItems(results.data.listMediaFiles.items);
+        } catch (e) {
+            history.push('/collections')
+        }
+        
     };
 
     //Delete the collection from the item in DynamoDB, fetch media files again for dynamic refresh.
