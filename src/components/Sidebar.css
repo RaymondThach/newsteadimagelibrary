@@ -110,11 +110,31 @@
   width: 72%;
 }
 
+.favourites {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-top: 20%;
+}
+
+.favouritesBtn {
+  background-color: white;
+  color: black;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  width: 210px;
+  margin-left: 20px;
+  height: 40px;
+}
+
 .Delete {
   position: relative;
   display: inline-block;
   width: 100%;
-  margin-top: 50%;
+  margin-top: 20%;
 }
 
 .deleteBtn {

@@ -298,8 +298,11 @@ function Sidebar() {
                             )
                         })
                     }
+                    <div class='favourites' > 
+                        <button onClick={() => history.push('/categories/Favourites/favourites')} class='favouritesBtn'>Favourites</button>
+                    </div>
                     <div class='Delete' > 
-                        <button onClick={handleLogout} onClick={switchDeleteMode} class='deleteBtn'>Delete Mode</button>
+                        <button onClick={switchDeleteMode} class='deleteBtn'>Delete Mode</button>
                     </div>
                     <div class='Sign-Out-Button' > 
                         <button onClick={handleLogout} class='signOut'>Logout</button>

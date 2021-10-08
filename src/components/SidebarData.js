@@ -19,6 +19,5 @@ export const SidebarData = [
         title: 'User Accounts',
         path: '/admin-user-accounts',
         cName: 'nav-text'
-    },
-    
+    }, 
 ]

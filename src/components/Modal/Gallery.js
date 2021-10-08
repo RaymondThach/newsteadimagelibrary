@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { MdClose, MdEdit, MdFileDownload, MdShare } from 'react-icons/md';
-import { AiFillTag, AiOutlinePlus } from 'react-icons/ai';
+import { AiFillTag, AiOutlinePlus, AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { FcOk, FcCancel } from 'react-icons/fc';
 import { Storage, API, graphqlOperation } from 'aws-amplify';
 import { updateMediaFile } from '../../graphql/mutations';
@@ -50,6 +50,9 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
 
   //File Extensions
   const [fileExt, setFileExt] = useState();
+
+  //Favourited state for selected item
+  const [favourited, setFavourited] = useState(item.favourite); 
 
   //Close modal if background of modal is clicked. Fetch latest information.
   const closeGallery = event => {
@@ -238,7 +241,6 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
 
   //On load get the details of the selected item.
   useEffect(() => {
-    
     setFileExt((item.name.split('.').pop()));
     getVideoObject();
     if (item.description != null) {
@@ -248,6 +250,22 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
     populateCatSelector();
     populateColSelector();
   }, []);
+
+  //Change the favourite property to true or false for the selected item in the database
+  async function setFavourite() {
+    if (favourited === undefined) {
+      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: true } }));
+      setFavourited(prev => !prev);
+    }
+    else if (favourited === true) {
+      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: false } }));
+      setFavourited(prev => !prev);
+    }
+    else if (favourited === false) {
+      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: true } }));
+      setFavourited(prev => !prev);
+    }
+  }
 
   return (
     <>
@@ -296,6 +314,13 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
               </div>
               <div class='downloadButton'>
                 <MdFileDownload size={20} onClick={download} />
+              </div>
+              <div class ='favouriteButton' onClick={() => {setFavourite();}}>
+                {
+                  (favourited !== null ? 
+                    (favourited === true ? <AiFillStar size={20} id='favouritedStar'/> : <AiOutlineStar size={20}/>)
+                  : <AiOutlineStar size={20}/>)
+                } 
               </div>
               <div class='shareButton'>
                 <MdShare size={20} onClick={copyToClipboard} />

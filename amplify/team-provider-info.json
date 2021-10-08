@@ -16,6 +16,12 @@
         "newsteadimagelibrary648aa53a": {},
         "userPoolGroups": {}
       },
+      "function": {
+        "AdminQueries10f5143c": {
+          "deploymentBucketName": "amplify-newsteadimagelibrary-nhbackend-194108-deployment",
+          "s3Key": "amplify-builds/AdminQueries10f5143c-6d4373496b436566434c-build.zip"
+        }
+      },
       "hosting": {
         "amplifyhosting": {
           "appId": "d17t75b7jvjqaz",

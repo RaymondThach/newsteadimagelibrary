@@ -40,9 +40,10 @@ export default function CategoryItem() {
         setShowGallery(true);
     }
 
-    //Fetch all media files of the selected category accounting for uncategorised items in uncategorised page
+    //Fetch all media files of the selected category accounting for uncategorised items in uncategorised page and favourites in favourites page
     async function fetchMediaFiles() {
         if (categoryName === 'Uncategorised') {
+            setCatName(categoryName);
             const uncategorised = [];
             const results = await API.graphql(graphqlOperation(listMediaFiles));
             if (results.data.listMediaFiles.items.length > 0){
@@ -52,7 +53,19 @@ export default function CategoryItem() {
                     }
                 })
                 setItems(uncategorised);
-                setCatName(categoryName);
+            }
+        }
+        else if (categoryName === 'Favourites') {
+            setCatName(categoryName);
+            const favourites = [];
+            const results = await API.graphql(graphqlOperation(listMediaFiles));
+            if (results.data.listMediaFiles.items.length > 0) {
+                results.data.listMediaFiles.items.map((item) => {
+                    if (item.favourite === true) {
+                        favourites.push(item);
+                    }
+                })
+                setItems(favourites);
             }
         }
         else {
@@ -79,6 +92,12 @@ export default function CategoryItem() {
         fetchMediaFiles();
         setDeleteMode(false);
     }, []);
+
+    //Refresh the content on route categoryName param change, used for routing to Favourites page from another category path.
+    useEffect(() => {
+        fetchMediaFiles();
+        setDeleteMode(false);
+    }, [categoryName]);
 
     return (
         <div class='page'>

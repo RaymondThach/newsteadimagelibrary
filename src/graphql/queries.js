@@ -28,6 +28,31 @@ export const listTags = /* GraphQL */ `
     }
   }
 `;
+export const tagByCatName = /* GraphQL */ `
+  query TagByCatName(
+    $categoryName: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    tagByCatName(
+      categoryName: $categoryName
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        categoryName
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getMediaFile = /* GraphQL */ `
   query GetMediaFile($id: ID!) {
     getMediaFile(id: $id) {
@@ -36,6 +61,7 @@ export const getMediaFile = /* GraphQL */ `
       description
       tags
       collection
+      favourite
       file {
         bucket
         region
@@ -59,6 +85,41 @@ export const listMediaFiles = /* GraphQL */ `
         description
         tags
         collection
+        favourite
+        file {
+          bucket
+          region
+          key
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const fileName = /* GraphQL */ `
+  query FileName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelMediaFileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    fileName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        description
+        tags
+        collection
+        favourite
         file {
           bucket
           region
@@ -91,64 +152,6 @@ export const listCollections = /* GraphQL */ `
       items {
         id
         name
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const tagByCatName = /* GraphQL */ `
-  query TagByCatName(
-    $categoryName: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelTagFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    tagByCatName(
-      categoryName: $categoryName
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        categoryName
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const fileName = /* GraphQL */ `
-  query FileName(
-    $name: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelMediaFileFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    fileName(
-      name: $name
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        description
-        tags
-        collection
-        file {
-          bucket
-          region
-          key
-        }
         createdAt
         updatedAt
       }

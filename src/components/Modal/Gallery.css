@@ -72,12 +72,27 @@ textarea {
 .editButton {
     position: absolute;
     top: 0%;
-    right: 24%;
+    right: 36%;
 }
 
 .downloadButton {
     position: absolute;
     top: 0%;
+    right: 24%;
+}
+
+.favouriteButton{
+    position: absolute;
+    top: 0%;
+    right: 12%;
+}
+
+#favouritedStar {
+    position: absolute;
+    stroke-width: 30px;
+    color: gold;
+    stroke: black;
+    top: 3px;
     right: 12%;
 }
 
