@@ -19,7 +19,7 @@ Amplify.configure(awsExports);
 const history = createHistory();
 
 function App() {
-  //Context varaible that tracks if the user is logged in
+  //Context variable that tracks if the user is logged in
   const [isAuthenticated, userHasAuthenticated] = useState(false);
 
   //Context variable that tracks if gallery modal is open

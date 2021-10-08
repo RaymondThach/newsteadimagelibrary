@@ -9,6 +9,7 @@ import { useAppContext } from '../services/context.js';
 import DeleteConfirmationBox from '../Modal/DeleteConfirmationBox.js';
 import './CategoryItem.css';
 import { BsCameraVideo } from "react-icons/bs";
+import { useHistory } from 'react-router-dom';
 
 export default function CategoryItem() {
     //Get the URL parameter to set the original category name
@@ -31,15 +32,18 @@ export default function CategoryItem() {
     const [ delConfirmation, setDelConfirmation ] = useState(false);
     //State variable of selected item for deletion
     const [ delItem, setDelItem ] = useState();
+    //Track history, used to redirect on error catch
+    const history = useHistory();
 
     //Show gallery on click of an item
     const openGallery = () => {
         setShowGallery(true);
     }
 
-    //Fetch all media files of the selected category accounting for uncategorised items in uncategorised page
+    //Fetch all media files of the selected category accounting for uncategorised items in uncategorised page and favourites in favourites page
     async function fetchMediaFiles() {
         if (categoryName === 'Uncategorised') {
+            setCatName(categoryName);
             const uncategorised = [];
             const results = await API.graphql(graphqlOperation(listMediaFiles));
             if (results.data.listMediaFiles.items.length > 0){
@@ -49,14 +53,30 @@ export default function CategoryItem() {
                     }
                 })
                 setItems(uncategorised);
-                setCatName(categoryName);
+            }
+        }
+        else if (categoryName === 'Favourites') {
+            setCatName(categoryName);
+            const favourites = [];
+            const results = await API.graphql(graphqlOperation(listMediaFiles));
+            if (results.data.listMediaFiles.items.length > 0) {
+                results.data.listMediaFiles.items.map((item) => {
+                    if (item.favourite === true) {
+                        favourites.push(item);
+                    }
+                })
+                setItems(favourites);
             }
         }
         else {
-            const categoryObj = await API.graphql(graphqlOperation(getTag, {id: id}));
-            setCatName(categoryObj.data.getTag.categoryName);
-            const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName } } }));
-            setItems(results.data.listMediaFiles.items);
+            try {
+                const categoryObj = await API.graphql(graphqlOperation(getTag, {id: id}));
+                setCatName(categoryObj.data.getTag.categoryName);
+                const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName } } }));
+                setItems(results.data.listMediaFiles.items);
+            } catch (e) {
+                history.push('/categories');
+            }
         }
     };
 
@@ -72,6 +92,12 @@ export default function CategoryItem() {
         fetchMediaFiles();
         setDeleteMode(false);
     }, []);
+
+    //Refresh the content on route categoryName param change, used for routing to Favourites page from another category path.
+    useEffect(() => {
+        fetchMediaFiles();
+        setDeleteMode(false);
+    }, [categoryName]);
 
     return (
         <div class='page'>

@@ -6,16 +6,15 @@
   font-weight: bold;
   border: none;
   cursor: pointer;
-  margin: 50px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
   width: 210px;
-  margin-left: 20px;
   height: 40px;
 }
 
 .dropdown {
   position: relative;
   display: inline-block;
-  
+  left: 8%;
 }
 
 .dropdown-content {
@@ -88,11 +87,54 @@
   font-weight: bold;
 }
 
+.searchBar {
+  display: flex;
+  width: 100%;
+  padding-bottom: 20%;
+}
+
+#searchBtn {
+  position: relative;
+  left: 8%;
+  background-color: white;
+  border-top: solid;
+  border-right: solid;
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: grey;
+}
+
+#searchField {
+  position: relative;
+  left: 8%;
+  width: 72%;
+}
+
+.favourites {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-top: 20%;
+}
+
+.favouritesBtn {
+  background-color: white;
+  color: black;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  width: 210px;
+  margin-left: 20px;
+  height: 40px;
+}
+
 .Delete {
   position: relative;
   display: inline-block;
   width: 100%;
-  margin-top: 50%;
+  margin-top: 20%;
 }
 
 .deleteBtn {
