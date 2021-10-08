@@ -47,6 +47,7 @@ type MediaFile
   description: String
   tags: [String]!
   collection: [String]
+  favourite: Boolean
   # Reference the S3Object type from a field.
   file: S3Object
 }

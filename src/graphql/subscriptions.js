@@ -39,6 +39,7 @@ export const onCreateMediaFile = /* GraphQL */ `
       description
       tags
       collection
+      favourite
       file {
         bucket
         region
@@ -57,6 +58,7 @@ export const onUpdateMediaFile = /* GraphQL */ `
       description
       tags
       collection
+      favourite
       file {
         bucket
         region
@@ -75,6 +77,7 @@ export const onDeleteMediaFile = /* GraphQL */ `
       description
       tags
       collection
+      favourite
       file {
         bucket
         region

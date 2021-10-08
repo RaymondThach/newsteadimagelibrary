@@ -61,6 +61,7 @@ export const getMediaFile = /* GraphQL */ `
       description
       tags
       collection
+      favourite
       file {
         bucket
         region
@@ -84,6 +85,7 @@ export const listMediaFiles = /* GraphQL */ `
         description
         tags
         collection
+        favourite
         file {
           bucket
           region
@@ -117,6 +119,7 @@ export const fileName = /* GraphQL */ `
         description
         tags
         collection
+        favourite
         file {
           bucket
           region
