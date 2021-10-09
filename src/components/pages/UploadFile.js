@@ -34,7 +34,7 @@ class UploadMediaFile extends React.Component {
       selectedCollection: [],
       selectedCategories: [],
       error: 0,
-      count: 0
+      count: 0,
     };
   }
 
@@ -74,16 +74,13 @@ class UploadMediaFile extends React.Component {
   dropdownHandler = (e, index) => {
     this.state.categories[index] = e;
 
-
     //to keep dropdown box with latest selected labels and values
     this.setState({ categories: this.state.categories });
 
-
     // For passing just value (no lable + value) to DB
-    const selectedStrings = (e.map((obj => obj.value)));
-    this.state.selectedCategories[index] = selectedStrings
-    this.setState({ selectedCategories: this.state.selectedCategories })
-
+    const selectedStrings = e.map((obj) => obj.value);
+    this.state.selectedCategories[index] = selectedStrings;
+    this.setState({ selectedCategories: this.state.selectedCategories });
   };
 
   /**
@@ -100,12 +97,9 @@ class UploadMediaFile extends React.Component {
     this.setState({ collection: this.state.collection });
 
     // For passing just value (no lable + value) to DB
-    const selectedStrings = (e.map((obj => obj.value)));
-    this.state.selectedCollection[index] = selectedStrings
-    this.setState({ selectedCollection: this.state.selectedCollection })
-
-
-
+    const selectedStrings = e.map((obj) => obj.value);
+    this.state.selectedCollection[index] = selectedStrings;
+    this.setState({ selectedCollection: this.state.selectedCollection });
   };
 
   /**
@@ -176,7 +170,7 @@ class UploadMediaFile extends React.Component {
 
   addFileToDB = async (mediaFile, i) => {
     console.log("Adding file to DB");
-    console.log(this.state.file.length)
+    console.log(this.state.file.length);
 
     //Get File extension of uploaded file
     var fileExt = this.state.file[i].name.split(".").pop();
@@ -207,19 +201,14 @@ class UploadMediaFile extends React.Component {
       );
       console.log("file added to database");
 
-      console.log("test count " + this.state.count)
-      
+      console.log("test count " + this.state.count);
+
       //this.handleRemove(i)
 
-      this.setState({ count: this.state.count + 1 })
-      console.log("test count " + this.state.count)
-
-
-
-
+      this.setState({ count: this.state.count + 1 });
+      console.log("test count " + this.state.count);
     } catch (error) {
       alert("DB Error " + error);
-
     }
   };
 
@@ -262,29 +251,17 @@ class UploadMediaFile extends React.Component {
             this.state.fileName.length === 0 ||
             this.state.fileName[i] === undefined
           ) {
-            
-            this.state.progressBar[i] = 0
-            this.setState({progressBar: this.state.progressBar})
-            
+            this.state.progressBar[i] = 0;
+            this.setState({ progressBar: this.state.progressBar });
+
             alert("Please enter a file name for file #" + [i + 1]);
             if (i === this.state.file.length) {
-
-
-              alert(
-                this.state.count + " files uploaded successfully"
-              );
+              alert(this.state.count + " files uploaded successfully");
               this.reset();
               window.location.reload();
-
             }
-
-            
-
-
-          }
-          else {
+          } else {
             try {
-
               this.setState({ uploads: [...this.state.uploads, mediaFile] });
               //Uploads image to S3 bucket
 
@@ -305,60 +282,38 @@ class UploadMediaFile extends React.Component {
               ).then((result) => {
                 console.log(
                   "Uploading " +
-                  this.state.fileName[i] +
-                  "." +
-                  fileExt +
-                  " to s3"
+                    this.state.fileName[i] +
+                    "." +
+                    fileExt +
+                    " to s3"
                 );
 
-                this.addFileToDB(this.state.uploads[i], i).then((e)=>{
-
+                this.addFileToDB(this.state.uploads[i], i).then((e) => {
                   if (i === this.state.file.length) {
-
-
-                    alert(
-                      this.state.count + " files uploaded successfully"
-                    );
+                    alert(this.state.count + " files uploaded successfully");
                     this.reset();
                     window.location.reload();
-  
                   }
-  
-
-                }
-                  )
-                
-
-                
-
-
+                });
               });
             } catch (error) {
               alert("Error uploading file: ", error);
-              
             }
           }
-
         } else {
-          
-          this.state.progressBar[i] = 0
-          this.setState({progressBar: this.state.progressBar})
-          console.log("sashatest " + i )
+          this.state.progressBar[i] = 0;
+          this.setState({ progressBar: this.state.progressBar });
+          console.log("sashatest " + i);
           alert(
             this.state.fileName[i] +
-            "." +
-            fileExt +
-            " already exist. Please enter a different name"
-          )
+              "." +
+              fileExt +
+              " already exist. Please enter a different name"
+          );
           if (i === this.state.file.length - 1) {
-
-
-            alert(
-              this.state.count + " files uploaded successfully"
-            );
+            alert(this.state.count + " files uploaded successfully");
             this.reset();
             window.location.reload();
-
           }
         }
       } catch (error) {
@@ -469,7 +424,7 @@ class UploadMediaFile extends React.Component {
                   classNamePrefix="select"
                   onChange={(e) => this.dropdownHandler(e, index)}
                 />
-                { }
+                {}
 
                 <Select
                   isMulti
