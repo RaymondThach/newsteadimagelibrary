@@ -47,6 +47,15 @@ function Sidebar() {
     //State array for holding original items array to repopulate category items and collection items page upon search field reset
     const [ originalItems, setOriginalItems ] = useState([]);
 
+    //Accepted video extensions
+    const videoFormat = ['mp4', 'mov', 'wmv', 'avi', 'avchd', 'flv', 'f4v', 'swf', 'mkv']
+
+    //State boolean for setting which mode to search by for sorting by photos only
+    const [ photosOnly, setPhotosOnly ] = useState(false);
+
+    //State boolean for setting which mode to search by for sorting by videos only 
+    const [ videosOnly, setVideosOnly ] = useState(false);
+
     //Set the Context service to false for logging out, sign out of Amplify
     async function handleLogout() {
         await Auth.signOut();
@@ -62,6 +71,12 @@ function Sidebar() {
     /* Sort by alphabetical */
     //Ordering categories alphabetically based on integer returned (categories.js)
     function sortCatAlphabetically() {
+        if (originalCats.length === 0) {
+            setOriginalCats(items);
+        }
+        if (items.length === 0) {
+            setItems(originalItems);
+        }
         const sortedArr = categories.sort(function(a, b) {
             var catNameA = a.categoryName.toUpperCase();
             var catNameB = b.categoryName.toUpperCase();
@@ -88,6 +103,37 @@ function Sidebar() {
             return (itemNameA < itemNameB) ? -1 : (itemNameA > itemNameB) ? 1 : 0;
         });
         setItems(sortedArr);
+    }
+
+    //Check file extensions not existing in videoFormat array to return only photos of the current search results
+    function sortItemsPhotos() {
+        console.log('sorting by photo');
+        setPhotosOnly(true);
+        setVideosOnly(false);
+        if (originalItems.length === 0){
+            setOriginalItems(items);
+        } else if (items.length > 0) {
+            let results = items.filter(item => {
+                
+                return videoFormat.indexOf(item.name.split('.').pop()) < 0
+            })
+            setItems(results);
+        }  
+    }
+
+    //Check file extensions existing in videoFormat array to return only videos of the current search results
+    function sortItemsVideos() {
+        console.log('sorting by vid');
+        setPhotosOnly(false);
+        setVideosOnly(true);
+        if (originalItems.length === 0){
+            setOriginalItems(items);
+        } else if (items.length > 0) {
+            let results = items.filter(item => {
+                return videoFormat.indexOf(item.name.split('.').pop()) > 0
+            })
+            setItems(results);
+        }  
     }
 
     //Handler for choosing which function to use based on which state array is populated for sorting alphabetically
@@ -130,6 +176,7 @@ function Sidebar() {
             return new Date(a.createdAt) - new Date(b.createdAt);
         });
     }
+    
     //Handler for choosing which array to pass to the sorting function based on which is populated
     function sortByOldest() {
         if (categories.length > 0) {
@@ -193,6 +240,7 @@ function Sidebar() {
     }
 
     //Search based on route accounting for pages categories, category items, collections, and collection items
+    //Order of these statements matter
     async function searchDB(){
         if (window.location.pathname.includes('categories/')) {
             try {
@@ -201,7 +249,7 @@ function Sidebar() {
                 history.push('/categories');
             }
         }
-        else if (window.location.pathname.includes('categories')) {
+        else if (window.location.pathname.includes('/categories')) {
             searchCats();
         }
         else if (window.location.pathname.includes('collections/')) {
@@ -211,7 +259,7 @@ function Sidebar() {
                 history.push('/collections');
             }
         }
-        else if (window.location.pathname.includes('collections')) {
+        else if (window.location.pathname.includes('/collections')) {
             searchCols();
         }
     }
@@ -249,18 +297,50 @@ function Sidebar() {
         }  
     }, [originalCols]);
 
-    //Handle initial re-rendering of items for searching
+    //Handle initial re-rendering of items for searching and sorting by photos and videos of that search
     useEffect(() => {
-        if (searchTerm === '') {
-            setItems(originalItems);
+        if (photosOnly === true) {
+            if (originalItems.length > 0) {
+                let results = items.filter(item => {
+                    return videoFormat.indexOf(item.name.split('.').pop()) < 0
+                })
+                setItems(results);
+            }
+        } else if (videosOnly === true) {
+            if (originalItems.length > 0) {
+                let results = items.filter(item => {
+                    return videoFormat.indexOf(item.name.split('.').pop()) > 0
+                })
+                setItems(results);
+            }
+        } else {
+            if (searchTerm === '') {
+                setItems(originalItems);
+            }
+            else if (originalItems.length > 0) {
+                let results = originalItems.filter(item => {
+                    return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+                })
+                setItems(results);
+            }  
         }
-        else if (originalItems.length > 0) {
-            let results = originalItems.filter(item => {
-                return item.name.toLowerCase().includes(searchTerm.toLowerCase());
-            })
-            setItems(results);
-        }  
     }, [originalItems]);
+
+    //Hide the photo and video sort options on pages except category item and collection item
+    useEffect(() => {
+        const hideConditions = ['Photos/', 'Videos/'];
+        const enableConditions = ['categories/', 'collections/'];
+        if (hideConditions.some(path => window.location.pathname.includes(path))) {
+            document.getElementById("photoSortBtn").hidden = true;
+            document.getElementById("videoSortBtn").hidden = true;
+        } else if (enableConditions.some( path => window.location.pathname.includes(path))) {
+            document.getElementById("photoSortBtn").hidden = false;
+            document.getElementById("videoSortBtn").hidden = false;
+        } else {
+            document.getElementById("photoSortBtn").hidden = true;
+            document.getElementById("videoSortBtn").hidden = true;
+        }
+    }, [window.location.pathname]);
 
     //If the route is included in the noSidebarRoutes array return null instead of rendering the Sidebar
     if (noSidebarRoutes.some((item) => pathname === item)) {
@@ -286,6 +366,8 @@ function Sidebar() {
                                 <a href="#" onClick={() => {sortByAlphabetical();}}>Alphabetically</a>
                                 <a href="#" onClick={() => {sortByNewest();}}>Newest</a>
                                 <a href="#" onClick={() => {sortByOldest();}}>Oldest</a>
+                                <a href="#" id='photoSortBtn' onClick={() => {sortItemsPhotos();}} hidden={true}>Photos</a>
+                                <a href="#" id='videoSortBtn' onClick={() => {sortItemsVideos();}} hidden={true}>Videos</a>
                                 </div>
                     </div>
                     {SidebarData.map((item, index) => {

@@ -2,35 +2,40 @@
   margin-bottom: 0%;
 }
 
+/* Header Menu */
 .header-menu {
   display: flex;
   margin-top: 0%;
   margin-bottom: 0.25%;
+  justify-content: center;
 }
 
 .photosBtn {
   position: relative;
-  left: 10%;
+  right: 20%;
 }
 
 .videosBtn {
   position: relative;
-  left: 35%;
-}
-
-.favouritesBtn {
-  position: relative;
-  left: 55%;
+  right: 5%;
 }
 
 .uncategorisedBtn {
   position: relative;
-  left: 75%;
+  left: 10%;
 }
+
+.favouritesBtn {
+  position: relative;
+  left: 25%;
+}
+
 .create-button {
   position: relative;
-  left: 82.5%;
+  left: 40%;
 }
+
+/* Catalogue Area */
 .categoryGrid {
   margin-left: 2%;
 }
