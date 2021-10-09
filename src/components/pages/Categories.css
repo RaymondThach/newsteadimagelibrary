@@ -4,19 +4,32 @@
 
 .header-menu {
   display: flex;
-  justify-content: center;
   margin-top: 0%;
   margin-bottom: 0.25%;
 }
 
-.uncategorisedBtn {
+.photosBtn {
   position: relative;
-  left: 25%;
+  left: 10%;
 }
 
+.videosBtn {
+  position: relative;
+  left: 35%;
+}
+
+.favouritesBtn {
+  position: relative;
+  left: 55%;
+}
+
+.uncategorisedBtn {
+  position: relative;
+  left: 75%;
+}
 .create-button {
   position: relative;
-  left: 45%;
+  left: 82.5%;
 }
 .categoryGrid {
   margin-left: 2%;
