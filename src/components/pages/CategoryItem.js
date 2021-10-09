@@ -34,6 +34,13 @@ export default function CategoryItem() {
     const [ delItem, setDelItem ] = useState();
     //Track history, used to redirect on error catch
     const history = useHistory();
+    
+    //Current token to fetch items
+    const [ nextToken, setNextToken ] = useState(undefined);
+    //Next token to fetch the next page of items
+    const [ nextNextToken, setNextNextToken ] = useState();
+    //Array state to store all previous tokens to go backwards
+    const [ previousTokens, setPreviousTokens ] = useState([]);
 
     //Show gallery on click of an item
     const openGallery = () => {
@@ -119,8 +126,9 @@ export default function CategoryItem() {
             try {
                 const categoryObj = await API.graphql(graphqlOperation(getTag, {id: id}));
                 setCatName(categoryObj.data.getTag.categoryName);
-                const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName } } }));
+                const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName }, limit: 1 } }));
                 setItems(results.data.listMediaFiles.items);
+                console.log(results.data.listMediaFiles);
             } catch (e) {
                 history.push('/categories');
             }
@@ -145,6 +153,14 @@ export default function CategoryItem() {
         fetchMediaFiles();
         setDeleteMode(false);
     }, [categoryName]);
+
+    // useEffect(() => {
+    //     const fetch = async () => {
+    //         const result = await API.graphql(graphqlOperation(listMediaFiles, nextToken));
+    //         setNextNextToken(result.data.listMediaFiles.nextToken);
+            
+    //     }
+    // })
 
     return (
         <div class='page'>

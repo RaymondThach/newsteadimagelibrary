@@ -156,6 +156,7 @@ function Sidebar() {
             return new Date(b.createdAt) - new Date(a.createdAt);
         });
     }
+
     //Handler for choosing which array to pass to the sorting function based on which is populated
     function sortByNewest() {
         if (categories.length > 0) {
@@ -176,7 +177,7 @@ function Sidebar() {
             return new Date(a.createdAt) - new Date(b.createdAt);
         });
     }
-    
+
     //Handler for choosing which array to pass to the sorting function based on which is populated
     function sortByOldest() {
         if (categories.length > 0) {
@@ -328,17 +329,19 @@ function Sidebar() {
 
     //Hide the photo and video sort options on pages except category item and collection item
     useEffect(() => {
-        const hideConditions = ['Photos/', 'Videos/'];
-        const enableConditions = ['categories/', 'collections/'];
-        if (hideConditions.some(path => window.location.pathname.includes(path))) {
-            document.getElementById("photoSortBtn").hidden = true;
-            document.getElementById("videoSortBtn").hidden = true;
-        } else if (enableConditions.some( path => window.location.pathname.includes(path))) {
-            document.getElementById("photoSortBtn").hidden = false;
-            document.getElementById("videoSortBtn").hidden = false;
-        } else {
-            document.getElementById("photoSortBtn").hidden = true;
-            document.getElementById("videoSortBtn").hidden = true;
+        if (window.location.pathname !== '/login') {
+            const hideConditions = ['Photos/', 'Videos/'];
+            const enableConditions = ['categories/', 'collections/'];
+            if (hideConditions.some(path => window.location.pathname.includes(path))) {
+                document.getElementById("photoSortBtn").hidden = true;
+                document.getElementById("videoSortBtn").hidden = true;
+            } else if (enableConditions.some( path => window.location.pathname.includes(path))) {
+                document.getElementById("photoSortBtn").hidden = false;
+                document.getElementById("videoSortBtn").hidden = false;
+            } else {
+                document.getElementById("photoSortBtn").hidden = true;
+                document.getElementById("videoSortBtn").hidden = true;
+            }
         }
     }, [window.location.pathname]);
 
