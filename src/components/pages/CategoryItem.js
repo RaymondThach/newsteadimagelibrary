@@ -34,46 +34,101 @@ export default function CategoryItem() {
     const [ delItem, setDelItem ] = useState();
     //Track history, used to redirect on error catch
     const history = useHistory();
+    
+    //Current token to fetch items
+    const [ nextToken, setNextToken ] = useState(undefined);
+    //Next token to fetch the next page of items
+    const [ nextNextToken, setNextNextToken ] = useState();
+    //Array state to store all previous tokens to go backwards
+    const [ previousTokens, setPreviousTokens ] = useState([]);
 
     //Show gallery on click of an item
     const openGallery = () => {
         setShowGallery(true);
     }
 
-    //Fetch all media files of the selected category accounting for uncategorised items in uncategorised page and favourites in favourites page
+    //Fetch all media files without a tag/category
+    async function getAllUncat() {
+        const uncategorised = [];
+        const results = await API.graphql(graphqlOperation(listMediaFiles));
+        if (results.data.listMediaFiles.items.length > 0){
+            results.data.listMediaFiles.items.map((item) => {
+                if (item.tags.length === 0){
+                    uncategorised.push(item);
+                }
+            })
+            setItems(uncategorised);
+        }
+    }
+    
+    //Fetch all media files favourited 
+    async function getAllFavourites(){
+        const favourites = [];
+        const results = await API.graphql(graphqlOperation(listMediaFiles));
+        if (results.data.listMediaFiles.items.length > 0) {
+            results.data.listMediaFiles.items.map((item) => {
+                if (item.favourite === true) {
+                    favourites.push(item);
+                }
+            })
+            setItems(favourites);
+        }
+    }
+
+    //Fetch all photos only outside of array of video extensions
+    async function getAllPhotos(){
+        const photos = [];
+        const results = await API.graphql(graphqlOperation(listMediaFiles));
+        if (results.data.listMediaFiles.items.length > 0) {
+            results.data.listMediaFiles.items.map((item) => {
+                if (videoFormat.indexOf(item.name.split('.').pop()) < 0) {
+                    photos.push(item);
+                }
+            })
+            setItems(photos);
+        }
+    }
+
+    //Fetch all videos only based on array of video extensions
+    async function getAllVideos(){
+        const videos = [];
+        const results = await API.graphql(graphqlOperation(listMediaFiles));
+        if (results.data.listMediaFiles.items.length > 0) {
+            results.data.listMediaFiles.items.map((item) => {
+                if (videoFormat.indexOf(item.name.split('.').pop()) > 0) {
+                    videos.push(item);
+                }
+            })
+            setItems(videos);
+        }
+    }
+
+
+    //Fetch all media files of the selected category accounting for uncategorised items, favourites, photos only, and videos only pages.
     async function fetchMediaFiles() {
         if (categoryName === 'Uncategorised') {
             setCatName(categoryName);
-            const uncategorised = [];
-            const results = await API.graphql(graphqlOperation(listMediaFiles));
-            if (results.data.listMediaFiles.items.length > 0){
-                results.data.listMediaFiles.items.map((item) => {
-                    if (item.tags.length === 0){
-                        uncategorised.push(item);
-                    }
-                })
-                setItems(uncategorised);
-            }
+            getAllUncat();
         }
         else if (categoryName === 'Favourites') {
             setCatName(categoryName);
-            const favourites = [];
-            const results = await API.graphql(graphqlOperation(listMediaFiles));
-            if (results.data.listMediaFiles.items.length > 0) {
-                results.data.listMediaFiles.items.map((item) => {
-                    if (item.favourite === true) {
-                        favourites.push(item);
-                    }
-                })
-                setItems(favourites);
-            }
+            getAllFavourites();
+        }
+        else if (categoryName === 'Photos') {
+            setCatName(categoryName);
+            getAllPhotos();
+        }
+        else if (categoryName === 'Videos') {
+            setCatName(categoryName);
+            getAllVideos();
         }
         else {
             try {
                 const categoryObj = await API.graphql(graphqlOperation(getTag, {id: id}));
                 setCatName(categoryObj.data.getTag.categoryName);
-                const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName } } }));
+                const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName }, limit: 1 } }));
                 setItems(results.data.listMediaFiles.items);
+                console.log(results.data.listMediaFiles);
             } catch (e) {
                 history.push('/categories');
             }
@@ -98,6 +153,14 @@ export default function CategoryItem() {
         fetchMediaFiles();
         setDeleteMode(false);
     }, [categoryName]);
+
+    // useEffect(() => {
+    //     const fetch = async () => {
+    //         const result = await API.graphql(graphqlOperation(listMediaFiles, nextToken));
+    //         setNextNextToken(result.data.listMediaFiles.nextToken);
+            
+    //     }
+    // })
 
     return (
         <div class='page'>
