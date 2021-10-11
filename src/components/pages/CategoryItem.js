@@ -20,8 +20,6 @@ export default function CategoryItem() {
     const [ catName, setCatName ] = useState('');
     //Context state array for items of a selected category lifted to App.js
     const { items, setItems } = useAppContext();
-    //State variable of selected item
-    const [ item, setItem ] = useState();
     //State variable for showing the gallery
     const [ showGallery, setShowGallery ] = useState(false);
     //Use declared context variables to track delete mode
@@ -34,13 +32,21 @@ export default function CategoryItem() {
     const [ delItem, setDelItem ] = useState();
     //Track history, used to redirect on error catch
     const history = useHistory();
-    
-    //Current token to fetch items
-    const [ nextToken, setNextToken ] = useState(undefined);
-    //Next token to fetch the next page of items
-    const [ nextNextToken, setNextNextToken ] = useState();
-    //Array state to store all previous tokens to go backwards
-    const [ previousTokens, setPreviousTokens ] = useState([]);
+
+    //State variable of selected item
+    const [ item, setItem ] = useState();
+    //Current page shown in the catalogue
+    const [ currentPage, setCurrentPage ] = useState(1);
+    //
+    const [ itemsPerPage ] = useState(15);
+
+    //Index of the last item from the results
+    const lastPageLastIndex = currentPage * itemsPerPage;
+    const firstPageLastIndex = lastPageLastIndex - itemsPerPage;
+    const currentItems = items.slice(firstPageLastIndex, lastPageLastIndex);
+    const [pageNumbers, setPageNumbers] = useState([]);
+
+    const numbers = [];
 
     //Show gallery on click of an item
     const openGallery = () => {
@@ -126,14 +132,31 @@ export default function CategoryItem() {
             try {
                 const categoryObj = await API.graphql(graphqlOperation(getTag, {id: id}));
                 setCatName(categoryObj.data.getTag.categoryName);
-                const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName }, limit: 1 } }));
+                const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: categoryObj.data.getTag.categoryName } } }));
                 setItems(results.data.listMediaFiles.items);
-                console.log(results.data.listMediaFiles);
             } catch (e) {
                 history.push('/categories');
             }
         }
     };
+
+    function pagination() {
+        for (let i = 1; i <= Math.ceil((items.length)/itemsPerPage); i++) {
+            numbers.push(i);
+        }
+        setPageNumbers(numbers);
+        console.log(pageNumbers);
+    }
+    
+    function changePage(pageNumber) {
+        setCurrentPage(pageNumber);
+    }
+
+    // async function pageBarSetup() {
+    //     const results = await API.graphql(graphqlOperation(listMediaFiles, { filter: { tags: { contains: catName } }}));
+    //     const numOfPages = Math.ceil((results.data.listMediaFiles.items.length)/15);
+    //     setPageNumbers(Array.from(Array(numOfPages).keys()));
+    // }
 
     //Handler for showing delete cofirmation and setting the selected item to pass to confirmation box.
     function showDelConfirmation(selectedItem) {
@@ -148,19 +171,16 @@ export default function CategoryItem() {
         setDeleteMode(false);
     }, []);
 
-    //Refresh the content on route categoryName param change, used for routing to Favourites page from another category path.
     useEffect(() => {
-        fetchMediaFiles();
-        setDeleteMode(false);
-    }, [categoryName]);
+        if (pageNumbers.length === 0) {
+            pagination();
+        }
+    }, [items]);
 
-    // useEffect(() => {
-    //     const fetch = async () => {
-    //         const result = await API.graphql(graphqlOperation(listMediaFiles, nextToken));
-    //         setNextNextToken(result.data.listMediaFiles.nextToken);
-            
-    //     }
-    // })
+    useEffect(() => {
+        //setPageNumbers(numbers);
+        //console.log(pageNumbers);
+    }, [numbers]);
 
     return (
         <div class='page'>
@@ -173,7 +193,7 @@ export default function CategoryItem() {
                 <div class='catItemGrid'>
                     <div class='categoryItems'>
                         {
-                            items.map((item, i) => (
+                            currentItems.map((item, i) => (
                                 <a class='items' key={item.name} >
                                     {
                                         (deleteMode ? <MdClose id='deleteCatItem' onClick={() => { showDelConfirmation(item); }} /> : null)
@@ -190,6 +210,17 @@ export default function CategoryItem() {
                                     </div>
                                 </a>
                             ))
+                        }
+                    </div>
+                    <div class='pageBar'>
+                        {
+                            pageNumbers.map((number, i) => {
+                                return (
+                                    <div class='pageBarBtns' key={i}>
+                                        <button class='pageNumber' onClick={() => changePage(number)}>{number}</button>
+                                    </div>
+                                )
+                            })
                         }
                     </div>
                     {

@@ -31,3 +31,16 @@
     top: -5%;
     font-size: 25px;
 }
+
+.pageBar {
+    position: relative;
+    display: flex;
+    outline-style: solid;
+    justify-content: center;
+}
+
+.pageNumber{
+    position: relative;
+    display: inline-block;
+    
+}
