@@ -11,17 +11,14 @@
   
 }
 
-.modal-overlay{
-  width: 100%;
-  height: 100%;
-}
-
 .header{
   background: white;
   position: relative;
   overflow: hidden;
   margin-top: 0;
   margin-left: 250px;
+  
+
 }
 
 .header-right{
@@ -49,6 +46,69 @@ h1{
   text-align: center;
   font-size: 32px;
 }
+
+.title {
+  margin-bottom: 0%;
+}
+
+.header-menu {
+  display: flex;
+  justify-content: center;
+  margin-top: 0%;
+  margin-bottom: 0.25%;
+}
+
+
+.create-button {
+  position: relative;
+  left: 45%;
+}
+.collectionGrid {
+  margin-left: 2%;
+}
+
+.collections {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 80px;
+}
+
+.items{
+  position: relative;
+}
+
+.item {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.collection-tn {
+  height: 200px;
+  width: 300px;
+}
+
+.defaultImgIcon {
+  height: 200px;
+  width: 300px;
+}
+
+#deleteCollection {
+  position: absolute;
+  stroke-width: 2px;
+  stroke:red;
+  z-index: 0;
+  right: -29%;
+  top: -5%;
+  font-size: 25px;
+}
+
+/* Popups */
+.createCollection {
+    position: absolute;
+    left: 0%;
+    z-index: 1;
+}
+
 
 /* Image Gallery */
 .gallery a {

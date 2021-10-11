@@ -12,6 +12,7 @@ import Collections from './components/pages/Collections';
 import { Context } from './components/services/context';
 import CollectionItem from './components/pages/CollectionItem.js';
 import CategoryItem from './components/pages/CategoryItem.js';
+import UserManagement from './components/pages/UserManagement.js';
 
 Amplify.configure(awsExports);
 
@@ -68,6 +69,7 @@ function App() {
                 <Route path='/collections' component={Collections}/>
                 <Route path='/login' component={Login}/>
                 <Route path='/upload-item' component={UploadMediaFile}/>
+                <Route path='/admin-user-accounts' component={UserManagement}/>
                 <Route path='/' render= {() => {
                     return (
                       isAuthenticated ? 

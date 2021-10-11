@@ -1,3 +1,5 @@
+/* eslint-disable react/no-direct-mutation-state */
+/* eslint-disable no-loop-func */
 import React from "react";
 import "./UploadFile.css";
 import { Storage, API, graphqlOperation } from "aws-amplify";
@@ -31,7 +33,8 @@ class UploadMediaFile extends React.Component {
       mediaFiles: [],
       selectedCollection: [],
       selectedCategories: [],
-      error:0
+      error: 0,
+      count: 0,
     };
   }
 
@@ -71,16 +74,13 @@ class UploadMediaFile extends React.Component {
   dropdownHandler = (e, index) => {
     this.state.categories[index] = e;
 
-
-  //to keep dropdown box with latest selected labels and values
+    //to keep dropdown box with latest selected labels and values
     this.setState({ categories: this.state.categories });
 
-
     // For passing just value (no lable + value) to DB
-    const selectedStrings = (e.map((obj => obj.value)));
-        this.state.selectedCategories[index] = selectedStrings
-        this.setState({ selectedCategories: this.state.selectedCategories })
-    
+    const selectedStrings = e.map((obj) => obj.value);
+    this.state.selectedCategories[index] = selectedStrings;
+    this.setState({ selectedCategories: this.state.selectedCategories });
   };
 
   /**
@@ -97,12 +97,9 @@ class UploadMediaFile extends React.Component {
     this.setState({ collection: this.state.collection });
 
     // For passing just value (no lable + value) to DB
-    const selectedStrings = (e.map((obj => obj.value)));
-        this.state.selectedCollection[index] = selectedStrings
-        this.setState({ selectedCollection: this.state.selectedCollection })
-
-    
-    
+    const selectedStrings = e.map((obj) => obj.value);
+    this.state.selectedCollection[index] = selectedStrings;
+    this.setState({ selectedCollection: this.state.selectedCollection });
   };
 
   /**
@@ -140,6 +137,7 @@ class UploadMediaFile extends React.Component {
     this.state.descriptions.splice(index, 1);
     this.state.fileName.splice(index, 1);
     this.state.file.splice(index, 1);
+    this.state.progressBar.splice(index, 1);
 
     this.setState({ collection: this.state.collection });
     this.setState({ categories: this.state.categories });
@@ -147,6 +145,7 @@ class UploadMediaFile extends React.Component {
     this.setState({ file: this.state.file });
     this.setState({ descriptions: this.state.descriptions });
     this.setState({ fileName: this.state.fileName });
+    this.setState({ progressBar: this.state.progressBar });
   }
 
   /**
@@ -169,13 +168,45 @@ class UploadMediaFile extends React.Component {
    *
    ***/
 
-  addFileToDB = async (mediaFile) => {
+  addFileToDB = async (mediaFile, i) => {
     console.log("Adding file to DB");
+    console.log(this.state.file.length);
+
+    //Get File extension of uploaded file
+    var fileExt = this.state.file[i].name.split(".").pop();
+
+    //Set tag as an empty array for uncategorised mediaFiles
+    if (
+      this.state.categories.length === 0 &&
+      this.state.categories[i] === undefined
+    ) {
+      mediaFile = {
+        name: this.state.fileName[i] + "." + fileExt,
+        description: this.state.descriptions[i],
+        tags: [],
+        collection: this.state.selectedCollection[i],
+
+        file: {
+          bucket: awsExports.aws_user_files_s3_bucket,
+          region: awsExports.aws_user_files_s3_bucket_region,
+          key: "public/" + this.state.fileName[i] + "." + fileExt,
+        },
+      };
+    }
+
+    //Upload mediaFile to db table
     try {
       await API.graphql(
         graphqlOperation(createMediaFile, { input: mediaFile })
       );
       console.log("file added to database");
+
+      console.log("test count " + this.state.count);
+
+      //this.handleRemove(i)
+
+      this.setState({ count: this.state.count + 1 });
+      console.log("test count " + this.state.count);
     } catch (error) {
       alert("DB Error " + error);
     }
@@ -191,10 +222,6 @@ class UploadMediaFile extends React.Component {
   handleSubmit = async (e) => {
     for (var i = 0; i < this.state.file.length; i++) {
       var fileExt = this.state.file[i].name.split(".").pop();
-
-      const collectionName =[];
-
-   
 
       const newFileName = {
         name: this.state.fileName[i] + "." + fileExt,
@@ -224,68 +251,70 @@ class UploadMediaFile extends React.Component {
             this.state.fileName.length === 0 ||
             this.state.fileName[i] === undefined
           ) {
+            this.state.progressBar[i] = 0;
+            this.setState({ progressBar: this.state.progressBar });
+
             alert("Please enter a file name for file #" + [i + 1]);
-            if (
-              this.state.categories.length === 0 &&
-              this.state.categories[i] === undefined
-            ) {
-              alert("Please assign at least one category for file #" + [i + 1]);
+            if (i === this.state.file.length) {
+              alert(this.state.count + " files uploaded successfully");
+              this.reset();
+              window.location.reload();
             }
           } else {
-            if (
-              this.state.categories.length === 0 &&
-              this.state.categories[i] === undefined
-            ) {
-              alert("Please assign at least one category for file #" + [i + 1]);
-            } else {
-              try {
-                this.setState({ uploads: [...this.state.uploads, mediaFile] });
-                //Uploads image to S3 bucket
+            try {
+              this.setState({ uploads: [...this.state.uploads, mediaFile] });
+              //Uploads image to S3 bucket
 
-                await Storage.put(
-                  this.state.fileName[i] + "." + fileExt,
-                  this.state.file[i],
-                  {
-                    contentType: "media",
-                    progressCallback: (progress) => {
-                      this.state.progressBar[i] = Math.round(
-                        (100 * progress.loaded) / progress.total
-                      );
-                      this.setState({
-                        progressBar: this.state.progressBar,
-                      });
-                    },
-                  }
-                ).then((result) => {
-                  console.log(
-                    "Uploading " +
-                      this.state.fileName[i] +
-                      "." +
-                      fileExt +
-                      " to s3"
-                  );
-
-                  this.addFileToDB(this.state.uploads[i]);
-                  if (i === this.state.file.length - 1) {
-                    alert(
-                      this.state.file.length + " files uploaded successfully"
+              await Storage.put(
+                this.state.fileName[i] + "." + fileExt,
+                this.state.file[i],
+                {
+                  contentType: "media",
+                  progressCallback: (progress) => {
+                    this.state.progressBar[i] = Math.round(
+                      (100 * progress.loaded) / progress.total
                     );
+                    this.setState({
+                      progressBar: this.state.progressBar,
+                    });
+                  },
+                }
+              ).then((result) => {
+                console.log(
+                  "Uploading " +
+                    this.state.fileName[i] +
+                    "." +
+                    fileExt +
+                    " to s3"
+                );
+
+                this.addFileToDB(this.state.uploads[i], i).then((e) => {
+                  if (i === this.state.file.length) {
+                    alert(this.state.count + " files uploaded successfully");
                     this.reset();
                     window.location.reload();
                   }
                 });
-              } catch (error) {
-                alert("Error uploading file: ", error);
-              }
+              });
+            } catch (error) {
+              alert("Error uploading file: ", error);
             }
           }
         } else {
+          this.state.progressBar[i] = 0;
+          this.setState({ progressBar: this.state.progressBar });
+          console.log("sashatest " + i);
           alert(
             this.state.fileName[i] +
               "." +
               fileExt +
               " already exist. Please enter a different name"
           );
+          if (i === this.state.file.length - 1) {
+            alert(this.state.count + " files uploaded successfully");
+            this.reset();
+            window.location.reload();
+          }
         }
       } catch (error) {
         console.log(error);

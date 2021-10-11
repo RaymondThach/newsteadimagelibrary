@@ -1,0 +1,12 @@
+{
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "userpool",
+      "environmentVariableName": "USERPOOL"
+    },
+    {
+      "cloudFormationParameterName": "region",
+      "environmentVariableName": "region"
+    }
+  ]
+}
