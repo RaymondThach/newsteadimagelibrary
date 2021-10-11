@@ -239,6 +239,22 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
     setVideoUrl(result) //Sign URL for video player
   }
 
+  //Change the favourite property to true or false for the selected item in the database
+  async function setFavourite() {
+    if (favourited === undefined || favourited === null) {
+      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: true } }));
+      setFavourited(true);
+    }
+    else if (favourited === true) {
+      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: false } }));
+      setFavourited(prev => !prev);
+    }
+    else if (favourited === false) {
+      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: true } }));
+      setFavourited(prev => !prev);
+    }
+  }
+
   //On load get the details of the selected item.
   useEffect(() => {
     setFileExt((item.name.split('.').pop()));
@@ -251,21 +267,7 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
     populateColSelector();
   }, []);
 
-  //Change the favourite property to true or false for the selected item in the database
-  async function setFavourite() {
-    if (favourited === undefined) {
-      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: true } }));
-      setFavourited(prev => !prev);
-    }
-    else if (favourited === true) {
-      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: false } }));
-      setFavourited(prev => !prev);
-    }
-    else if (favourited === false) {
-      await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: true } }));
-      setFavourited(prev => !prev);
-    }
-  }
+  
 
   return (
     <>
@@ -317,7 +319,7 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
               </div>
               <div class ='favouriteButton' onClick={() => {setFavourite();}}>
                 {
-                  (favourited !== null ? 
+                  (favourited !== null || favourited !== undefined ? 
                     (favourited === true ? <AiFillStar size={20} id='favouritedStar'/> : <AiOutlineStar size={20}/>)
                   : <AiOutlineStar size={20}/>)
                 } 

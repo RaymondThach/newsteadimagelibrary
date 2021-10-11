@@ -94,7 +94,7 @@ export default function Categories() {
           <a href={'/categories/Videos/allVideos' } class='videosBtn'>Videos</a>    
           <a href={'/categories/Uncategorised/uncategorised' } class='uncategorisedBtn'>Uncategorised</a>
           <a href={'/categories/Favourites/favourites' } class='favouritesBtn'>Favourites</a>          
-          <div class='create-button' onClick={() => {setShowing(!showing)}}> + </div>
+          <div class='createCatBtn' onClick={() => {setShowing(!showing)}}> + </div>
         </div>
         <div class='categoryGrid'>
           <div class='categories'>
