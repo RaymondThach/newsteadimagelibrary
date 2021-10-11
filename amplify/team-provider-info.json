@@ -20,7 +20,7 @@
         "AdminQueries10f5143c": {
           "region": "ap-southeast-2",
           "deploymentBucketName": "amplify-newsteadimagelibrary-newbackend-174722-deployment",
-          "s3Key": "amplify-builds/AdminQueries10f5143c-643338564835436b7670-build.zip",
+          "s3Key": "amplify-builds/AdminQueries10f5143c-667a6e71366442336363-build.zip",
           "userpool": "ap-southeast-2_Md48CoLxs"
         }
       },
