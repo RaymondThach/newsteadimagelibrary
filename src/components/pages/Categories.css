@@ -38,6 +38,7 @@
 /* Catalogue Area */
 .categoryGrid {
   margin-left: 2%;
+  margin-top: 2%;
 }
 
 .categories {
@@ -80,4 +81,31 @@
     position: absolute;
     left: 0%;
     z-index: 1;
+}
+
+/* Page Bar */
+.pageBarContainerCat {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  bottom: 0.5%;
+  width: 83%;
+  left: 14.85%;
+}
+
+.pageBarCat {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.pageNumberCat {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: rgb(96, 143, 221);
+  color: white;
+  font-size: 11px;
+  border: none;
+  margin: 10px;
 }

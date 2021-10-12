@@ -1,3 +1,7 @@
+.page {
+    overflow: hidden;
+}
+
 .catItemGrid {
     margin-left: 2%;
 }
@@ -13,6 +17,7 @@
 }
 
 .item {
+    margin-top: 5%;
     display: inline-block;
     overflow: hidden;
 }
@@ -20,6 +25,11 @@
 .catItem_tn {
     height: 200px;
     width: 300px;
+}
+
+.catItem_name {
+    width: 95%;
+    word-wrap: break-word;
 }
 
 #deleteCatItem {
@@ -32,15 +42,27 @@
     font-size: 25px;
 }
 
+.pageBarContainer {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    bottom: 0.5%;
+    width: 83%;
+}
+
 .pageBar {
     position: relative;
     display: flex;
-    outline-style: solid;
     justify-content: center;
 }
 
-.pageNumber{
+.pageNumber {
     position: relative;
     display: inline-block;
-    
+    border-radius: 50%;
+    background-color: rgb(96, 143, 221);
+    color: white;
+    font-size: 11px;
+    border: none;
+    margin: 10px;
 }

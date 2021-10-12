@@ -71,12 +71,6 @@ function Sidebar() {
     /* Sort by alphabetical */
     //Ordering categories alphabetically based on integer returned (categories.js)
     function sortCatAlphabetically() {
-        if (originalCats.length === 0) {
-            setOriginalCats(items);
-        }
-        if (items.length === 0) {
-            setItems(originalItems);
-        }
         const sortedArr = categories.sort(function(a, b) {
             var catNameA = a.categoryName.toUpperCase();
             var catNameB = b.categoryName.toUpperCase();

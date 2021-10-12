@@ -29,6 +29,19 @@ export default function Categories() {
   //State variable for choosing which category to delete
   const [ delCategory, setDelCategory ] = useState();
 
+  //Current page shown in the catalogue
+  const [ currentPage, setCurrentPage ] = useState(1);
+  //State variable for number of items shown per page
+  const [ itemsPerPage ] = useState(15);
+  //Last item index of current page
+  const lastIndex = currentPage * itemsPerPage;
+  //First item index of current page
+  const firstIndex = lastIndex - itemsPerPage;
+  //Items of the page being shown
+  const currentCategories = categories.slice(firstIndex, lastIndex);
+  //State array of the page numbers
+  const [ pageNumbers, setPageNumbers ] = useState([]);
+
   //Fetch all categories from DynamoDB tags table, then select a random photo of each category
   //Get photo names from Promise results
   async function fetchCategories(){
@@ -77,11 +90,34 @@ export default function Categories() {
     setDelConfirmation(true);
   }
 
+  //Add the number of pages required to show all items
+  function pagination() {
+    const numbers = [];
+    for (let i = 1; i <= Math.ceil((categories.length)/itemsPerPage); i++) {
+        numbers.push(i);
+    }
+    setPageNumbers(numbers);
+  }
+
+  //Change the current page to the one selected
+  function changePage(pageNumber) {
+    setCurrentPage(pageNumber);
+  }
+
   //componentDidMount() for functional component, populate page and return deleteMode to default
   useEffect(() => {
     fetchCategories();
     setDeleteMode(false);
   }, []);
+
+  //Call back to pagination function re-render the page button initially.
+  useEffect(() => {
+    if (pageNumbers.length === 0) {
+      pagination();
+      
+    }
+    //if ((pageNumbers.length/2))
+  }, [categories, pageNumbers]);
 
   return (
     <div class='page'>
@@ -99,7 +135,7 @@ export default function Categories() {
         <div class='categoryGrid'>
           <div class='categories'>
           {
-            categories.map((listname, i) => (
+            currentCategories.map((listname, i) => (
             <div class='items' key={listname.categoryName}>
               {
                 (deleteMode ? <MdClose id='deleteCat' onClick={() => { showDelConfirmation(listname); }} /> : null)
@@ -117,13 +153,26 @@ export default function Categories() {
           }
           </div>
           {
-            (delConfirmation ? <DeleteConfirmationBox delCategory={delCategory} setDelConfirmation={setDelConfirmation} fetchCategories={fetchCategories} /> : null)
+            (delConfirmation ? <DeleteConfirmationBox delCategory={delCategory} setDelConfirmation={setDelConfirmation} fetchCategories={fetchCategories} pagination={pagination}/> : null)
           }
           {showing
-            ? <CreateCategory class='createCat' setShowing={setShowing} fetchCategories={fetchCategories}/>
+            ? <CreateCategory class='createCat' setShowing={setShowing} fetchCategories={fetchCategories} pagination={pagination}/>
             : null
           }
         </div>
+      </div>
+      <div class= 'pageBarContainerCat'>
+          <div class='pageBarCat'>
+              {
+                  pageNumbers.map((number, i) => {
+                      return (
+                        <div class='pageBarBtnsCat' key={i}>
+                            <button class='pageNumberCat' onClick={() => changePage(number)}>{number}</button>
+                        </div>
+                      )
+                  })
+              }
+          </div>
       </div>
     </div>
   );
