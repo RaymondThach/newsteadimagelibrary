@@ -205,9 +205,6 @@ export default function UserMangement() {
   //Delete user
 
   async function deleteUser() {
-    console.log(userPoolId)
-    console.log(accessKey)
-    console.log(secret)
     const params = {
       UserPoolId: userPoolId,
       Username: user,
