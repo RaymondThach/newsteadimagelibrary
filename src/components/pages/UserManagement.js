@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import "./UserManagement.css";
 import "amazon-cognito-identity-js";
@@ -7,12 +8,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Select from "react-select";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import aws from "aws-sdk";
+
+
+require('dotenv').config()
 const { CognitoIdentityServiceProvider } = require('aws-sdk');
 
-const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({region: 'ap-southeast-2'});
-const userPoolId = process.env.USERPOOL;
 
+const userPoolId = process.env.REACT_APP_USERPOOL_ID;
+const region = process.env.REACT_APP_REGION;
+const accessKey = process.env.REACT_APP_ACCESS_KEY;
+const secret = process.env.REACT_APP_SECRET;
+const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({region: region, accessKeyId: accessKey, secretAccessKey: secret});
 
 export default function UserMangement() {
   // Dropdown box value selection
@@ -200,6 +206,8 @@ export default function UserMangement() {
 
   async function deleteUser() {
     console.log(userPoolId)
+    console.log(accessKey)
+    console.log(secret)
     const params = {
       UserPoolId: userPoolId,
       Username: user,
