@@ -428,10 +428,8 @@ export default function UserMangement() {
   return (
     <div className="userManagement">
       <h1>User Account Management</h1>
-
       <div className="userEditing">
         <p>
-          {" "}
           Please select one of the current users below, then edit their
           permissions.
         </p>
@@ -443,7 +441,6 @@ export default function UserMangement() {
           options={userOptions}
           onChange={(e) => dropboxChangerHandler(e.value)}
         ></Select>
-        &nbsp;&nbsp;&nbsp;
         <button
           onClick={() => {
             openAddUser();
