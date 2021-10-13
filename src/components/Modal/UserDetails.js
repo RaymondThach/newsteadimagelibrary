@@ -78,6 +78,8 @@ export default function AddUser({ user, showUserDetails, setShowUserDetails }) {
     try {
       //Check if confirmation password matches
       updateUser()
+      alert(user+ ' has been updated')
+      setShowUserDetails(false);
     } catch (e) {
       alert(e.message)
     }

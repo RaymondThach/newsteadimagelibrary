@@ -5,6 +5,7 @@ import "amazon-cognito-identity-js";
 import AddUser from "../Modal/AddUser";
 import ResetPassword from "../Modal/ResetPassword";
 import UserDetails from "../Modal/UserDetails";
+import UserDeleteConfirmation from "../Modal/UserDeleteConfirmation";
 import Amplify, { Auth, API } from "aws-amplify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Select from "react-select";
@@ -30,7 +31,7 @@ export default function UserMangement() {
   //State handler for form rendering
   const [renderForm, setRenderForm] = useState(true);
   // User list array for dropdown
-  const [userOptions] = useState([]);
+  const [userOptions, setUserOptions] = useState([]);
   //Selected user current groups
   const [currentGroups, setCurrentGroups] = useState([]);
   //User group status
@@ -60,8 +61,10 @@ export default function UserMangement() {
   
   //State handler for password reset
   const [showResetPassword, setShowResetPassword] = useState(false)
+  //State handler for password reset
+  const [showUserDetails, setShowUserDetails] = useState(false)
     //State handler for password reset
-    const [showUserDetails, setShowUserDetails] = useState(false)
+    const [showUserDelete, setShowUserDelete] = useState(false)
 
   //Store group to add user too
   const [addGroup, setAddGroup] = useState([]);
@@ -83,6 +86,12 @@ export default function UserMangement() {
   //Show user details form
   const userDetails = () => {
     setShowUserDetails(true);
+      
+  };
+
+  //Show user details form
+  const userDelete = () => {
+    setShowUserDelete(true);
       
   };
 
@@ -408,12 +417,16 @@ export default function UserMangement() {
         addToGroup(user, e)
       })
 
+      
+
     }
     if (removeGroup.length > 0) {
 
       removeGroup.map((e) => {
         removeFromGroup(user, e)
       })
+
+   
 
     }
     if (addGroup.length < 1 && removeGroup.length < 1) {
@@ -422,6 +435,7 @@ export default function UserMangement() {
     if (user.length < 1) {
       alert("No user has been selected")
     }
+    alert(user + ' has been updated' )
 
   }
 
@@ -477,7 +491,7 @@ export default function UserMangement() {
         </div>
         <button
           onClick={() => {
-            deleteUser();
+            userDelete();
           }}
         >
           Delete User
@@ -485,13 +499,16 @@ export default function UserMangement() {
       </div>
       <div class="modal-overlay">
         {showing ? (
-          <AddUser showAddUser={showing} setShowAddUser={setShowing} />
+          <AddUser showAddUser={showing} setShowAddUser={setShowing} listUsers={listUsers} userOptions={userOptions}/>
         ) : null}
         {showResetPassword ? (
           <ResetPassword showResetPassword={showResetPassword} setShowResetPassword={setShowResetPassword} user={user} />
         ) : null}
         {showUserDetails ? (
           <UserDetails user={user} showUserDetails={showUserDetails} setShowUserDetails={setShowUserDetails} />
+        ) : null}
+        {showUserDelete ? (
+          <UserDeleteConfirmation user={user} showUserDelete={showUserDelete} setShowUserDelete={setShowUserDelete} userOptions={userOptions}/>
         ) : null}
       </div>
     </div>
