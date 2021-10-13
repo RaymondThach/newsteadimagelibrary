@@ -74,17 +74,17 @@ export default function UserMangement() {
     
   };
 
-    //Show user creation form
-    const resetPassword = () => {
-      setShowResetPassword(true);
-      console.log(showResetPassword)
-    };
+  //Show user creation form
+  const resetPassword = () => {
+    setShowResetPassword(true);
+    console.log(showResetPassword)
+  };
 
-       //Show user details form
-       const userDetails = () => {
-        setShowUserDetails(true);
+  //Show user details form
+  const userDetails = () => {
+    setShowUserDetails(true);
       
-      };
+  };
 
   /**
    *

@@ -5,7 +5,7 @@ import { Auth, API } from "aws-amplify";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-export default function AddUser({ user, showUser, setShowUser }) {
+export default function AddUser({ user, showUserDetails, setShowUserDetails }) {
  
 
   const { CognitoIdentityServiceProvider } = require('aws-sdk');
@@ -14,7 +14,7 @@ export default function AddUser({ user, showUser, setShowUser }) {
     const region = process.env.REACT_APP_REGION;
     const accessKey = process.env.REACT_APP_ACCESS_KEY;
     const secret = process.env.REACT_APP_SECRET;
-    const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider
+    const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({ region: region, accessKeyId: accessKey, secretAccessKey: secret });
 
   // Handles user input for user accounts
   const [username, setUsername] = useState("");
@@ -24,9 +24,9 @@ export default function AddUser({ user, showUser, setShowUser }) {
   const [lastname, setLastname] = useState("");
   const [jobRole, setJobRole] = useState("");
   const [email, setEmail] = useState("");
+  const [userDetails, setUserDetails] = useState([])
 
-
-
+  
 
   /**
   *
@@ -49,8 +49,22 @@ export default function AddUser({ user, showUser, setShowUser }) {
    };
    const userList = await API.get(apiName, path, myInit);
 
-   await userList.map((user) => {
-     console.log(user)
+   setUserDetails(userList)
+
+   // filter through details
+   await userList.UserAttributes.map((info, i) => {
+     if ( info.Name === "custom:jobRole"){
+       setJobRole(info.Value)
+     }
+     if ( info.Name === "custom:firstname"){
+      setFirstname(info.Value)
+    }
+    if ( info.Name === "custom:lastname"){
+      setLastname(info.Value)
+    }
+    if ( info.Name === "email"){
+      setEmail(info.Value)
+    }
    });
 
  }
@@ -63,35 +77,49 @@ export default function AddUser({ user, showUser, setShowUser }) {
 
     try {
       //Check if confirmation password matches
-      if (confirmPassword !== password) {
-        alert("Password does not match");
-      } else {
-    
-      }
+      updateUser()
     } catch (e) {
       alert(e.message)
     }
   }
 
-  // Handler for firtname userinput
-  async function handleFirstname(e) {
-    try {
-      setFirstname(e);
+  async function updateUser(){
 
-    } catch (e) {
-      console.log(e);
+    var params = {
+      UserAttributes: [ /* required */
+        {
+          Name: "custom:jobRole", /* required */
+          Value: jobRole
+        },
+        {
+          Name: "custom:firstname", /* required */
+          Value: firstname
+        },
+        {
+          Name: "custom:lastname", /* required */
+          Value: lastname
+        },
+        {
+          Name: "email", /* required */
+          Value: email
+        },
+        /* more items */
+      ],
+      UserPoolId: userPoolId, /* required */
+      Username: user, /* required */
+    };
+    try {
+      const result = await cognitoIdentityServiceProvider.adminUpdateUserAttributes(params).promise();
+      console.log(`Update ${user}`);
+      return {
+        message: `Updated ${user}`,
+      };
+    } catch (err) {
+      console.log(err);
+      throw err;
     }
   }
-
-  //Handler for lastname userinput
-  async function handleLastname(e) {
-    try {
-      setLastname(e);
-      
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  
 
 
 
@@ -107,7 +135,7 @@ export default function AddUser({ user, showUser, setShowUser }) {
                 autoFocus
                 type="firstname"
                 value={firstname}
-                onChange={(e) => handleFirstname(e.target.value)}
+                onChange={(e) => setFirstname(e.target.value)}
               />{" "}
             </Form.Group>{" "}
           </div>{" "}
@@ -118,7 +146,7 @@ export default function AddUser({ user, showUser, setShowUser }) {
                 autoFocus
                 type="lastname"
                 value={lastname}
-                onChange={(e) => handleLastname(e.target.value)}
+                onChange={(e) => setLastname(e.target.value)}
               />{" "}
             </Form.Group>{" "}
           </div>{" "}
@@ -144,17 +172,6 @@ export default function AddUser({ user, showUser, setShowUser }) {
               />{" "}
             </Form.Group>{" "}
           </div>{" "}
-          <div class="form-group col-md-6">
-            <Form.Group controlId="username" size="lg">
-              <Form.Label> Username </Form.Label>{" "}
-              <Form.Control
-                autoFocus
-                type="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
         </div>
         <Button
           block
@@ -164,14 +181,14 @@ export default function AddUser({ user, showUser, setShowUser }) {
             fontSize: 20,
           }}
         >
-          Create Account{" "}
+          Update Account{" "}
         </Button>{" "}
 
         <Button
           block
           size="lg"
           type="reset"
-          onClick={() => { setShowUser(false); }}
+          onClick={() => { setShowUserDetails(false); }}
           style={{
             fontSize: 20,
           }
@@ -185,19 +202,21 @@ export default function AddUser({ user, showUser, setShowUser }) {
   }
 
   useEffect(() => {
-    getUser(user);
+    getUser();
+    setUsername(user)
   }, []);
 
 
   return (
     <>
-    { showUser?
+    { showUserDetails?
         <div class= "background" >
           <div id="add-user">
-            <h1> Create a New User </h1>{" "}
+            <h1> Edit User </h1>{" "}
             <p>
-              User details for.{" "}
+              User details for {user}
             </p>{" "}
+            {renderForm()}
           </div>{ " " }
     </div >
     : null
