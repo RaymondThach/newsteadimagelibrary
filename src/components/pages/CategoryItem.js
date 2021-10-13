@@ -166,10 +166,17 @@ export default function CategoryItem() {
         setDeleteMode(false);
     }, []);
 
-    //Call back to pagination function re-render the page button initially.
+    //Call back to pagination function to re-render the page buttons initially, refresh the pagebar if the maximum item displayed it reached,
+    //or if no items is on the page. This accounts for deleting items.
     useEffect(() => {
         if (pageNumbers.length === 0) {
             pagination();
+        }
+        else if (currentItems.length === 0) {
+            if (currentPage !== 1){
+                changePage(currentPage - 1);
+                pagination();
+            }
         }
     }, [items]);
 

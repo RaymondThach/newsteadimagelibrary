@@ -8,8 +8,9 @@
   column-gap: 80px;
 }
 
-.items{
+.items {
   position: relative;
+  bottom: 15%;
 }
 
 .item {
@@ -35,4 +36,31 @@
 #video-thumbnail{
   height: 200px;
   width: 300px;
+}
+
+/* Page Bar */
+.pageBarContainerColItem {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  bottom: 0.5%;
+  width: 83%;
+  left: 14.85%;
+}
+
+.pageBarColItem {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.pageNumberColItem {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: rgb(96, 143, 221);
+  color: white;
+  font-size: 11px;
+  border: none;
+  margin: 10px;
 }

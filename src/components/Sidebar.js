@@ -56,6 +56,9 @@ function Sidebar() {
     //State boolean for setting which mode to search by for sorting by videos only 
     const [ videosOnly, setVideosOnly ] = useState(false);
 
+    //State array to keep the original search results to continue sorting by
+    const [ searchResult, setSearchResult ] = useState([]); 
+
     //Set the Context service to false for logging out, sign out of Amplify
     async function handleLogout() {
         await Auth.signOut();
@@ -71,44 +74,88 @@ function Sidebar() {
     /* Sort by alphabetical */
     //Ordering categories alphabetically based on integer returned (categories.js)
     function sortCatAlphabetically() {
-        const sortedArr = categories.sort(function(a, b) {
-            var catNameA = a.categoryName.toUpperCase();
-            var catNameB = b.categoryName.toUpperCase();
-            return (catNameA < catNameB) ? -1 : (catNameA > catNameB) ? 1 : 0;
-        });
-        setCategories(sortedArr);
+        if (categories.length === 0 && searchResult.length !== 0) {
+            setCategories(searchResult);
+        }
+        if (searchResult.length === 0) {
+            setSearchResult(categories);
+            const sortedArr = categories.sort(function(a, b) {
+                var catNameA = a.categoryName.toUpperCase();
+                var catNameB = b.categoryName.toUpperCase();
+                return (catNameA < catNameB) ? -1 : (catNameA > catNameB) ? 1 : 0;
+            });
+            setCategories(sortedArr);
+        }
+        else if (searchResult.length > 0) {
+            const sortedArr = searchResult.sort(function(a, b) {
+                var catNameA = a.categoryName.toUpperCase();
+                var catNameB = b.categoryName.toUpperCase();
+                return (catNameA < catNameB) ? -1 : (catNameA > catNameB) ? 1 : 0;
+            });
+            setCategories(sortedArr);
+        } 
     }
 
     //Ordering collections alphabetically based on integer returned (collections.js)
     function sortColAlphabetically() {
-        const sortedArr = collectionNames.sort(function(a, b) {
-            var colNameA = a.name.toUpperCase();
-            var colNameB = b.name.toUpperCase();
-            return (colNameA < colNameB) ? -1 : (colNameA > colNameB) ? 1 : 0;
-        });
-        setCollectionNames(sortedArr);
+        if (collectionNames.length === 0 && searchResult.length !== 0) {
+            setCollectionNames(searchResult);
+        }
+        else if (searchResult.length === 0) {
+            setSearchResult(collectionNames);
+            const sortedArr = collectionNames.sort(function(a, b) {
+                var colNameA = a.name.toUpperCase();
+                var colNameB = b.name.toUpperCase();
+                return (colNameA < colNameB) ? -1 : (colNameA > colNameB) ? 1 : 0;
+            });
+            setCollectionNames(sortedArr);
+        }
+        else if (searchResult.length > 0) {
+            const sortedArr = searchResult.sort(function(a, b) {
+                var colNameA = a.name.toUpperCase();
+                var colNameB = b.name.toUpperCase();
+                return (colNameA < colNameB) ? -1 : (colNameA > colNameB) ? 1 : 0;
+            });
+            setCollectionNames(sortedArr);
+        }
     }
 
     //Ordering items alphabetically based on integer returned, functionality shared by category and collection items
     function sortItemsAlphabetically() {
-        const sortedArr = items.sort(function(a, b) {
-            var itemNameA = a.name.toUpperCase();
-            var itemNameB = b.name.toUpperCase();
-            return (itemNameA < itemNameB) ? -1 : (itemNameA > itemNameB) ? 1 : 0;
-        });
-        setItems(sortedArr);
+        if (items.length === 0 && searchResult.length !== 0) {
+            setItems(searchResult);
+        }
+        else if (searchResult.length === 0) {
+            setSearchResult(items);
+            const sortedArr = items.sort(function(a, b) {
+                var itemNameA = a.name.toUpperCase();
+                var itemNameB = b.name.toUpperCase();
+                return (itemNameA < itemNameB) ? -1 : (itemNameA > itemNameB) ? 1 : 0;
+            });
+            setItems(sortedArr);
+        }
+        else if (searchResult.length > 0) {
+            const sortedArr = searchResult.sort(function(a, b) {
+                var itemNameA = a.name.toUpperCase();
+                var itemNameB = b.name.toUpperCase();
+                return (itemNameA < itemNameB) ? -1 : (itemNameA > itemNameB) ? 1 : 0;
+            });
+            setItems(sortedArr);
+        }
     }
 
     //Check file extensions not existing in videoFormat array to return only photos of the current search results
     function sortItemsPhotos() {
-        console.log('sorting by photo');
         setPhotosOnly(true);
         setVideosOnly(false);
         if (originalItems.length === 0){
             setOriginalItems(items);
-        } else if (items.length > 0) {
-            let results = items.filter(item => {
-                
+        }
+        if (searchResult.length === 0) {
+            setSearchResult(items);
+        } 
+        else if (searchResult.length > 0) {
+            let results = searchResult.filter(item => {
                 return videoFormat.indexOf(item.name.split('.').pop()) < 0
             })
             setItems(results);
@@ -117,16 +164,19 @@ function Sidebar() {
 
     //Check file extensions existing in videoFormat array to return only videos of the current search results
     function sortItemsVideos() {
-        console.log('sorting by vid');
         setPhotosOnly(false);
         setVideosOnly(true);
         if (originalItems.length === 0){
             setOriginalItems(items);
-        } else if (items.length > 0) {
-            let results = items.filter(item => {
+        } 
+        if (searchResult.length === 0) {
+            setSearchResult(items);
+        }
+        else if (searchResult.length > 0) {
+            let results = searchResult.filter(item => {
                 return videoFormat.indexOf(item.name.split('.').pop()) > 0
             })
-            setItems(results);
+            setItems(results);  
         }  
     }
 
@@ -138,17 +188,29 @@ function Sidebar() {
         else if (collectionNames.length > 0) {
             sortColAlphabetically();
         }
-        else if (items.length > 0) {
+        else if (items.length >= 0) {
             sortItemsAlphabetically();
         }
     }
 
     /* Sort by Newest */
-    //Ordering categories, collections, category items, collection items by newest
+    //Ordering categories, collections, category items and collection items by newest
     function sortAllNewest(array) {
-        array.sort(function(a, b) {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-        });
+        if (array.length === 0 && searchResult.length !== 0) {
+            setItems(searchResult);
+            searchResult.sort(function(a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        } else if (searchResult.length === 0) {
+            setSearchResult(array);
+            array.sort(function(a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        } else {
+            array.sort(function(a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        } 
     }
 
     //Handler for choosing which array to pass to the sorting function based on which is populated
@@ -159,7 +221,7 @@ function Sidebar() {
         else if (collectionNames.length > 0) {
             sortAllNewest(collectionNames);
         }
-        else if (items.length > 0) {
+        else if (items.length >= 0) {
             sortAllNewest(items);
         }
     }
@@ -167,9 +229,21 @@ function Sidebar() {
     /* Sort by Oldest */
     //Ordering categories, collections, category items, collection items by oldest
     function sortAllOldest(array) {
-        array.sort(function(a, b) {
-            return new Date(a.createdAt) - new Date(b.createdAt);
-        });
+        if (array.length === 0 && searchResult.length !== 0) {
+            setItems(searchResult);
+            searchResult.sort(function(a, b) {
+                return new Date(a.createdAt) - new Date(b.createdAt);
+            });
+        } else if (searchResult.length === 0) {
+            setSearchResult(array);
+            array.sort(function(a, b) {
+                return new Date(a.createdAt) - new Date(b.createdAt);
+            });  
+        } else {
+            array.sort(function(a, b) {
+                return new Date(a.createdAt) - new Date(b.createdAt);
+            });    
+        }
     }
 
     //Handler for choosing which array to pass to the sorting function based on which is populated
@@ -180,7 +254,7 @@ function Sidebar() {
         else if (collectionNames.length > 0) {
             sortAllOldest(collectionNames);
         }
-        else if (items.length > 0) {
+        else if (items.length >= 0) {
             sortAllOldest(items);
         }
     }
@@ -199,6 +273,7 @@ function Sidebar() {
                 return cat.categoryName.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setCategories(results);
+            setSearchResult(results);
         }  
     }
 
@@ -215,6 +290,7 @@ function Sidebar() {
                 return col.name.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setCollectionNames(results);
+            setSearchResult(results);
         }  
     }
 
@@ -231,6 +307,7 @@ function Sidebar() {
                 return item.name.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setItems(results);
+            setSearchResult(results);
         }  
     }
 
@@ -270,12 +347,14 @@ function Sidebar() {
     useEffect(() => {
         if (searchTerm === '') {
             setCategories(originalCats);
+            setSearchResult(originalCats);
         }
         else if (originalCats.length > 0 ) {
             let results = originalCats.filter(cat => {
                 return cat.categoryName.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setCategories(results);
+            setSearchResult(results);
         }  
     }, [originalCats]);
     
@@ -283,31 +362,23 @@ function Sidebar() {
     useEffect(() => {
         if (searchTerm === '') {
             setCollectionNames(originalCols);
+            setSearchResult(originalCols);
         }
         else if (originalCols.length > 0) {
             let results = originalCols.filter(col => {
                 return col.name.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setCollectionNames(results);
+            setSearchResult(results);
         }  
     }, [originalCols]);
 
     //Handle initial re-rendering of items for searching and sorting by photos and videos of that search
     useEffect(() => {
         if (photosOnly === true) {
-            if (originalItems.length > 0) {
-                let results = items.filter(item => {
-                    return videoFormat.indexOf(item.name.split('.').pop()) < 0
-                })
-                setItems(results);
-            }
+            sortItemsPhotos();
         } else if (videosOnly === true) {
-            if (originalItems.length > 0) {
-                let results = items.filter(item => {
-                    return videoFormat.indexOf(item.name.split('.').pop()) > 0
-                })
-                setItems(results);
-            }
+            sortItemsVideos();
         } else {
             if (searchTerm === '') {
                 setItems(originalItems);
@@ -317,6 +388,7 @@ function Sidebar() {
                     return item.name.toLowerCase().includes(searchTerm.toLowerCase());
                 })
                 setItems(results);
+                setSearchResult(results);
             }  
         }
     }, [originalItems]);

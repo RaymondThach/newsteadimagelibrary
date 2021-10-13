@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { deleteMediaFile, deleteTag, updateMediaFile } from '../../graphql/mutations';
 import { listMediaFiles } from '../../graphql/queries';

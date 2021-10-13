@@ -110,14 +110,22 @@ export default function Categories() {
     setDeleteMode(false);
   }, []);
 
-  //Call back to pagination function re-render the page button initially.
+  //Call back to pagination function to re-render the page buttons initially, refresh the pagebar if the maximum item displayed it reached,
+  //or if no items are on the page. This accounts for deleting and creating categories.
   useEffect(() => {
     if (pageNumbers.length === 0) {
       pagination();
-      
     }
-    //if ((pageNumbers.length/2))
-  }, [categories, pageNumbers]);
+    else if (currentCategories.length === 15){
+      pagination();
+    }
+    else if (currentCategories.length === 0) {
+      if (currentPage !== 1){
+        changePage(currentPage - 1);
+        pagination();
+      }
+    }
+  }, [categories]);
 
   return (
     <div class='page'>
