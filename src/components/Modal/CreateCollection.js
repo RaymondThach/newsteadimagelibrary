@@ -7,7 +7,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { useAppContext } from '../services/context.js';
 
 
-export default function CreateCategory({ fetchCollection, setShowing}) {
+export default function CreateCollection({ fetchCollection, setShowing}) {
   //String value of the input field for new category name
   const [inputValue, setInputValue] = useState('');
 
@@ -16,18 +16,12 @@ export default function CreateCategory({ fetchCollection, setShowing}) {
     setInputValue(event);
   }
 
-  //Context object to keep track of whether gallery modal is open from App.js
-  const { galleryIsOpen } = useAppContext();
-
   //Create a new category name in the Tag table, refresh the category page.
   async function addToDB(collection) {
     try {
       await API.graphql(graphqlOperation(createCollection, { input: collection }));
       alert('A new collection was created: ' + inputValue);
-      if (galleryIsOpen === false) {
-        fetchCollection();     
-    } 
-   
+      fetchCollection();     
     }
     catch (error) {
       console.log(error);
@@ -64,8 +58,6 @@ export default function CreateCategory({ fetchCollection, setShowing}) {
   //Manage the flow of closing the create category modal of two different paths
   function handleClose() {
       setShowing(false);
-    
-    
   }
 
   return (
