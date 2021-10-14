@@ -4,8 +4,6 @@ import { createCollection } from "../../graphql/mutations";
 import { collectionName } from "../../graphql/queries";
 import React, { useState } from "react";
 import { API, graphqlOperation } from 'aws-amplify';
-import { useAppContext } from '../services/context.js';
-
 
 export default function CreateCollection({ fetchCollection, setShowing}) {
   //String value of the input field for new category name

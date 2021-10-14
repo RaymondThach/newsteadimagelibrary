@@ -461,7 +461,7 @@ class UploadMediaFile extends React.Component {
             />
           </div>
         </div>
-        <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
+        <button class = 'submitButton' onClick={(e) => this.handleSubmit(e)}>Submit</button>
       </div>
     );
   }

@@ -1,7 +1,6 @@
 .dropbtn {
   background-color: white;
   color: black;
-  padding: 16px;
   font-size: 14px;
   font-weight: bold;
   border: none;
@@ -9,6 +8,7 @@
   margin: 0px 0px 0px 0px;
   width: 210px;
   height: 40px;
+  border-radius: 15px 15px;
 }
 
 .dropdown {
@@ -42,7 +42,7 @@
 }
 
 .dropdown:hover .dropbtn {
-  background-color: rgb(96, 143, 221) ;;
+  background-color: gray ;
 }
 
 /* Nav bar styling*/
@@ -50,8 +50,8 @@
 .logo{
   position: relative;
   display: block;
-  height: 220px;
-  width: 220px;
+  height: 20%;
+  width: 100%;
   margin: auto;
 }
 
@@ -64,7 +64,7 @@
   background-color:rgb(96, 143, 221);
 }
 
-.nav-text{
+.nav-text{ 
   display: flex;
   justify-content: start;
   padding: 8px 0px 8px 16px;
@@ -73,6 +73,7 @@
   height: 40px;
   margin: 50px 20px 0px 20px;
   background-color:white;
+  border-radius: 15px 15px;
 }
 
 .nav-text a {
@@ -128,6 +129,7 @@
   width: 210px;
   margin-left: 20px;
   height: 40px;
+  border-radius: 15px 15px;
 }
 
 .Sign-Out-Button{
@@ -148,4 +150,5 @@
   width: 210px;
   margin-left: 20px;
   height: 40px;
+  border-radius: 15px 15px;
 }
