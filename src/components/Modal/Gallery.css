@@ -7,6 +7,7 @@
     background: rgba(0, 0, 0, 0.8);
     justify-content: center;
     align-items: center;
+    z-index: 1;
 }
 
 /*Modal Gallery Section*/
@@ -19,11 +20,12 @@
 
 .imageName {
     position: relative;
+    justify-content: center;
     top: 0%; 
     max-width: inherit;
     font-weight: bold;
-    margin-left: 950px;
     font-size: 16px;
+
 }
 
 .mediaContainer {
@@ -47,10 +49,11 @@ amplify-s3-image {
 
 .dataColumn {
     position: absolute;
-    top: 7%;
+    top: 3%;
     right: 1.5%;
     width: 200px;
     height: 94%;
+    outline-style: solid;
 }
 
 .closeGalleryButton {
@@ -75,7 +78,6 @@ textarea {
     resize: none;
     border: none;
     outline: none;
-    
 }
 
 .editButton {

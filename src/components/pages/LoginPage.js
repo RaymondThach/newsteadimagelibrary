@@ -48,49 +48,38 @@ export default function Login() {
 
     return (
         <>
-        <div className='Login' className ="loginBorder" slot='sign-in' style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-            width: '100vw',
-            backgroundImage: `url(${Background})`,
-            backgroundPosition: 'center',
-            backgroundSize: '2000px 1000px',
-            borderTop:"20px solid rgb(96, 143, 221)",
-            borderBottom:"20px solid rgb(96, 143, 221)"
-        }}>
-            <Form onSubmit={handleLogin}>
-                <label style={{ fontSize: 30, textAlign: 'center', fontWeight:'bold', color:'black'}}>
-                    Newstead Image Library
-                </label>
-                <Form.Group size='lg' controlId='username'>
-                    <Form.Label style={{ fontSize: 25, textAlign: 'center',fontWeight:'bold',color:'black'}}>
-                        Username
-                    </Form.Label>
-                    <Form.Control
-                    autoFocus
-                    type='username'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group size='lg' controlId='password'>
-                    <Form.Label style={{ fontSize: 25, textAlign: 'left',fontWeight:'bold',color:'black' }}>
-                        Password
-                    </Form.Label>
-                    <Form.Control
-                    type='password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                </Form.Group>
-                <Button block size='lg' type='submit' style={{fontSize: 20, marginLeft:'130px', marginTop:'10px'}}>
-                    Login
-                </Button>
-                <img class="loginlogo" src={transparentLogo}>
-                </img> 
-            </Form>
+            <div class='Login'>
+            <div class='loginContainer'>
+                <img class="loginlogo" src={transparentLogo}></img> 
+                <div class='containerForm'>
+                    <Form onSubmit={handleLogin}>
+                        <Form.Group size='lg' controlId='username'>
+                            <Form.Label style={{ textAlign: 'left', fontWeight:'bold',color:'black'}}>
+                                Username
+                            </Form.Label>
+                            <Form.Control
+                            autoFocus
+                            type='username'
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group size='lg' controlId='password'>
+                            <Form.Label style={{ textAlign: 'left',fontWeight:'bold',color:'black' }}>
+                                Password
+                            </Form.Label>
+                            <Form.Control
+                            type='password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Button block size='lg' type='submit' style={{fontSize: 20, marginLeft:'130px', marginTop:'10px'}}>
+                            Login
+                        </Button>
+                    </Form>
+                </div>
+            </div>
         </div>
       </>
     );

@@ -11,8 +11,12 @@ import { MdClose } from 'react-icons/md';
 import DeleteCollectionConfirmation from "../Modal/DeleteCollectionConfirmation";
 
 export default function Collections() {
+  //State variable for showing or hiding the modal for creating collection
   const [showing, setShowing] = useState(false);
+
+  //Context state array for all collections
   const { collectionNames, setCollectionNames } = useAppContext();
+  
   //Use declared context variables to track delete mode
   const { deleteMode, setDeleteMode } = useAppContext();
 
@@ -157,7 +161,7 @@ export default function Collections() {
             (delConfirmation ? <DeleteCollectionConfirmation delCollection={delCollection} setDelConfirmation={setDelConfirmation} fetchCollection={fetchCollection} /> : null)
           }
           {showing
-            ? <CreateCollection class='createCollection' setShowing={setShowing} fetchCollection={fetchCollection} />
+            ? <CreateCollection class='createCollection' setShowing={setShowing} fetchCollection={fetchCollection} pagination={pagination}/>
             : null
           }
         </div>

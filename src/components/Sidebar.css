@@ -24,7 +24,6 @@
   min-width: 210px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-  margin-left: 20px;
 }
 
 .dropdown-content a {
@@ -61,7 +60,7 @@
   height: 100%;
   position: fixed;
   top: 0;
-  background-color:rgb(96, 143, 221);
+  background-image: linear-gradient(to bottom, #608fdd, #7fa7e6, #9fc0ef, #c0d8f7, #e3f0ff);
 }
 
 .nav-text{ 
