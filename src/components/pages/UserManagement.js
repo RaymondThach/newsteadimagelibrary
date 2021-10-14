@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import "./UserManagement.css";
 import "amazon-cognito-identity-js";
 import AddUser from "../Modal/AddUser";
+import ResetPassword from "../Modal/ResetPassword";
+import UserDetails from "../Modal/UserDetails";
+import UserDeleteConfirmation from "../Modal/UserDeleteConfirmation";
 import Amplify, { Auth, API } from "aws-amplify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Select from "react-select";
@@ -18,7 +21,7 @@ const userPoolId = process.env.REACT_APP_USERPOOL_ID;
 const region = process.env.REACT_APP_REGION;
 const accessKey = process.env.REACT_APP_ACCESS_KEY;
 const secret = process.env.REACT_APP_SECRET;
-const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({region: region, accessKeyId: accessKey, secretAccessKey: secret});
+const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({ region: region, accessKeyId: accessKey, secretAccessKey: secret });
 
 export default function UserMangement() {
   // Dropdown box value selection
@@ -28,7 +31,7 @@ export default function UserMangement() {
   //State handler for form rendering
   const [renderForm, setRenderForm] = useState(true);
   // User list array for dropdown
-  const [userOptions] = useState([]);
+  const [userOptions, setUserOptions] = useState([]);
   //Selected user current groups
   const [currentGroups, setCurrentGroups] = useState([]);
   //User group status
@@ -53,7 +56,15 @@ export default function UserMangement() {
   ]);
 
   //Current user selected
-  const[user, setUser] =useState("")
+  const [user, setUser] = useState("")
+
+  
+  //State handler for password reset
+  const [showResetPassword, setShowResetPassword] = useState(false)
+  //State handler for password reset
+  const [showUserDetails, setShowUserDetails] = useState(false)
+    //State handler for password reset
+    const [showUserDelete, setShowUserDelete] = useState(false)
 
   //Store group to add user too
   const [addGroup, setAddGroup] = useState([]);
@@ -63,6 +74,25 @@ export default function UserMangement() {
   //Show user creation form
   const openAddUser = () => {
     setShowing(true);
+    
+  };
+
+  //Show user creation form
+  const resetPassword = () => {
+    setShowResetPassword(true);
+    console.log(showResetPassword)
+  };
+
+  //Show user details form
+  const userDetails = () => {
+    setShowUserDetails(true);
+      
+  };
+
+  //Show user details form
+  const userDelete = () => {
+    setShowUserDelete(true);
+      
   };
 
   /**
@@ -164,7 +194,7 @@ export default function UserMangement() {
   }
 
   // Add User to Group
-  async function addToGroup(user, group){
+  async function addToGroup(user, group) {
     let apiName = 'AdminQueries';
     let path = '/addUserToGroup';
     let myInit = {
@@ -179,11 +209,11 @@ export default function UserMangement() {
       }
     }
     return await API.post(apiName, path, myInit);
-  
+
   }
 
   //Remove user from group
-  async function removeFromGroup(user, group){
+  async function removeFromGroup(user, group) {
 
     let apiName = 'AdminQueries';
     let path = '/removeUserFromGroup';
@@ -199,22 +229,19 @@ export default function UserMangement() {
       }
     }
     return await API.post(apiName, path, myInit);
-  
+
   }
 
   //Delete user
 
   async function deleteUser() {
-    console.log(userPoolId)
-    console.log(accessKey)
-    console.log(secret)
     const params = {
       UserPoolId: userPoolId,
       Username: user,
-     
-      
+
+
     };
-  
+
     try {
       const result = await cognitoIdentityServiceProvider.adminDeleteUser(params).promise();
       console.log(`Removed ${user}`);
@@ -368,10 +395,10 @@ export default function UserMangement() {
             fontSize: 20,
           }}
         >
-          Create Account{" "}
+          Submit Changes{" "}
         </Button>{" "}
 
-        </Form>
+      </Form>
     );
   }
 
@@ -384,50 +411,35 @@ export default function UserMangement() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if(addGroup.length > 0 ){
+    if (addGroup.length > 0) {
 
-      addGroup.map((e)=>{
+      addGroup.map((e) => {
         addToGroup(user, e)
       })
 
-    }
-    if(removeGroup.length > 0){
+      
 
-      removeGroup.map((e)=>{
+    }
+    if (removeGroup.length > 0) {
+
+      removeGroup.map((e) => {
         removeFromGroup(user, e)
       })
 
+   
+
     }
-    if(addGroup.length < 1 && removeGroup.length < 1){
+    if (addGroup.length < 1 && removeGroup.length < 1) {
       alert("You have not made any changes")
     }
-    if(user.length < 1){
+    if (user.length < 1) {
       alert("No user has been selected")
     }
+    alert(user + ' has been updated' )
 
   }
 
-  /**
-   * Delete user
-   */
 
-  async function removeUser(){
-
-      let apiName = 'AdminQueries';
-      let path = '/deleteUser';
-      let myInit = {
-        body: {
-          "username": user,
-        },
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-        }
-      }
-      return await API.post( path, myInit);
-    
-    
-  }
 
   useEffect(() => {
     listUsers();
@@ -456,13 +468,27 @@ export default function UserMangement() {
         >
           Add User...
         </button>
+        <button
+          onClick={() => {
+            resetPassword();
+          }}
+        >
+          Reset Password
+        </button>
+        <button
+          onClick={() => {
+            userDetails();
+          }}
+        >
+          Edit User
+        </button>
         <p>Selected: {selected}</p>
         <div className="buttons">
           {renderForm ? userForm() : null}
         </div>
         <button
           onClick={() => {
-            deleteUser();
+            userDelete();
           }}
         >
           Delete User
@@ -470,7 +496,16 @@ export default function UserMangement() {
       </div>
       <div class="modal-overlay">
         {showing ? (
-          <AddUser showAddUser={showing} setShowAddUser={setShowing} />
+          <AddUser showAddUser={showing} setShowAddUser={setShowing} listUsers={listUsers} userOptions={userOptions}/>
+        ) : null}
+        {showResetPassword ? (
+          <ResetPassword showResetPassword={showResetPassword} setShowResetPassword={setShowResetPassword} user={user} />
+        ) : null}
+        {showUserDetails ? (
+          <UserDetails user={user} showUserDetails={showUserDetails} setShowUserDetails={setShowUserDetails} />
+        ) : null}
+        {showUserDelete ? (
+          <UserDeleteConfirmation user={user} showUserDelete={showUserDelete} setShowUserDelete={setShowUserDelete} userOptions={userOptions}/>
         ) : null}
       </div>
     </div>

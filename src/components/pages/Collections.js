@@ -157,7 +157,7 @@ export default function Collections() {
             (delConfirmation ? <DeleteCollectionConfirmation delCollection={delCollection} setDelConfirmation={setDelConfirmation} fetchCollection={fetchCollection} /> : null)
           }
           {showing
-            ? <CreateCollection class='createCollection' setShowing={setShowing} />
+            ? <CreateCollection class='createCollection' setShowing={setShowing} fetchCollection={fetchCollection} />
             : null
           }
         </div>

@@ -5,7 +5,7 @@ import { Auth, API } from "aws-amplify";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-export default function AddUser({ showAddUser, setShowAddUser }) {
+export default function AddUser({ showAddUser, setShowAddUser, userOptions }) {
   // User Creation object to be passed to cognito
   const [newUser, setNewUser] = useState(null);
 
@@ -66,6 +66,7 @@ export default function AddUser({ showAddUser, setShowAddUser }) {
           addAccess((name))
         })
         alert("Account has been created for " + firstname + " " + lastname);
+        userOptions.push({value:username, label:username})
         setShowAddUser(false);
       }
     } catch (e) {
