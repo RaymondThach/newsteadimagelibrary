@@ -154,4 +154,32 @@ div.desc {
   width: 15%;
   float: left;
   text-align: center;
+  bottom: 15%;
+}
+
+/* Page Bar */
+.pageBarContainerCol {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  bottom: 0.5%;
+  width: 83%;
+  left: 14.85%;
+}
+
+.pageBarCol {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.pageNumberCol {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: rgb(96, 143, 221);
+  color: white;
+  font-size: 11px;
+  border: none;
+  margin: 10px;
 }

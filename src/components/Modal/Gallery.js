@@ -5,7 +5,6 @@ import { FcOk, FcCancel } from 'react-icons/fc';
 import { Storage, API, graphqlOperation } from 'aws-amplify';
 import { updateMediaFile } from '../../graphql/mutations';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
-import { useAppContext } from '../services/context.js';
 import transparentLogo from '../images/transparentLogo.png';
 import Select from 'react-select';
 import CreateCategory from '../Modal/CreateCategory';
@@ -17,9 +16,6 @@ import './Gallery.css';
 export default function Gallery({ showGallery, setShowGallery, item, fetchMediaFiles }) {
   //Reference to modal's background
   let modalRef = useRef();
-
-  //Context object to keep track of whether gallery modal is open in App.js
-  const { galleryHasOpened } = useAppContext();
 
   //State for showing the create category modal
   const [createCategory, setCreateCategory] = useState(false);
@@ -58,8 +54,6 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
   const closeGallery = event => {
     if (modalRef.current === event.target) {
       setShowGallery(false);
-      galleryHasOpened(false);
-      fetchMediaFiles();
     }
   }
 
@@ -262,17 +256,14 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
     if (item.description != null) {
       setDetails(item.description);
     }
-    galleryHasOpened(true);
     populateCatSelector();
     populateColSelector();
   }, []);
 
-  
-
   return (
     <>
       {showGallery ?
-        (<div class='background' ref={modalRef} onClick={closeGallery}>
+        (<div class='galleryBackground' ref={modalRef} onClick={closeGallery}>
           <div class='leftMenu'>
             <img class='galleryLogo' src={transparentLogo} />
             <div class='menu-wrapper'>
@@ -303,7 +294,7 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
             </div>
             <div class='dataColumn'>
               <div class='closeGalleryButton'>
-                <MdClose onClick={() => { setShowGallery(false); galleryHasOpened(false); fetchMediaFiles(); }} />
+                <MdClose onClick={() => { setShowGallery(false); }} />
               </div>
               <div class='detailLabel'>
                 <label>Details:</label>
