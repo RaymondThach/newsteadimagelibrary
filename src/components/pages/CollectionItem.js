@@ -118,28 +118,29 @@ export default function CollectionItem() {
                 </h1>
             </div>
             <div class="main-content">
-                <div class='itemGrid'></div>
-                <div class="collectionItems">
-                    {
-                        currentItems.map((item, i) => (
-                            <a class='items' key={item.name} >
-                                {
-                                    (deleteMode ? <MdClose id='deleteCollectionItem' onClick={() => { deleteFromCollection(item.id); }} /> : null)
-                                }
-                                <div class='item' onClick={() => { openGallery(); setItem(item); }}>
-                                    <div class='item_tn' >
-                                        {
-                                             videoFormat.indexOf(item.name.split('.').pop()) > -1
-                                             ? <BsCameraVideo id="video-thumbnail"/>
-                                             :<AmplifyS3Image imgKey={item.name} />
-                                        }     
+                <div class='itemGrid'>
+                    <div class="collectionItems">
+                        {
+                            currentItems.map((item, i) => (
+                                <a class='items' key={item.name} >
+                                    {
+                                        (deleteMode ? <MdClose id='deleteCollectionItem' onClick={() => { deleteFromCollection(item.id); }} /> : null)
+                                    }
+                                    <div class='item' onClick={() => { openGallery(); setItem(item); }}>
+                                        <div class='item_tn' >
+                                            {
+                                                videoFormat.indexOf(item.name.split('.').pop()) > -1
+                                                ? <BsCameraVideo id="video-thumbnail"/>
+                                                :<AmplifyS3Image imgKey={item.name} />
+                                            }     
+                                        </div>
+                                        <label class='collectionItem_name'>{item.name}</label>
                                     </div>
-                                    <label class='collectionItem_name'>{item.name}</label>
-                                </div>
 
-                            </a>
-                        ))
-                  }
+                                </a>
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
             <div class='modal-overlay'>

@@ -1,5 +1,6 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
+import "./UserDeleteConfirmation.css";
 
 const { CognitoIdentityServiceProvider } = require('aws-sdk');
 const userPoolId = process.env.REACT_APP_USERPOOL_ID;
@@ -39,21 +40,17 @@ async function deleteUser() {
     }
   }
 
-
-
-    return (
-        <>
-            <div class='background'>
-                <div class='delConfirmContainer'>
-                    
-                        Are you sure you want to delete {user}
-                    
-                    <div>
-                        <button class='confirmDelBtn' onClick={() => {deleteUser();}}>Confirm</button>
-                        <button class='cancelDelBtn' onClick={() => {setShowUserDelete(false);}}>Cancel</button>
-                    </div>
+  return (
+      <>
+          <div class='delUserBg'>
+              <div class='delUserContainer'>
+                <label>Are you sure you want to delete <b>{user}</b></label>
+                <div>
+                    <button class='confirmDelUserBtn' onClick={() => {deleteUser();}}>Confirm</button>
+                    <button class='cancelDelUserBtn' onClick={() => {setShowUserDelete(false);}}>Cancel</button>
                 </div>
-            </div>
-        </>
+              </div>
+          </div>
+      </>
     );
   }      

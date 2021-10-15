@@ -68,13 +68,13 @@ export default function CreateCollection({ fetchCollection, setShowing, setCreat
   return (
     <>
       <div class="background">
-        <div class="createCatContainer">
-          <form onSubmit={handleSubmit}>
-            <label>
-              New Collection Name:
+        <div class="createColContainer">
+          <form onSubmit={handleSubmit} class='createColForm'>
+            <label class='newColLabel'>
+              New Collection Name: 
             </label>
             <input type="text" value={inputValue} onChange={(e)=>myChangeHandler(e.target.value)} />
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Submit" class='submitBtn'/>
             <button class='cancelBtn' onClick={() => {handleClose();} }>Cancel</button>
           </form>
         </div>

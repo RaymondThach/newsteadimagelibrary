@@ -281,7 +281,7 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
               </div>
             </div>
           </div>
-          <div class='container'>
+          <div class='galContainer'>
             <div class='imageName'>
               <label>{item.name}</label>
             </div>

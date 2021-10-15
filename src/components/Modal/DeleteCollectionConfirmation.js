@@ -55,7 +55,7 @@ export default function DeleteCollectionConfirmation({ delItem, delCollection, s
             <div class='background'>
                 <div class='delConfirmContainer'>
                     {
-                        (delCollection ? <label>Are you sure you want to delete {delCollection.name}?</label> : <label>Are you sure you want to delete {delItem.name}?</label>)
+                        (delCollection ? <label>Are you sure you want to delete <b>{delCollection.name}</b>?</label> : <label>Are you sure you want to delete <b>{delItem.name}</b>?</label>)
                     }
                     <div>
                         <button class='confirmDelBtn' onClick={() => {deletion();}}>Confirm</button>
