@@ -23,7 +23,7 @@ const accessKey = process.env.REACT_APP_ACCESS_KEY;
 const secret = process.env.REACT_APP_SECRET;
 const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({ region: region, accessKeyId: accessKey, secretAccessKey: secret });
 
-export default function UserMangement() {
+export default function UserManagement() {
   // Dropdown box value selection
   const [selected, setSelected] = useState("");
   // State handler for user creation form
@@ -71,6 +71,13 @@ export default function UserMangement() {
   //Store group to add user too
   const [removeGroup, setRemoveGroup] = useState([]);
 
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [jobRole, setJobRole] = useState("");
+  const [email, setEmail] = useState("");
+ 
+
+
   //Show user creation form
   const openAddUser = () => {
     setShowing(true);
@@ -94,6 +101,44 @@ export default function UserMangement() {
     setShowUserDelete(true);
       
   };
+    /**
+  *
+  * Grab all user accounts in current user pool and store in array for dropdown options
+  *
+  * */
+ async function getUser(e) {
+  let apiName = "AdminQueries";
+  let path = "/getUser";
+  let myInit = {
+   queryStringParameters: {
+       username: e,
+     },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${(await Auth.currentSession())
+        .getAccessToken()
+        .getJwtToken()}`,
+    },
+  };
+  const userList = await API.get(apiName, path, myInit);
+
+  // filter through details
+  await userList.UserAttributes.map((info, i) => {
+    if ( info.Name === "custom:jobRole"){
+      setJobRole(info.Value)
+    }
+    if ( info.Name === "custom:firstname"){
+     setFirstname(info.Value)
+   }
+   if ( info.Name === "custom:lastname"){
+     setLastname(info.Value)
+   }
+   if ( info.Name === "email"){
+     setEmail(info.Value)
+   }
+  });
+
+}
 
   /**
    *
@@ -169,8 +214,14 @@ export default function UserMangement() {
     setSelected(e);
     //pass values to listUserGroups functionality to grab groups of current user
     listUserGroups(e);
+    getUser(e)
+
+    //grab selected user details
+    
 
     setUser(e)
+
+    console.log(firstname + lastname + jobRole)
   }
 
   /**
@@ -315,6 +366,7 @@ export default function UserMangement() {
             }}
           />
         </div>
+<<<<<<< Updated upstream
         <div class="form-group col-2">
           <label>Remove Item</label>
           <br />
@@ -397,6 +449,19 @@ export default function UserMangement() {
         >
           Submit Changes{" "}
         </Button>{" "}
+=======
+        <button
+            id="submitChanges"
+            block
+            size="lg"
+            type="submit"
+            style={{
+              fontSize: 20,
+            }}
+          >
+            Submit Changes{" "}
+          </button>{" "}
+>>>>>>> Stashed changes
 
       </Form>
     );
@@ -454,6 +519,7 @@ export default function UserMangement() {
           permissions.
         </p>
         <br />
+<<<<<<< Updated upstream
         <label input="users">Select a user:</label>&nbsp;&nbsp;
         <Select
           id="users"
@@ -487,12 +553,55 @@ export default function UserMangement() {
           {renderForm ? userForm() : null}
         </div>
         <button
+=======
+        <div class="inputWrapper-1">
+          <label input="users">Select a user:</label>&nbsp;&nbsp;
+          <Select
+            id="users"
+            name="users"
+            options={userOptions}
+            onChange={(e) => dropboxChangerHandler(e.value)}
+          ></Select>
+        </div>
+        <div class="editButtons">
+          <button
+            onClick={() => {
+              openAddUser();
+            }}
+          >
+            Add User...
+          </button>
+          <button
+            onClick={() => {
+              resetPassword();
+            }}
+          >
+            Reset Password
+          </button>
+          <button
+            onClick={() => {
+              userDetails();
+            }}
+          >
+            Edit User
+          </button>
+          <button
+>>>>>>> Stashed changes
           onClick={() => {
             userDelete();
           }}
         >
           Delete User
         </button>
+        </div>
+        <p>Selected:</p>
+        <p>{firstname} {lastname} - {jobRole}</p>
+        
+
+        <div className="buttons">
+          {renderForm ? userForm() : null}
+        </div>
+        
       </div>
       <div class="modal-overlay">
         {showing ? (

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 .userEditing{
     text-align: center
 }
@@ -27,6 +28,61 @@
     -webkit-transition: .4s;
     transition: .4s;
   }
+=======
+.userManagement{
+  position: relative;
+  display: inline-block;
+  left: 16.5%;
+  height: 80%;
+  width: 80%;
+  overflow: hidden;
+  justify-content: center;
+  text-align: center;
+  
+}
+
+#userAccessCheckboxes{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2%;
+}
+
+.userEditing {
+  top:0;
+  overflow: auto;
+  border:black;
+  border-radius: 3px;
+  border-style: solid;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+  padding: 2%;
+
+
+}
+.userEditing p{
+  text-align: center;
+  margin-bottom: 0 !important;
+  
+  
+  
+}
+.userEditing #submitChanges{
+  position: relative;
+    border-radius: 1rem;
+    border: none;
+    background-color: rgb(96, 143, 221);
+    bottom: 5%;
+    color: white;
+
+    cursor: pointer;
+    height: 40px;
+    margin-top: 5%; 
+    width: 20%;
+>>>>>>> Stashed changes
   
   .slider:before {
     position: absolute;
@@ -64,6 +120,7 @@
   }
 
 
+<<<<<<< Updated upstream
   .buttons{
       text-align: right;
     width: auto;
@@ -78,6 +135,9 @@
     display:inline-block;
 
   }
+=======
+
+>>>>>>> Stashed changes
 
 #labelSpacing{
     padding-right: 100px;
@@ -88,9 +148,19 @@
     padding-right: 100px;
 }
 
+<<<<<<< Updated upstream
 .rightPad{
     padding-right: 10px;
 
+=======
+.editButtons{
+  justify-content: center;
+  align-items: center;
+  margin-left: 30%;
+  margin-right: 30%;
+  padding: 10px;
+  margin-top: 0.5%;
+>>>>>>> Stashed changes
 }
 
 .modal-overlay{
