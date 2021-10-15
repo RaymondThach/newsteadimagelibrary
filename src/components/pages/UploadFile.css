@@ -26,7 +26,7 @@
     border-style: solid;
     width: 1500px;
     margin-left: 75px;
-    z-index: -1;
+   
 }
 
 .drop-area{
@@ -37,7 +37,7 @@
     width: 1500px;
     margin-left: 75px;
     margin-top:10px;
-    z-index: -1;
+    
 }
 .upload-button{
     height: 100%;

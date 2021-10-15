@@ -58,13 +58,13 @@ export default function UserManagement() {
   //Current user selected
   const [user, setUser] = useState("")
 
-  
+
   //State handler for password reset
   const [showResetPassword, setShowResetPassword] = useState(false)
   //State handler for password reset
   const [showUserDetails, setShowUserDetails] = useState(false)
-    //State handler for password reset
-    const [showUserDelete, setShowUserDelete] = useState(false)
+  //State handler for password reset
+  const [showUserDelete, setShowUserDelete] = useState(false)
 
   //Store group to add user too
   const [addGroup, setAddGroup] = useState([]);
@@ -81,7 +81,7 @@ export default function UserManagement() {
   //Show user creation form
   const openAddUser = () => {
     setShowing(true);
-    
+
   };
 
   //Show user creation form
@@ -93,13 +93,13 @@ export default function UserManagement() {
   //Show user details form
   const userDetails = () => {
     setShowUserDetails(true);
-      
+
   };
 
   //Show user details form
   const userDelete = () => {
     setShowUserDelete(true);
-      
+
   };
     /**
   *
@@ -283,29 +283,6 @@ export default function UserManagement() {
 
   }
 
-  //Delete user
-
-  async function deleteUser() {
-    const params = {
-      UserPoolId: userPoolId,
-      Username: user,
-
-
-    };
-
-    try {
-      const result = await cognitoIdentityServiceProvider.adminDeleteUser(params).promise();
-      console.log(`Removed ${user}`);
-      return {
-        message: `Removed ${user}`,
-      };
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  }
-
-
   /**
    *
    *Checkbox selection handler to give or remove access
@@ -354,102 +331,93 @@ export default function UserManagement() {
   function userForm() {
     return (
       <Form onSubmit={handleSubmit}>
-        <div class="form-group col-2">
-          <label class="">Add Item</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[0]}
-            value="addItem"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
+        <div class='rolesContainer'>
+          <div class="form-group col-2">
+            <label class="">Add Item</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[0]}
+              value="addItem"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Remove Item</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[1]}
+              value="removeItem"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Add Category</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[2]}
+              value="addCat"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Remove Category</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[3]}
+              value="removeCat"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Add Collection</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[4]}
+              value="addCollection"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Remove Collection</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[5]}
+              value="removeCollection"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Admin</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[6]}
+              value="Admin"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+         
         </div>
-<<<<<<< Updated upstream
-        <div class="form-group col-2">
-          <label>Remove Item</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[1]}
-            value="removeItem"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Add Category</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[2]}
-            value="addCat"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Remove Category</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[3]}
-            value="removeCat"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Add Collection</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[4]}
-            value="addCollection"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Remove Collection</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[5]}
-            value="removeCollection"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Admin</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[6]}
-            value="Admin"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <Button
-          block
-          size="lg"
-          type="submit"
-          style={{
-            fontSize: 20,
-          }}
-        >
-          Submit Changes{" "}
-        </Button>{" "}
-=======
         <button
             id="submitChanges"
             block
@@ -461,7 +429,6 @@ export default function UserManagement() {
           >
             Submit Changes{" "}
           </button>{" "}
->>>>>>> Stashed changes
 
       </Form>
     );
@@ -482,7 +449,7 @@ export default function UserManagement() {
         addToGroup(user, e)
       })
 
-      
+
 
     }
     if (removeGroup.length > 0) {
@@ -491,7 +458,7 @@ export default function UserManagement() {
         removeFromGroup(user, e)
       })
 
-   
+
 
     }
     if (addGroup.length < 1 && removeGroup.length < 1) {
@@ -500,7 +467,7 @@ export default function UserManagement() {
     if (user.length < 1) {
       alert("No user has been selected")
     }
-    alert(user + ' has been updated' )
+    alert(user + ' has been updated')
 
   }
 
@@ -519,41 +486,6 @@ export default function UserManagement() {
           permissions.
         </p>
         <br />
-<<<<<<< Updated upstream
-        <label input="users">Select a user:</label>&nbsp;&nbsp;
-        <Select
-          id="users"
-          name="users"
-          options={userOptions}
-          onChange={(e) => dropboxChangerHandler(e.value)}
-        ></Select>
-        <button
-          onClick={() => {
-            openAddUser();
-          }}
-        >
-          Add User...
-        </button>
-        <button
-          onClick={() => {
-            resetPassword();
-          }}
-        >
-          Reset Password
-        </button>
-        <button
-          onClick={() => {
-            userDetails();
-          }}
-        >
-          Edit User
-        </button>
-        <p>Selected: {selected}</p>
-        <div className="buttons">
-          {renderForm ? userForm() : null}
-        </div>
-        <button
-=======
         <div class="inputWrapper-1">
           <label input="users">Select a user:</label>&nbsp;&nbsp;
           <Select
@@ -586,7 +518,6 @@ export default function UserManagement() {
             Edit User
           </button>
           <button
->>>>>>> Stashed changes
           onClick={() => {
             userDelete();
           }}
@@ -595,7 +526,7 @@ export default function UserManagement() {
         </button>
         </div>
         <p>Selected:</p>
-        <p>{firstname} {lastname} - {jobRole}</p>
+        <p>{firstname} {lastname}- {jobRole}</p>
         
 
         <div className="buttons">
@@ -605,7 +536,7 @@ export default function UserManagement() {
       </div>
       <div class="modal-overlay">
         {showing ? (
-          <AddUser showAddUser={showing} setShowAddUser={setShowing} listUsers={listUsers} userOptions={userOptions}/>
+          <AddUser showAddUser={showing} setShowAddUser={setShowing} listUsers={listUsers} userOptions={userOptions} />
         ) : null}
         {showResetPassword ? (
           <ResetPassword showResetPassword={showResetPassword} setShowResetPassword={setShowResetPassword} user={user} />
@@ -614,7 +545,7 @@ export default function UserManagement() {
           <UserDetails user={user} showUserDetails={showUserDetails} setShowUserDetails={setShowUserDetails} />
         ) : null}
         {showUserDelete ? (
-          <UserDeleteConfirmation user={user} showUserDelete={showUserDelete} setShowUserDelete={setShowUserDelete} userOptions={userOptions}/>
+          <UserDeleteConfirmation user={user} showUserDelete={showUserDelete} setShowUserDelete={setShowUserDelete} userOptions={userOptions} />
         ) : null}
       </div>
     </div>
