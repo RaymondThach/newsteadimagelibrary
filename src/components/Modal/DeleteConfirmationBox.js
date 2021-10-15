@@ -55,7 +55,7 @@ export default function DeleteConfirmationBox({ delItem, delCategory, setDelConf
             <div class='background'>
                 <div class='delConfirmContainer'>
                     {
-                        (delCategory ? <label>Are you sure you want to delete {delCategory.categoryName}?</label> : <label>Are you sure you want to delete {delItem.name}?</label>)
+                        (delCategory ? <label>Are you sure you want to delete <b>{delCategory.categoryName}</b>?</label> : <label>Are you sure you want to delete <b>{delItem.name}</b>?</label>)
                     }
                     <div>
                         <button class='confirmDelBtn' onClick={() => {deletion();}}>Confirm</button>

@@ -423,7 +423,7 @@ function Sidebar() {
                     <link to="#" className="menu-bars"></link>
                 </div>
                 <nav className = 'nav-menu'>
-                    <img class="logo" src={transparentLogo}>
+                    <img class="sbLogo" src={transparentLogo}>
                     </img>
                     <form class='searchBar' onSubmit={ handleSubmit }>
                         <input id='searchField' type='search' value={searchTerm} placeholder={'Search'} onChange={(event) => { setSearchTerm(event.target.value); }}></input>

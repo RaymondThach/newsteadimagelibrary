@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./AddUser.css";
+import "./UserDetails.css";
 import "../pages/UserManagement.css";
 import { Auth, API } from "aws-amplify";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 
 export default function AddUser({ user, showUserDetails, setShowUserDetails }) {
  
@@ -130,52 +129,52 @@ export default function AddUser({ user, showUserDetails, setShowUserDetails }) {
     return (
       <Form onSubmit={handleSubmit}>
         <div class="form-group row">
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-4-editUser">
             <Form.Group controlId="firstname" size="sm">
-              <Form.Label> First Name </Form.Label>{" "}
+              <Form.Label> First Name </Form.Label>
               <Form.Control
                 autoFocus
                 type="firstname"
                 value={firstname}
                 onChange={(e) => setFirstname(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
-          <div class="form-group col-md-4">
+              />
+            </Form.Group>
+          </div>
+          <div class="form-group col-md-4-editUser">
             <Form.Group controlId="lastname" size="lg">
-              <Form.Label> Last Name </Form.Label>{" "}
+              <Form.Label> Last Name </Form.Label>
               <Form.Control
                 autoFocus
                 type="lastname"
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
-          <div class="form-group col-md-4">
+              />
+            </Form.Group>
+          </div>
+          <div class="form-group col-md-6-editUser">
             <Form.Group controlId="jobRole" size="lg">
-              <Form.Label> Job Role </Form.Label>{" "}
+              <Form.Label> Job Role </Form.Label>
               <Form.Control
                 autoFocus
                 type="jobRole"
                 value={jobRole}
                 onChange={(e) => setJobRole(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
-          <div class="form-group col-md-6">
-            <Form.Group controlId="email" size="lg">
-              <Form.Label> Email </Form.Label>{" "}
+              />
+            </Form.Group>
+          </div>
+          <div class="form-group col-md-6-editUser">
+            <Form.Group controlId="email" size="lg" >
+              <Form.Label> Email </Form.Label>
               <Form.Control
                 autoFocus
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
+              />
+            </Form.Group>
+          </div>
         </div>
-        <Button
+        <button class='editDetailsBtn'
           block
           size="lg"
           type="submit"
@@ -183,10 +182,10 @@ export default function AddUser({ user, showUserDetails, setShowUserDetails }) {
             fontSize: 20,
           }}
         >
-          Update Account{" "}
-        </Button>{" "}
+          Update Account
+        </button>
 
-        <Button
+        <button class='cancelEditDetailsBtn'
           block
           size="lg"
           type="reset"
@@ -197,8 +196,8 @@ export default function AddUser({ user, showUserDetails, setShowUserDetails }) {
           }
 
         >
-          Cancel{" "}
-        </Button>{" "}
+          Cancel
+        </button>
       </Form>
     );
   }
@@ -212,17 +211,18 @@ export default function AddUser({ user, showUserDetails, setShowUserDetails }) {
   return (
     <>
     { showUserDetails?
-        <div class= "background" >
+        <div class= "editUserBg" >
           <div id="add-user">
-            <h1> Edit User </h1>{" "}
-            <p>
-              User details for {user}
-            </p>{" "}
-            {renderForm()}
-          </div>{ " " }
+            <div class='editUserContainer'>
+              <h1> Edit User </h1>
+              <label>
+                User details for <b>{user}</b>
+              </label>
+              {renderForm()}
+            </div>
+          </div>
     </div >
     : null
-    
 }
 </>
   );

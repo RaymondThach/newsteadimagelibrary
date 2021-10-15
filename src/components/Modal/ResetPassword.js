@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
-import "./AddUser.css";
+import React, { useState } from "react";
+import "./ResetPassword.css";
 import "../pages/UserManagement.css";
-import { Auth, API } from "aws-amplify";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 
 export default function ResetPassword({ user, showResetPassword, setShowResetPassword }) {
 
@@ -79,29 +77,29 @@ export default function ResetPassword({ user, showResetPassword, setShowResetPas
             <Form onSubmit={handleSubmit}>
                 <div class="form-group row">
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6-passwordReset">
                         <Form.Group controlId="password" size="lg">
-                            <Form.Label> Password </Form.Label>{" "}
+                            <Form.Label> Password </Form.Label>
                             <Form.Control
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                            />{" "}
-                        </Form.Group>{" "}
-                    </div>{" "}
-                    <div class="form-group col-md-6">
+                            />
+                        </Form.Group>
+                    </div>
+                    <div class="form-group col-md-6-passwordReset">
                         <Form.Group controlId="confirmPassword" size="lg">
-                            <Form.Label> Confirm Password </Form.Label>{" "}
+                            <Form.Label> Confirm Password </Form.Label>
                             <Form.Control
                                 type="password"
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 value={confirmPassword}
-                            />{" "}
-                        </Form.Group>{" "}
-                    </div>{" "}
+                            />
+                        </Form.Group>
+                    </div>
 
                 </div>
-                <Button
+                <button class='resetPassBtn'
                     block
                     size="lg"
                     type="submit"
@@ -109,10 +107,10 @@ export default function ResetPassword({ user, showResetPassword, setShowResetPas
                         fontSize: 20,
                     }}
                 >
-                    Reset Password{" "}
-                </Button>{" "}
+                    Reset Password
+                </button>
 
-                <Button
+                <button class='cancelResetPassBtn'
                     block
                     size="lg"
                     type="reset"
@@ -123,8 +121,8 @@ export default function ResetPassword({ user, showResetPassword, setShowResetPas
                     }
 
                 >
-                    Cancel{" "}
-                </Button>{" "}
+                    Cancel
+                </button>
             </Form>
         );
     }
@@ -133,17 +131,18 @@ export default function ResetPassword({ user, showResetPassword, setShowResetPas
     return (
         <>
             {showResetPassword ?
-                <div class="background" >
-                    <div id="add-user">
-                        <h1> Password Reset for {user} </h1>{" "}
-                        <p>
-                            Please enter new password{" "}
-                        </p>{" "}
-                        {renderForm()}
-                    </div>{" "}
+                <div class="resetPasswordBg" >
+                    <div class='resetPassContainer'>
+                        <div id="add-user">
+                            <h1> Password Reset for <b>{user}</b> </h1>
+                            <p>
+                                Please enter new password
+                            </p>
+                            {renderForm()}
+                        </div>
+                    </div>
                 </div >
                 : null
-
             }
         </>
     );

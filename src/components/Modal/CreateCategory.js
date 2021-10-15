@@ -70,12 +70,12 @@ export default function CreateCategory({ setCreateCategory, setShowing, fetchCat
         <>
         <div class="background">
           <div class="createCatContainer">
-            <form onSubmit={ handleSubmit }>
-                <label>
+            <form onSubmit={ handleSubmit } class='createCatForm'>
+                <label class='newCatLabel'>
                 New Category Name:
                 </label>
-                <input type="text" value={ inputValue } onChange={ myChangeHandler } />
-                <input type="submit" value="Submit" />
+                <input type="text" value={ inputValue } onChange={ myChangeHandler }/>
+                <input type="submit" value="Submit" class='submitBtn'/>
                 <button class='cancelBtn' onClick={() => {handleClose();}}>Cancel</button>
             </form>
           </div>

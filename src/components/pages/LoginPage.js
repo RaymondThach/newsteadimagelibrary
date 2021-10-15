@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './LoginPage.css';
-import Background from '../images/bg.jpg';
 import { useAppContext } from '../services/context.js';
 import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
@@ -40,11 +39,6 @@ export default function Login() {
             alert(e.message);
         }
     }
-
-    //disabled={!validateForm()} <--- re-enable later add this to the button below.
-    //   function validateForm() {
-    //     return username.length > 0 && password.length > 0;
-    //   }
 
     return (
         <>
