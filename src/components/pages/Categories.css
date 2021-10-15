@@ -66,6 +66,13 @@
   width: 300px;
 }
 
+#defaultIcon{
+  color: #6190DC;
+}
+#defaultIcon path{
+  stroke-width: 0.5 !important;
+}
+
 #deleteCat {
   position: absolute;
   stroke-width: 2px;

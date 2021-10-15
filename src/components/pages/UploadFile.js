@@ -399,22 +399,31 @@ class UploadMediaFile extends React.Component {
         <div className="upload-forms">
           {this.state.file.map((f, index) => {
             return (
-              <div key={index}>
+              <div key={index} class="uploadedFile">
                 <div class="thumbnail">
                   <img src={URL.createObjectURL(this.state.file[index])} />
                 </div>
-
+                <div class="inputWrapper" >
+                <label id="fileName">File Name:</label>
                 <input
+                  class="inpContainer"
                   onChange={(e) => this.handleFileNameChange(e, index)}
                   value={this.state.fileName[index]}
                   defaultValue={this.state.fileName[index]}
                 />
+                </div>
+                <div class="inputWrapper" >
+                <label id="description">Description:</label>
                 <input
+                  class="inpContainer"
                   onChange={(e) => this.handleChange(e, index)}
                   value={this.state.descriptions[index]}
                 />
-                <button onClick={() => this.handleRemove(index)}>Remove</button>
-
+                
+                
+                </div>
+                <div class="inputWrapper">
+                <label id="categoryDropdown">Category:</label>
                 <Select
                   isMulti
                   name="Category"
@@ -424,23 +433,36 @@ class UploadMediaFile extends React.Component {
                   classNamePrefix="select"
                   onChange={(e) => this.dropdownHandler(e, index)}
                 />
+                </div>
                 {}
-
-                <Select
-                  isMulti
-                  name="Collection"
-                  value={this.state.collection[index]}
-                  options={collectionOptions}
-                  className="basic-multi-select"
-                  classNamePrefix="select"
-                  onChange={(e) => this.collectionDropdownHandler(e, index)}
-                  cache={false}
-                />
+                <div class="inputWrapper">
+                <label id="collectionDropdown">Collection:</label>
+                  <Select
+                    isMulti
+                    name="Collection"
+                    value={this.state.collection[index]}
+                    options={collectionOptions}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={(e) => this.collectionDropdownHandler(e, index)}
+                    cache={false}
+                  />
+                  
+                </div>
+                
+                <br/>
+                <button id="removeFile" onClick={() => this.handleRemove(index)}>Remove</button>
+                <br/>
+                <br/>
+                <div class="progressContainer">
                 <ProgressBar
                   now={this.state.progressBar[index]}
                   label={`${this.state.progressBar[index]}%`}
                 />
+                </div>
+                
               </div>
+             
             );
           })}
         </div>

@@ -1,33 +1,33 @@
 {
-    "newbackend": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-newsteadimagelibrary-newbackend-174722-authRole",
-            "UnauthRoleArn": "arn:aws:iam::965350275560:role/amplify-newsteadimagelibrary-newbackend-174722-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::965350275560:role/amplify-newsteadimagelibrary-newbackend-174722-authRole",
-            "Region": "ap-southeast-2",
-            "DeploymentBucketName": "amplify-newsteadimagelibrary-newbackend-174722-deployment",
-            "UnauthRoleName": "amplify-newsteadimagelibrary-newbackend-174722-unauthRole",
-            "StackName": "amplify-newsteadimagelibrary-newbackend-174722",
-            "StackId": "arn:aws:cloudformation:ap-southeast-2:965350275560:stack/amplify-newsteadimagelibrary-newbackend-174722/7b7d9ab0-2a67-11ec-899a-0231c76dc538",
-            "AmplifyAppId": "d3ubrysxis9rlg"
-        },
-        "categories": {
-            "auth": {
-                "newsteadimagelibrary648aa53a": {},
-                "userPoolGroups": {}
-            },
-            "function": {
-                "AdminQueries10f5143c": {
-                    "deploymentBucketName": "amplify-newsteadimagelibrary-newbackend-174722-deployment",
-                    "s3Key": "amplify-builds/AdminQueries10f5143c-667a6e71366442336363-build.zip"
-                }
-            },
-            "hosting": {
-                "amplifyhosting": {
-                    "appId": "d3ubrysxis9rlg",
-                    "type": "manual"
-                }
-            }
+  "newbackend": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-newsteadimagelibrary-newbackend-174722-authRole",
+      "UnauthRoleArn": "arn:aws:iam::965350275560:role/amplify-newsteadimagelibrary-newbackend-174722-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::965350275560:role/amplify-newsteadimagelibrary-newbackend-174722-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-newsteadimagelibrary-newbackend-174722-deployment",
+      "UnauthRoleName": "amplify-newsteadimagelibrary-newbackend-174722-unauthRole",
+      "StackName": "amplify-newsteadimagelibrary-newbackend-174722",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:965350275560:stack/amplify-newsteadimagelibrary-newbackend-174722/7b7d9ab0-2a67-11ec-899a-0231c76dc538",
+      "AmplifyAppId": "d3ubrysxis9rlg"
+    },
+    "categories": {
+      "auth": {
+        "newsteadimagelibrary648aa53a": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries10f5143c": {
+          "deploymentBucketName": "amplify-newsteadimagelibrary-newbackend-174722-deployment",
+          "s3Key": "amplify-builds/AdminQueries10f5143c-667a6e71366442336363-build.zip"
         }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3ubrysxis9rlg",
+          "type": "manual"
+        }
+      }
     }
+  }
 }

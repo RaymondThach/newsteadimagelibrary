@@ -151,7 +151,7 @@ export default function Categories() {
               <a class='item' href={'/categories/'+ encodeURIComponent(listname.categoryName.replace(/[ ]/g, '-')) + '/' + listname.id}>
                 <div class='cat_tn'>
                   {
-                    (listname.randPhoto !== null ? <AmplifyS3Image imgKey={listname.randPhoto} /> : <HiOutlinePhotograph class='defaultImgIcon'/>)
+                    (listname.randPhoto !== null ? <AmplifyS3Image imgKey={listname.randPhoto} /> : <HiOutlinePhotograph id='defaultIcon' class='defaultImgIcon'/>)
                   }
                 </div>
                 {listname.categoryName}
