@@ -437,7 +437,7 @@ function Sidebar() {
                                 <a href="#" onClick={() => {sortByOldest();}}>Oldest</a>
                                 <a href="#" id='photoSortBtn' onClick={() => {sortItemsPhotos();}} hidden={true}>Photos</a>
                                 <a href="#" id='videoSortBtn' onClick={() => {sortItemsVideos();}} hidden={true}>Videos</a>
-                                </div>
+                            </div>
                     </div>
                     {SidebarData.map((item, index) => {
                             return(

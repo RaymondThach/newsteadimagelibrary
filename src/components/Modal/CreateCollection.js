@@ -4,10 +4,8 @@ import { createCollection } from "../../graphql/mutations";
 import { collectionName } from "../../graphql/queries";
 import React, { useState } from "react";
 import { API, graphqlOperation } from 'aws-amplify';
-import { useAppContext } from '../services/context.js';
 
-
-export default function CreateCollection({ fetchCollection, setShowing}) {
+export default function CreateCollection({ fetchCollection, setShowing, setCreateCollection, pagination }) {
   //String value of the input field for new category name
   const [inputValue, setInputValue] = useState('');
 
@@ -36,7 +34,7 @@ export default function CreateCollection({ fetchCollection, setShowing}) {
       if (arrResult.data.collectionName.items.length === 0) {
         addToDB(collection);
       } else {
-        alert("Collection " + this.state.value + " already exists.");
+        alert("Collection " + inputValue + " already exists.");
       }
     } catch (error) {
       console.log(error);
@@ -49,16 +47,23 @@ export default function CreateCollection({ fetchCollection, setShowing}) {
       name: inputValue
     }
     addNewCollection(collection);
-    console.log(collection)
+    if (window.location.pathname.includes('collections/') === false) {
+      pagination(); 
+    } 
 
     //Prevent Redirection to Categories Page
     event.preventDefault();
   }
 
   //Manage the flow of closing the create category modal of two different paths
-  function handleClose() {
-      setShowing(false);
-  }
+  function handleClose(){
+    if(!setCreateCollection) {
+        setShowing(false);
+    }
+    else {
+        setCreateCollection(false);
+    }
+}
 
   return (
     <>
@@ -70,7 +75,7 @@ export default function CreateCollection({ fetchCollection, setShowing}) {
             </label>
             <input type="text" value={inputValue} onChange={(e)=>myChangeHandler(e.target.value)} />
             <input type="submit" value="Submit" />
-            <button class='cancelBtn' onClick={() => { handleClose(); }}>Cancel</button>
+            <button class='cancelBtn' onClick={() => {handleClose();} }>Cancel</button>
           </form>
         </div>
       </div>

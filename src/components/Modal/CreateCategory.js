@@ -33,6 +33,7 @@ export default function CreateCategory({ setCreateCategory, setShowing, fetchCat
 
     //Query DB using input category name to check if it already exists, if not add it to the Tag table
     async function addNewCat(tag){
+        console.log('reached');
         try {
             const arrResult = await API.graphql(graphqlOperation(tagByCatName, tag));
             { arrResult.data.tagByCatName.items.length === 0 ? addToDB(tag) : alert('Category ' + inputValue + ' already exists.') };
@@ -48,8 +49,9 @@ export default function CreateCategory({ setCreateCategory, setShowing, fetchCat
             categoryName: inputValue 
         }
         addNewCat(tag);
-        pagination();
-
+        if (window.location.pathname.includes('categories/') === false) {
+            pagination(); 
+        } 
         //Prevent Redirection to Categories Page
         event.preventDefault();
     }
