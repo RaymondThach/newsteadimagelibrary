@@ -64,5 +64,8 @@
   margin-top: 0.5%;
 }
 
-
+.col-2 {
+  width: 14%;
+  outline-style: solid;
+}
 

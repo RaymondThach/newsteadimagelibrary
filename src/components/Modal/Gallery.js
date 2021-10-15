@@ -54,6 +54,7 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
   const closeGallery = event => {
     if (modalRef.current === event.target) {
       setShowGallery(false);
+      fetchMediaFiles();
     }
   }
 

@@ -134,7 +134,7 @@ export default function ResetPassword({ user, showResetPassword, setShowResetPas
                 <div class="resetPasswordBg" >
                     <div class='resetPassContainer'>
                         <div id="add-user">
-                            <h1> Password Reset for <b>{user}</b> </h1>
+                            <h2> Password Reset for <b>{user}</b> </h2>
                             <p>
                                 Please enter new password
                             </p>
