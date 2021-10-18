@@ -290,7 +290,7 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
               {
                 videoFormat.indexOf(fileExt) > -1
                   ? videoUrl !== undefined ? <Videojs {...videoJsOptions} /> : null
-                  : <AmplifyS3Image imgKey={item.name} class='image' />
+                  : <div class='imageContainer'><AmplifyS3Image imgKey={item.name} class='image' /></div>
               }
             </div>
             <div class='dataColumn'>

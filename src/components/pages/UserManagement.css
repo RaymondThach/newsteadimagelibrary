@@ -29,28 +29,24 @@
   position: relative;
   width: 100%;
   padding: 2%;
-
-
 }
+
 .userEditing p{
   text-align: center;
   margin-bottom: 0 !important;
-  
-  
-  
 }
+
 .userEditing #submitChanges{
   position: relative;
-    border-radius: 1rem;
-    border: none;
-    background-color: rgb(96, 143, 221);
-    bottom: 5%;
-    color: white;
-
-    cursor: pointer;
-    height: 40px;
-    margin-top: 5%; 
-    width: 20%;
+  border-radius: 1rem;
+  border: none;
+  background-color: rgb(96, 143, 221);
+  bottom: 5%;
+  color: white;
+  cursor: pointer;
+  height: 40px;
+  margin-top: 5%; 
+  width: 20%;
   
 
 }
@@ -66,6 +62,5 @@
 
 .col-2 {
   width: 14%;
-  outline-style: solid;
 }
 

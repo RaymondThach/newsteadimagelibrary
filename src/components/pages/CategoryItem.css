@@ -20,11 +20,13 @@
     margin-top: 5%;
     display: inline-block;
     overflow: hidden;
+    height: 260px;
+    width: 300px;
 }
 
 .catItem_tn {
-    height: 200px;
-    width: 300px;
+    height: 80%;
+    width: inherit;
 }
 
 .catItem_name {

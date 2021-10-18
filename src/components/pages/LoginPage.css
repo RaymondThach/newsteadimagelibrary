@@ -1,10 +1,17 @@
+.bgColour {
+  background-image: linear-gradient(to bottom, #608fdd, #7fa7e6, #9fc0ef, #c0d8f7, #e3f0ff);
+}
+
 .Login {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-image: linear-gradient(to bottom, #608fdd, #7fa7e6, #9fc0ef, #c0d8f7, #e3f0ff);
+  background-image: url('../images/background.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 2000px 900px; 
 }
 
 .loginlogo{

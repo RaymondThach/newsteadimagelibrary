@@ -41,7 +41,7 @@ export default function Login() {
     }
 
     return (
-        <>
+        <div class='bgColour'>
             <div class='Login'>
             <div class='loginContainer'>
                 <img class="loginlogo" src={transparentLogo}></img> 
@@ -75,6 +75,6 @@ export default function Login() {
                 </div>
             </div>
         </div>
-      </>
+      </div>
     );
 }
