@@ -15,7 +15,7 @@ export default function Categories() {
   const [ showing, setShowing ] = useState(false);
 
   //Context State array for storing all categories and their random photo, lifted to App.js level
-  const { categories, setCategories } = useAppContext();
+  const { categories, setCategories, setCollectionNames, setItems } = useAppContext();
 
   //Use declared context variables to track delete mode
   const { deleteMode, setDeleteMode } = useAppContext();
@@ -108,6 +108,8 @@ export default function Categories() {
   useEffect(() => {
     fetchCategories();
     setDeleteMode(false);
+    setCollectionNames([]);
+    setItems([]);
   }, []);
 
   //Call back to pagination function to re-render the page buttons initially, refresh the pagebar if the maximum item displayed it reached,

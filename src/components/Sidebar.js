@@ -74,6 +74,7 @@ function Sidebar() {
     /* Sort by alphabetical */
     //Ordering categories alphabetically based on integer returned (categories.js)
     function sortCatAlphabetically() {
+        console.log('1');
         if (categories.length === 0 && searchResult.length !== 0) {
             setCategories(searchResult);
         }
@@ -98,6 +99,7 @@ function Sidebar() {
 
     //Ordering collections alphabetically based on integer returned (collections.js)
     function sortColAlphabetically() {
+        console.log('2');
         if (collectionNames.length === 0 && searchResult.length !== 0) {
             setCollectionNames(searchResult);
         }
@@ -122,6 +124,7 @@ function Sidebar() {
 
     //Ordering items alphabetically based on integer returned, functionality shared by category and collection items
     function sortItemsAlphabetically() {
+        console.log('3');
         if (items.length === 0 && searchResult.length !== 0) {
             setItems(searchResult);
         }
@@ -267,6 +270,7 @@ function Sidebar() {
         }
         if (searchTerm === '') {
             setCategories(originalCats);
+            setSearchResult(originalCats);
         }
         else if (originalCats.length > 0 ) {
             let results = originalCats.filter(cat => {
@@ -284,6 +288,7 @@ function Sidebar() {
         }
         if (searchTerm === '') {
             setCollectionNames(originalCols);
+            setSearchResult(originalCols);
         }
         else if (originalCols.length > 0) {
             let results = originalCols.filter(col => {
@@ -301,6 +306,7 @@ function Sidebar() {
         }
         if (searchTerm === '') {
             setItems(originalItems);
+            setSearchResult(originalItems);
         }
         else if (originalItems.length > 0) {
             let results = originalItems.filter(item => {
@@ -393,20 +399,45 @@ function Sidebar() {
         }
     }, [originalItems]);
 
-    //Hide the photo and video sort options on pages except category item and collection item
+    //Hide the photo and video sort options on pages except category item and collection item, reset the search results on page change
     useEffect(() => {
+        setSearchResult([]);
         if (window.location.pathname !== '/login') {
             const hideConditions = ['Photos/', 'Videos/'];
             const enableConditions = ['categories/', 'collections/'];
+            const hideSortSearchFor = ['upload-item', 'admin-user-accounts']
             if (hideConditions.some(path => window.location.pathname.includes(path))) {
+                document.getElementById("alphabetSortBtn").hidden = false;
+                document.getElementById("newestSortBtn").hidden = false;
+                document.getElementById("oldestSortBtn").hidden = false;
                 document.getElementById("photoSortBtn").hidden = true;
                 document.getElementById("videoSortBtn").hidden = true;
+                document.getElementById("searchField").disabled = false;
+                document.getElementById("searchBtn").disabled = false;
             } else if (enableConditions.some( path => window.location.pathname.includes(path))) {
+                document.getElementById("alphabetSortBtn").hidden = false;
+                document.getElementById("newestSortBtn").hidden = false;
+                document.getElementById("oldestSortBtn").hidden = false;
                 document.getElementById("photoSortBtn").hidden = false;
                 document.getElementById("videoSortBtn").hidden = false;
-            } else {
+                document.getElementById("searchField").disabled = false;
+                document.getElementById("searchBtn").disabled = false;
+            } else if (hideSortSearchFor.some(path => window.location.pathname.includes(path))){
+                document.getElementById("alphabetSortBtn").hidden = true;
+                document.getElementById("newestSortBtn").hidden = true;
+                document.getElementById("oldestSortBtn").hidden = true;
                 document.getElementById("photoSortBtn").hidden = true;
                 document.getElementById("videoSortBtn").hidden = true;
+                document.getElementById("searchField").disabled = true;
+                document.getElementById("searchBtn").disabled = true;    
+            } else {
+                document.getElementById("alphabetSortBtn").hidden = false;
+                document.getElementById("newestSortBtn").hidden = false;
+                document.getElementById("oldestSortBtn").hidden = false;
+                document.getElementById("photoSortBtn").hidden = true;
+                document.getElementById("videoSortBtn").hidden = true;
+                document.getElementById("searchField").disabled = false;
+                document.getElementById("searchBtn").disabled = false;
             }
         }
     }, [window.location.pathname]);
@@ -426,15 +457,15 @@ function Sidebar() {
                     <img class="sbLogo" src={transparentLogo}>
                     </img>
                     <form class='searchBar' onSubmit={ handleSubmit }>
-                        <input id='searchField' type='search' value={searchTerm} placeholder={'Search'} onChange={(event) => { setSearchTerm(event.target.value); }}></input>
-                        <FcSearch id='searchBtn' size={30} onClick={handleSubmit}/>
+                        <input id='searchField' type='search' value={searchTerm} placeholder={'Search'} onChange={(event) => { setSearchTerm(event.target.value); }} disabled={true}></input>
+                        <FcSearch id='searchBtn' size={30} onClick={handleSubmit} disabled={true}/>
                     </form>
                     <div class="dropdown">
                         <button class="dropbtn">Sort By</button>
                             <div class="dropdown-content">
-                                <a href="#" onClick={() => {sortByAlphabetical();}}>Alphabetically</a>
-                                <a href="#" onClick={() => {sortByNewest();}}>Newest</a>
-                                <a href="#" onClick={() => {sortByOldest();}}>Oldest</a>
+                                <a href="#" id= 'alphabetSortBtn' onClick={() => {sortByAlphabetical();}} hidden={true}>Alphabetically</a>
+                                <a href="#" id= 'newestSortBtn' onClick={() => {sortByNewest();}} hidden={true}>Newest</a>
+                                <a href="#" id= 'oldestSortBtn' onClick={() => {sortByOldest();}} hidden={true}>Oldest</a>
                                 <a href="#" id='photoSortBtn' onClick={() => {sortItemsPhotos();}} hidden={true}>Photos</a>
                                 <a href="#" id='videoSortBtn' onClick={() => {sortItemsVideos();}} hidden={true}>Videos</a>
                             </div>

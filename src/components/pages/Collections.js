@@ -15,7 +15,7 @@ export default function Collections() {
   const [showing, setShowing] = useState(false);
 
   //Context state array for all collections
-  const { collectionNames, setCollectionNames } = useAppContext();
+  const { collectionNames, setCollectionNames, setCategories, setItems } = useAppContext();
   
   //Use declared context variables to track delete mode
   const { deleteMode, setDeleteMode } = useAppContext();
@@ -108,6 +108,8 @@ export default function Collections() {
   useEffect(() => {
     fetchCollection();
     setDeleteMode(false);
+    setCategories([]);
+    setItems([]);
   }, []);
 
   //Call back to pagination function to re-render the page buttons initially, refresh the pagebar if the maximum item displayed it reached,

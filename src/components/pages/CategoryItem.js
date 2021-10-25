@@ -19,7 +19,7 @@ export default function CategoryItem() {
     //State variable to store category name from DynamoDB or for 'Uncategorised' page
     const [ catName, setCatName ] = useState('');
     //Context state array for items of a selected category lifted to App.js
-    const { items, setItems } = useAppContext();
+    const { items, setItems, setCategories, setCollectionNames } = useAppContext();
     //State variable for showing the gallery
     const [ showGallery, setShowGallery ] = useState(false);
     //Use declared context variables to track delete mode
@@ -164,6 +164,8 @@ export default function CategoryItem() {
     useEffect(() => {
         fetchMediaFiles();
         setDeleteMode(false);
+        setCategories([]);
+        setCollectionNames([]);
     }, []);
 
     //Call back to pagination function to re-render the page buttons initially, refresh the pagebar if the maximum item displayed it reached,
