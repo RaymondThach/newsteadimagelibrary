@@ -5,7 +5,6 @@ import { FcOk, FcCancel } from 'react-icons/fc';
 import { Storage, API, graphqlOperation } from 'aws-amplify';
 import { updateMediaFile } from '../../graphql/mutations';
 import { AmplifyS3Image } from '@aws-amplify/ui-react';
-import { useAppContext } from '../services/context.js';
 import transparentLogo from '../images/transparentLogo.png';
 import Select from 'react-select';
 import CreateCategory from '../Modal/CreateCategory';
@@ -17,9 +16,6 @@ import './Gallery.css';
 export default function Gallery({ showGallery, setShowGallery, item, fetchMediaFiles }) {
   //Reference to modal's background
   let modalRef = useRef();
-
-  //Context object to keep track of whether gallery modal is open in App.js
-  const { galleryHasOpened } = useAppContext();
 
   //State for showing the create category modal
   const [createCategory, setCreateCategory] = useState(false);
@@ -58,7 +54,6 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
   const closeGallery = event => {
     if (modalRef.current === event.target) {
       setShowGallery(false);
-      galleryHasOpened(false);
       fetchMediaFiles();
     }
   }
@@ -239,23 +234,11 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
     setVideoUrl(result) //Sign URL for video player
   }
 
-  //On load get the details of the selected item.
-  useEffect(() => {
-    setFileExt((item.name.split('.').pop()));
-    getVideoObject();
-    if (item.description != null) {
-      setDetails(item.description);
-    }
-    galleryHasOpened(true);
-    populateCatSelector();
-    populateColSelector();
-  }, []);
-
   //Change the favourite property to true or false for the selected item in the database
   async function setFavourite() {
-    if (favourited === undefined) {
+    if (favourited === undefined || favourited === null) {
       await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: true } }));
-      setFavourited(prev => !prev);
+      setFavourited(true);
     }
     else if (favourited === true) {
       await API.graphql(graphqlOperation(updateMediaFile, { input: { id: item.id, favourite: false } }));
@@ -267,10 +250,21 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
     }
   }
 
+  //On load get the details of the selected item.
+  useEffect(() => {
+    setFileExt((item.name.split('.').pop()));
+    getVideoObject();
+    if (item.description != null) {
+      setDetails(item.description);
+    }
+    populateCatSelector();
+    populateColSelector();
+  }, []);
+
   return (
     <>
       {showGallery ?
-        (<div class='background' ref={modalRef} onClick={closeGallery}>
+        (<div class='galleryBackground' ref={modalRef} onClick={closeGallery}>
           <div class='leftMenu'>
             <img class='galleryLogo' src={transparentLogo} />
             <div class='menu-wrapper'>
@@ -288,7 +282,7 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
               </div>
             </div>
           </div>
-          <div class='container'>
+          <div class='galContainer'>
             <div class='imageName'>
               <label>{item.name}</label>
             </div>
@@ -296,12 +290,12 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
               {
                 videoFormat.indexOf(fileExt) > -1
                   ? videoUrl !== undefined ? <Videojs {...videoJsOptions} /> : null
-                  : <AmplifyS3Image imgKey={item.name} class='image' />
+                  : <div class='imageContainer'><AmplifyS3Image imgKey={item.name} class='image' /></div>
               }
             </div>
             <div class='dataColumn'>
               <div class='closeGalleryButton'>
-                <MdClose onClick={() => { setShowGallery(false); galleryHasOpened(false); fetchMediaFiles(); }} />
+                <MdClose onClick={() => { setShowGallery(false); }} />
               </div>
               <div class='detailLabel'>
                 <label>Details:</label>
@@ -317,7 +311,7 @@ export default function Gallery({ showGallery, setShowGallery, item, fetchMediaF
               </div>
               <div class ='favouriteButton' onClick={() => {setFavourite();}}>
                 {
-                  (favourited !== null ? 
+                  (favourited !== null || favourited !== undefined ? 
                     (favourited === true ? <AiFillStar size={20} id='favouritedStar'/> : <AiOutlineStar size={20}/>)
                   : <AiOutlineStar size={20}/>)
                 } 

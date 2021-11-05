@@ -22,9 +22,6 @@ function App() {
   //Context variable that tracks if the user is logged in
   const [isAuthenticated, userHasAuthenticated] = useState(false);
 
-  //Context variable that tracks if gallery modal is open
-  const [ galleryIsOpen, galleryHasOpened ] = useState(false);
-
   //Context variable that tracks delete mode to show delete buttons or not for categories and items
   const [ deleteMode, setDeleteMode ] = useState(false);
 
@@ -57,11 +54,9 @@ function App() {
 
   return (
     <div className='App'>
-        <Context.Provider value={{ isAuthenticated, userHasAuthenticated, categories, setCategories, items, setItems, collectionNames, setCollectionNames, galleryIsOpen, galleryHasOpened, deleteMode, setDeleteMode}}>
+        <Context.Provider value={{ isAuthenticated, userHasAuthenticated, categories, setCategories, items, setItems, collectionNames, setCollectionNames, deleteMode, setDeleteMode}}>
             <BrowserRouter history={history}>
-              {
-                galleryIsOpen ? null : <Sidebar/>
-              }
+              <Sidebar/>
               <Switch>
                 <Route path='/categories/:categoryName/:id' component={CategoryItem}/>
                 <Route path='/categories' component={Categories}/>

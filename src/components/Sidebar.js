@@ -56,6 +56,9 @@ function Sidebar() {
     //State boolean for setting which mode to search by for sorting by videos only 
     const [ videosOnly, setVideosOnly ] = useState(false);
 
+    //State array to keep the original search results to continue sorting by
+    const [ searchResult, setSearchResult ] = useState([]); 
+
     //Set the Context service to false for logging out, sign out of Amplify
     async function handleLogout() {
         await Auth.signOut();
@@ -71,50 +74,91 @@ function Sidebar() {
     /* Sort by alphabetical */
     //Ordering categories alphabetically based on integer returned (categories.js)
     function sortCatAlphabetically() {
-        if (originalCats.length === 0) {
-            setOriginalCats(items);
+        console.log('1');
+        if (categories.length === 0 && searchResult.length !== 0) {
+            setCategories(searchResult);
         }
-        if (items.length === 0) {
-            setItems(originalItems);
+        if (searchResult.length === 0) {
+            setSearchResult(categories);
+            const sortedArr = categories.sort(function(a, b) {
+                var catNameA = a.categoryName.toUpperCase();
+                var catNameB = b.categoryName.toUpperCase();
+                return (catNameA < catNameB) ? -1 : (catNameA > catNameB) ? 1 : 0;
+            });
+            setCategories(sortedArr);
         }
-        const sortedArr = categories.sort(function(a, b) {
-            var catNameA = a.categoryName.toUpperCase();
-            var catNameB = b.categoryName.toUpperCase();
-            return (catNameA < catNameB) ? -1 : (catNameA > catNameB) ? 1 : 0;
-        });
-        setCategories(sortedArr);
+        else if (searchResult.length > 0) {
+            const sortedArr = searchResult.sort(function(a, b) {
+                var catNameA = a.categoryName.toUpperCase();
+                var catNameB = b.categoryName.toUpperCase();
+                return (catNameA < catNameB) ? -1 : (catNameA > catNameB) ? 1 : 0;
+            });
+            setCategories(sortedArr);
+        } 
     }
 
     //Ordering collections alphabetically based on integer returned (collections.js)
     function sortColAlphabetically() {
-        const sortedArr = collectionNames.sort(function(a, b) {
-            var colNameA = a.name.toUpperCase();
-            var colNameB = b.name.toUpperCase();
-            return (colNameA < colNameB) ? -1 : (colNameA > colNameB) ? 1 : 0;
-        });
-        setCollectionNames(sortedArr);
+        console.log('2');
+        if (collectionNames.length === 0 && searchResult.length !== 0) {
+            setCollectionNames(searchResult);
+        }
+        else if (searchResult.length === 0) {
+            setSearchResult(collectionNames);
+            const sortedArr = collectionNames.sort(function(a, b) {
+                var colNameA = a.name.toUpperCase();
+                var colNameB = b.name.toUpperCase();
+                return (colNameA < colNameB) ? -1 : (colNameA > colNameB) ? 1 : 0;
+            });
+            setCollectionNames(sortedArr);
+        }
+        else if (searchResult.length > 0) {
+            const sortedArr = searchResult.sort(function(a, b) {
+                var colNameA = a.name.toUpperCase();
+                var colNameB = b.name.toUpperCase();
+                return (colNameA < colNameB) ? -1 : (colNameA > colNameB) ? 1 : 0;
+            });
+            setCollectionNames(sortedArr);
+        }
     }
 
     //Ordering items alphabetically based on integer returned, functionality shared by category and collection items
     function sortItemsAlphabetically() {
-        const sortedArr = items.sort(function(a, b) {
-            var itemNameA = a.name.toUpperCase();
-            var itemNameB = b.name.toUpperCase();
-            return (itemNameA < itemNameB) ? -1 : (itemNameA > itemNameB) ? 1 : 0;
-        });
-        setItems(sortedArr);
+        console.log('3');
+        if (items.length === 0 && searchResult.length !== 0) {
+            setItems(searchResult);
+        }
+        else if (searchResult.length === 0) {
+            setSearchResult(items);
+            const sortedArr = items.sort(function(a, b) {
+                var itemNameA = a.name.toUpperCase();
+                var itemNameB = b.name.toUpperCase();
+                return (itemNameA < itemNameB) ? -1 : (itemNameA > itemNameB) ? 1 : 0;
+            });
+            setItems(sortedArr);
+        }
+        else if (searchResult.length > 0) {
+            const sortedArr = searchResult.sort(function(a, b) {
+                var itemNameA = a.name.toUpperCase();
+                var itemNameB = b.name.toUpperCase();
+                return (itemNameA < itemNameB) ? -1 : (itemNameA > itemNameB) ? 1 : 0;
+            });
+            setItems(sortedArr);
+        }
     }
 
     //Check file extensions not existing in videoFormat array to return only photos of the current search results
     function sortItemsPhotos() {
-        console.log('sorting by photo');
         setPhotosOnly(true);
         setVideosOnly(false);
         if (originalItems.length === 0){
             setOriginalItems(items);
-        } else if (items.length > 0) {
-            let results = items.filter(item => {
-                
+        }
+        if (searchResult.length === 0) {
+            setSearchResult(items);
+        } 
+        else if (searchResult.length > 0) {
+            let results = searchResult.filter(item => {
                 return videoFormat.indexOf(item.name.split('.').pop()) < 0
             })
             setItems(results);
@@ -123,16 +167,19 @@ function Sidebar() {
 
     //Check file extensions existing in videoFormat array to return only videos of the current search results
     function sortItemsVideos() {
-        console.log('sorting by vid');
         setPhotosOnly(false);
         setVideosOnly(true);
         if (originalItems.length === 0){
             setOriginalItems(items);
-        } else if (items.length > 0) {
-            let results = items.filter(item => {
+        } 
+        if (searchResult.length === 0) {
+            setSearchResult(items);
+        }
+        else if (searchResult.length > 0) {
+            let results = searchResult.filter(item => {
                 return videoFormat.indexOf(item.name.split('.').pop()) > 0
             })
-            setItems(results);
+            setItems(results);  
         }  
     }
 
@@ -144,17 +191,29 @@ function Sidebar() {
         else if (collectionNames.length > 0) {
             sortColAlphabetically();
         }
-        else if (items.length > 0) {
+        else if (items.length >= 0) {
             sortItemsAlphabetically();
         }
     }
 
     /* Sort by Newest */
-    //Ordering categories, collections, category items, collection items by newest
+    //Ordering categories, collections, category items and collection items by newest
     function sortAllNewest(array) {
-        array.sort(function(a, b) {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-        });
+        if (array.length === 0 && searchResult.length !== 0) {
+            setItems(searchResult);
+            searchResult.sort(function(a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        } else if (searchResult.length === 0) {
+            setSearchResult(array);
+            array.sort(function(a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        } else {
+            array.sort(function(a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+        } 
     }
 
     //Handler for choosing which array to pass to the sorting function based on which is populated
@@ -165,7 +224,7 @@ function Sidebar() {
         else if (collectionNames.length > 0) {
             sortAllNewest(collectionNames);
         }
-        else if (items.length > 0) {
+        else if (items.length >= 0) {
             sortAllNewest(items);
         }
     }
@@ -173,9 +232,21 @@ function Sidebar() {
     /* Sort by Oldest */
     //Ordering categories, collections, category items, collection items by oldest
     function sortAllOldest(array) {
-        array.sort(function(a, b) {
-            return new Date(a.createdAt) - new Date(b.createdAt);
-        });
+        if (array.length === 0 && searchResult.length !== 0) {
+            setItems(searchResult);
+            searchResult.sort(function(a, b) {
+                return new Date(a.createdAt) - new Date(b.createdAt);
+            });
+        } else if (searchResult.length === 0) {
+            setSearchResult(array);
+            array.sort(function(a, b) {
+                return new Date(a.createdAt) - new Date(b.createdAt);
+            });  
+        } else {
+            array.sort(function(a, b) {
+                return new Date(a.createdAt) - new Date(b.createdAt);
+            });    
+        }
     }
 
     //Handler for choosing which array to pass to the sorting function based on which is populated
@@ -186,7 +257,7 @@ function Sidebar() {
         else if (collectionNames.length > 0) {
             sortAllOldest(collectionNames);
         }
-        else if (items.length > 0) {
+        else if (items.length >= 0) {
             sortAllOldest(items);
         }
     }
@@ -199,12 +270,14 @@ function Sidebar() {
         }
         if (searchTerm === '') {
             setCategories(originalCats);
+            setSearchResult(originalCats);
         }
         else if (originalCats.length > 0 ) {
             let results = originalCats.filter(cat => {
                 return cat.categoryName.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setCategories(results);
+            setSearchResult(results);
         }  
     }
 
@@ -215,12 +288,14 @@ function Sidebar() {
         }
         if (searchTerm === '') {
             setCollectionNames(originalCols);
+            setSearchResult(originalCols);
         }
         else if (originalCols.length > 0) {
             let results = originalCols.filter(col => {
                 return col.name.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setCollectionNames(results);
+            setSearchResult(results);
         }  
     }
 
@@ -231,12 +306,14 @@ function Sidebar() {
         }
         if (searchTerm === '') {
             setItems(originalItems);
+            setSearchResult(originalItems);
         }
         else if (originalItems.length > 0) {
             let results = originalItems.filter(item => {
                 return item.name.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setItems(results);
+            setSearchResult(results);
         }  
     }
 
@@ -276,12 +353,14 @@ function Sidebar() {
     useEffect(() => {
         if (searchTerm === '') {
             setCategories(originalCats);
+            setSearchResult(originalCats);
         }
         else if (originalCats.length > 0 ) {
             let results = originalCats.filter(cat => {
                 return cat.categoryName.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setCategories(results);
+            setSearchResult(results);
         }  
     }, [originalCats]);
     
@@ -289,31 +368,23 @@ function Sidebar() {
     useEffect(() => {
         if (searchTerm === '') {
             setCollectionNames(originalCols);
+            setSearchResult(originalCols);
         }
         else if (originalCols.length > 0) {
             let results = originalCols.filter(col => {
                 return col.name.toLowerCase().includes(searchTerm.toLowerCase());
             })
             setCollectionNames(results);
+            setSearchResult(results);
         }  
     }, [originalCols]);
 
     //Handle initial re-rendering of items for searching and sorting by photos and videos of that search
     useEffect(() => {
         if (photosOnly === true) {
-            if (originalItems.length > 0) {
-                let results = items.filter(item => {
-                    return videoFormat.indexOf(item.name.split('.').pop()) < 0
-                })
-                setItems(results);
-            }
+            sortItemsPhotos();
         } else if (videosOnly === true) {
-            if (originalItems.length > 0) {
-                let results = items.filter(item => {
-                    return videoFormat.indexOf(item.name.split('.').pop()) > 0
-                })
-                setItems(results);
-            }
+            sortItemsVideos();
         } else {
             if (searchTerm === '') {
                 setItems(originalItems);
@@ -323,24 +394,50 @@ function Sidebar() {
                     return item.name.toLowerCase().includes(searchTerm.toLowerCase());
                 })
                 setItems(results);
+                setSearchResult(results);
             }  
         }
     }, [originalItems]);
 
-    //Hide the photo and video sort options on pages except category item and collection item
+    //Hide the photo and video sort options on pages except category item and collection item, reset the search results on page change
     useEffect(() => {
+        setSearchResult([]);
         if (window.location.pathname !== '/login') {
             const hideConditions = ['Photos/', 'Videos/'];
             const enableConditions = ['categories/', 'collections/'];
+            const hideSortSearchFor = ['upload-item', 'admin-user-accounts']
             if (hideConditions.some(path => window.location.pathname.includes(path))) {
+                document.getElementById("alphabetSortBtn").hidden = false;
+                document.getElementById("newestSortBtn").hidden = false;
+                document.getElementById("oldestSortBtn").hidden = false;
                 document.getElementById("photoSortBtn").hidden = true;
                 document.getElementById("videoSortBtn").hidden = true;
+                document.getElementById("searchField").disabled = false;
+                document.getElementById("searchBtn").disabled = false;
             } else if (enableConditions.some( path => window.location.pathname.includes(path))) {
+                document.getElementById("alphabetSortBtn").hidden = false;
+                document.getElementById("newestSortBtn").hidden = false;
+                document.getElementById("oldestSortBtn").hidden = false;
                 document.getElementById("photoSortBtn").hidden = false;
                 document.getElementById("videoSortBtn").hidden = false;
-            } else {
+                document.getElementById("searchField").disabled = false;
+                document.getElementById("searchBtn").disabled = false;
+            } else if (hideSortSearchFor.some(path => window.location.pathname.includes(path))){
+                document.getElementById("alphabetSortBtn").hidden = true;
+                document.getElementById("newestSortBtn").hidden = true;
+                document.getElementById("oldestSortBtn").hidden = true;
                 document.getElementById("photoSortBtn").hidden = true;
                 document.getElementById("videoSortBtn").hidden = true;
+                document.getElementById("searchField").disabled = true;
+                document.getElementById("searchBtn").disabled = true;    
+            } else {
+                document.getElementById("alphabetSortBtn").hidden = false;
+                document.getElementById("newestSortBtn").hidden = false;
+                document.getElementById("oldestSortBtn").hidden = false;
+                document.getElementById("photoSortBtn").hidden = true;
+                document.getElementById("videoSortBtn").hidden = true;
+                document.getElementById("searchField").disabled = false;
+                document.getElementById("searchBtn").disabled = false;
             }
         }
     }, [window.location.pathname]);
@@ -357,21 +454,21 @@ function Sidebar() {
                     <link to="#" className="menu-bars"></link>
                 </div>
                 <nav className = 'nav-menu'>
-                    <img class="logo" src={transparentLogo}>
+                    <img class="sbLogo" src={transparentLogo}>
                     </img>
                     <form class='searchBar' onSubmit={ handleSubmit }>
-                        <input id='searchField' type='search' value={searchTerm} placeholder={'Search'} onChange={(event) => { setSearchTerm(event.target.value); }}></input>
-                        <FcSearch id='searchBtn' size={30} onClick={handleSubmit}/>
+                        <input id='searchField' type='search' value={searchTerm} placeholder={'Search'} onChange={(event) => { setSearchTerm(event.target.value); }} disabled={true}></input>
+                        <FcSearch id='searchBtn' size={30} onClick={handleSubmit} disabled={true}/>
                     </form>
                     <div class="dropdown">
                         <button class="dropbtn">Sort By</button>
                             <div class="dropdown-content">
-                                <a href="#" onClick={() => {sortByAlphabetical();}}>Alphabetically</a>
-                                <a href="#" onClick={() => {sortByNewest();}}>Newest</a>
-                                <a href="#" onClick={() => {sortByOldest();}}>Oldest</a>
+                                <a href="#" id= 'alphabetSortBtn' onClick={() => {sortByAlphabetical();}} hidden={true}>Alphabetically</a>
+                                <a href="#" id= 'newestSortBtn' onClick={() => {sortByNewest();}} hidden={true}>Newest</a>
+                                <a href="#" id= 'oldestSortBtn' onClick={() => {sortByOldest();}} hidden={true}>Oldest</a>
                                 <a href="#" id='photoSortBtn' onClick={() => {sortItemsPhotos();}} hidden={true}>Photos</a>
                                 <a href="#" id='videoSortBtn' onClick={() => {sortItemsVideos();}} hidden={true}>Videos</a>
-                                </div>
+                            </div>
                     </div>
                     {SidebarData.map((item, index) => {
                             return(

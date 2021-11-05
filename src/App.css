@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Bebas Kai';
+  src: url('http://fonts.cdnfonts.com/css/bebas-kai');
+}
+
+
+                
+
 html,body{
   margin-left: 250px;
  
@@ -10,16 +18,29 @@ html,body{
   min-height: 100%;
 }
 
-
-
-
-
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  
+}
+
+.App a {
+  text-decoration: none;
+  color: #414756;
+  font-weight: 500;
+
+}
+.App h1 {
+  text-decoration: none;
+  color: #282c35;
+  font-family: 'Bebas Kai', sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+                                                
+
 }
 
 

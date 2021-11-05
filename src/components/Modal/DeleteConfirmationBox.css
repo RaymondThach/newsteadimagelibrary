@@ -6,9 +6,35 @@
 
 .delConfirmContainer{
     position: absolute;
-    height: 10%;
-    width: 20%;
-    left: 35%;
+    height: 15%;
+    width: 25%;
+    left: 30%;
     text-align: center;
     background-color: white;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.confirmDelBtn {
+    position: absolute;
+    border-radius: 1rem;
+    border: none;
+    background-color: rgb(96, 143, 221);
+    bottom: 5%;
+    color: white;
+    cursor: pointer;
+    height: 40px;
+    margin-top: 5%; 
+    width: 20%;
+    left: 25%;
+}
+
+.cancelDelBtn {
+    position: absolute;
+    border-radius: 1rem;
+    border: none;
+    bottom: 5%;
+    height: 40px;
+    width: 20%;
+    right: 25%;
 }

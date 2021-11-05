@@ -9,71 +9,39 @@
     align-items: center;
 }
 
-.container {
-    width: 1300px;
-    height: 800px;
-    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
-    background: #fff;
-    color: #000;
-    display: grid;
+.createColContainer {
     position: absolute;
-    z-index: 10;
-    border-radius: 10px;
-    justify-content: center;
-    border-style: solid; 
-}
-
-.collectionName{
-    padding-top: 0px;
-    display: inline-block;
-    border-style: solid;
-    width: 1290px;
-    height: 200px;
+    height: 10%;
+    width: 20%;
+    left: 35%;
     text-align: center;
-    vertical-align:middle;
+    background-color: white;
+    border-radius: 1rem;
 }
 
-
-.thumbnail{
-    width: 120px;
-    height: 120px;
-    background-color:white ;
-    padding-left: auto ;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+.createColForm {
+    margin-top: 2%;
 }
 
-.heading{
-    text-align: center;
-    font-size: small;
-    font-weight: bold;
+.newColLabel {
+    margin-right: 3%;
 }
 
-.text{
-    font-size:large;
-    font-weight: bold;
-}
-
-.submit{
-    background-color:rgb(96, 143, 221) ;
+.submitBtn {
+    position: absolute;
+    border-radius: 1rem;
     border: none;
+    background-color: rgb(96, 143, 221);
+    bottom: 5%;
+    left: 30%;
     color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;  
+    cursor: pointer; 
 }
 
-.border2{
-    padding-top: 0px;
-    display: inline-block;
-    border-style: dotted;
-    width: 1290px;
-    height: 300px;
-    text-align: center;
-    vertical-align:middle;
+.cancelBtn {
+    position: absolute;
+    border-radius: 1rem;
+    border: none;
+    bottom: 5%;
+    right: 30%;
 }

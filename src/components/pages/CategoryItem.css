@@ -1,42 +1,8 @@
-.title {
-    margin-bottom: 0%;
-  }
-  
-  /* Header Menu */
-  .header-menu {
-    display: flex;
-    margin-top: 0%;
-    margin-bottom: 0.25%;
-    justify-content: center;
-  }
-  
-  .photosBtn {
-    position: relative;
-    right: 20%;
-  }
-  
-  .videosBtn {
-    position: relative;
-    right: 5%;
-  }
-  
-  .uncategorisedBtn {
-    position: relative;
-    left: 10%;
-  }
-  
-  .favouritesBtn {
-    position: relative;
-    left: 25%;
-  }
-  
-  .create-button {
-    position: relative;
-    left: 40%;
-  }
-  
-  /* Catalogue Area */
-  .categoryGrid {
+.page {
+    overflow: hidden;
+}
+
+.catItemGrid {
     margin-left: 2%;
   }
   
@@ -48,24 +14,27 @@
   
   .items{
     position: relative;
-  }
-  
-  .item {
+}
+
+.item {
+    margin-top: 5%;
     display: inline-block;
     overflow: hidden;
-  }
-  
-  .cat_tn {
-    height: 200px;
+    height: 260px;
     width: 300px;
-  }
-  
-  .defaultImgIcon {
-    height: 200px;
-    width: 300px;
-  }
-  
-  #deleteCat {
+}
+
+.catItem_tn {
+    height: 80%;
+    width: inherit;
+}
+
+.catItem_name {
+    width: 95%;
+    word-wrap: break-word;
+}
+
+#deleteCatItem {
     position: absolute;
     stroke-width: 2px;
     stroke:red;
@@ -73,11 +42,29 @@
     right: -29%;
     top: -5%;
     font-size: 25px;
-  }
-  
-  /* Popups */
-  .createCat {
-      position: absolute;
-      left: 0%;
-      z-index: 1;
-  }
+}
+
+.pageBarContainer {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    bottom: 0.5%;
+    width: 83%;
+}
+
+.pageBar {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.pageNumber {
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: rgb(96, 143, 221);
+    color: white;
+    font-size: 11px;
+    border: none;
+    margin: 10px;
+}

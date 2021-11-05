@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./AddUser.css";
 import "../pages/UserManagement.css";
 import { Auth, API } from "aws-amplify";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 
-export default function AddUser({ showAddUser, setShowAddUser }) {
+export default function AddUser({ showAddUser, setShowAddUser, userOptions }) {
   // User Creation object to be passed to cognito
   const [newUser, setNewUser] = useState(null);
 
@@ -66,6 +65,7 @@ export default function AddUser({ showAddUser, setShowAddUser }) {
           addAccess((name))
         })
         alert("Account has been created for " + firstname + " " + lastname);
+        userOptions.push({value:username, label:username})
         setShowAddUser(false);
       }
     } catch (e) {
@@ -122,111 +122,113 @@ export default function AddUser({ showAddUser, setShowAddUser }) {
         <div class="form-group row">
           <div class="form-group col-md-4">
             <Form.Group controlId="firstname" size="sm">
-              <Form.Label> First Name </Form.Label>{" "}
+              <Form.Label> First Name </Form.Label>
               <Form.Control
                 autoFocus
                 type="firstname"
                 value={firstname}
                 onChange={(e) => handleFirstname(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
+              />
+            </Form.Group>
+          </div>
           <div class="form-group col-md-4">
             <Form.Group controlId="lastname" size="lg">
-              <Form.Label> Last Name </Form.Label>{" "}
+              <Form.Label> Last Name </Form.Label>
               <Form.Control
                 autoFocus
                 type="lastname"
                 value={lastname}
                 onChange={(e) => handleLastname(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
+              />
+            </Form.Group>
+          </div>
           <div class="form-group col-md-4">
             <Form.Group controlId="jobRole" size="lg">
-              <Form.Label> Job Role </Form.Label>{" "}
+              <Form.Label> Job Role </Form.Label>
               <Form.Control
                 autoFocus
                 type="jobRole"
                 value={jobRole}
                 onChange={(e) => setJobRole(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
+              />
+            </Form.Group>
+          </div>
           <div class="form-group col-md-6">
             <Form.Group controlId="email" size="lg">
-              <Form.Label> Email </Form.Label>{" "}
+              <Form.Label> Email </Form.Label>
               <Form.Control
                 autoFocus
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
+              />
+            </Form.Group>
+          </div>
           <div class="form-group col-md-6">
             <Form.Group controlId="username" size="lg">
-              <Form.Label> Username </Form.Label>{" "}
+              <Form.Label> Username </Form.Label>
               <Form.Control
                 autoFocus
                 type="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
+              />
+            </Form.Group>
+          </div>
           <div class="form-group col-md-6">
             <Form.Group controlId="password" size="lg">
-              <Form.Label> Password </Form.Label>{" "}
+              <Form.Label> Password </Form.Label>
               <Form.Control
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
+              />
+            </Form.Group>
+          </div>
           <div class="form-group col-md-6">
             <Form.Group controlId="confirmPassword" size="lg">
-              <Form.Label> Confirm Password </Form.Label>{" "}
+              <Form.Label> Confirm Password </Form.Label>
               <Form.Control
                 type="password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
-              />{" "}
-            </Form.Group>{" "}
-          </div>{" "}
+              />
+            </Form.Group>
+          </div>
 
-          <div class="form-group col-2">
-            <label class="">Add Item</label><br />
-            <input type="checkbox" value="addItem" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
-          </div>
-          <div class="form-group col-2">
-            <label>Remove Item</label><br />
-            <input type="checkbox" value="removeItem" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
-          </div>
-          <div class="form-group col-2">
-            <label>Add Category</label><br />
-            <input type="checkbox" value="addCat" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
-          </div>
-          <div class="form-group col-2">
-            <label>Remove Category</label><br />
-            <input type="checkbox" value="removeCat" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
-          </div>
-          <div class="form-group col-2">
-            <label>Add Collection</label><br />
-            <input type="checkbox" value="addCollection" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
-          </div>
-          <div class="form-group col-2">
-            <label>Remove Collection</label><br />
-            <input type="checkbox" value="removeCollection" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
-          </div>
-          <div class="form-group col-2">
-            <label>Admin</label><br />
-            <input type="checkbox" value="Admin" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+          <div class='rolesContainer'>
+            <div class="form-group col-2-roles">
+              <label class="">Add Item</label><br />
+              <input type="checkbox" value="addItem" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+            </div>
+            <div class="form-group col-2-roles">
+              <label>Remove Item</label><br />
+              <input type="checkbox" value="removeItem" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+            </div>
+            <div class="form-group col-2-roles">
+              <label>Add Category</label><br />
+              <input type="checkbox" value="addCat" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+            </div>
+            <div class="form-group col-2-roles">
+              <label>Remove Category</label><br />
+              <input type="checkbox" value="removeCat" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+            </div>
+            <div class="form-group col-2-roles">
+              <label>Add Collection</label><br />
+              <input type="checkbox" value="addCollection" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+            </div>
+            <div class="form-group col-2-roles">
+              <label>Remove Collection</label><br />
+              <input type="checkbox" value="removeCollection" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+            </div>
+            <div class="form-group col-2-roles">
+              <label>Admin</label><br />
+              <input type="checkbox" value="Admin" onChange={((e) => { handleCheckbox(e.target.checked, e.target.value) })} />
+            </div>
           </div>
 
         </div>
-        <Button
+        <button class='addUserCreateBtn'
           block
           size="lg"
           type="submit"
@@ -234,10 +236,10 @@ export default function AddUser({ showAddUser, setShowAddUser }) {
             fontSize: 20,
           }}
         >
-          Create Account{" "}
-        </Button>{" "}
+          Create Account
+        </button>
 
-        <Button
+        <button class='addUserCancelBtn'
           block
           size="lg"
           type="reset"
@@ -248,8 +250,8 @@ export default function AddUser({ showAddUser, setShowAddUser }) {
           }
 
         >
-          Cancel{" "}
-        </Button>{" "}
+          Cancel
+        </button>
       </Form>
     );
   }
@@ -258,14 +260,16 @@ export default function AddUser({ showAddUser, setShowAddUser }) {
   return (
     <>
     { showAddUser?
-        <div class= "background" >
+      <div class= "addUserBg" >
+        <div class='addUserContainer'>
           <div id="add-user">
-            <h1> Create a New User </h1>{" "}
+            <h1> Create a New User </h1>
             <p>
-              Please enter credentials for new user and set their permissions below.{" "}
-            </p>{" "}
-            <p> These will be able to be edited later. </p> {renderForm()}{" "}
-          </div>{ " " }
+              Please enter credentials for new user and set their permissions below.
+            </p>
+            <p> These will be able to be edited later. </p> {renderForm()}
+          </div>
+        </div>
     </div >
     : null
     

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { deleteMediaFile, deleteTag, updateMediaFile } from '../../graphql/mutations';
 import { listMediaFiles } from '../../graphql/queries';
 import './DeleteConfirmationBox.css';
 
-export default function DeleteConfirmationBox({ delItem, delCategory, setDelConfirmation, fetchMediaFiles, fetchCategories }) {
+export default function DeleteConfirmationBox({ delItem, delCategory, setDelConfirmation, fetchMediaFiles, fetchCategories, pagination }) {
     
     //Delete the item from the S3 bucket and the DynamoDB, fetch media files again for dynamic refresh.
     async function deleteItem(item) {
@@ -13,11 +13,13 @@ export default function DeleteConfirmationBox({ delItem, delCategory, setDelConf
             await Storage.remove(item.name);
             fetchMediaFiles();
             setDelConfirmation(false);
+            pagination();
         } catch (e) {
             console.log(e);
         }
     }
 
+    //Delete the category from DynamoDB then dynamically refresh
     async function deleteCategory(category) {
         try {
             await API.graphql(graphqlOperation(deleteTag, {input: {id: category.id}}));
@@ -32,11 +34,13 @@ export default function DeleteConfirmationBox({ delItem, delCategory, setDelConf
             });
             fetchCategories();
             setDelConfirmation(false);
+            pagination();
         } catch (e) {
             console.log(e);
         }
     }
 
+    //Deletion handler
     function deletion() {
         if (delCategory) {
             deleteCategory(delCategory);
@@ -46,16 +50,12 @@ export default function DeleteConfirmationBox({ delItem, delCategory, setDelConf
         }
     }
 
-    useEffect(() => {
-        //console.log(currentPathName);
-    }, []);
-
     return (
         <>
             <div class='background'>
                 <div class='delConfirmContainer'>
                     {
-                        (delCategory ? <label>Are you sure you want to delete {delCategory.categoryName}?</label> : <label>Are you sure you want to delete {delItem.name}?</label>)
+                        (delCategory ? <label>Are you sure you want to delete <b>{delCategory.categoryName}</b>?</label> : <label>Are you sure you want to delete <b>{delItem.name}</b>?</label>)
                     }
                     <div>
                         <button class='confirmDelBtn' onClick={() => {deletion();}}>Confirm</button>

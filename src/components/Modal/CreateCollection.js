@@ -1,117 +1,84 @@
-import React from "react";
+
 import "./CreateCollection.css";
-import { Storage, API, graphqlOperation } from "aws-amplify";
 import { createCollection } from "../../graphql/mutations";
 import { collectionName } from "../../graphql/queries";
+import React, { useState } from "react";
+import { API, graphqlOperation } from 'aws-amplify';
 
-export default class CreateCollection extends React.Component {
-  // grabs input from text and creates a folder
-  s3CreateCollection() {
-    //File needs to exist in directory, create temp file in no media file is uploaded during creation
-    Storage.put(
-      "Collections/" + this.state.value + "/temp.tmp",
-      this.state.value
-    );
+export default function CreateCollection({ fetchCollection, setShowing, setCreateCollection, pagination }) {
+  //String value of the input field for new category name
+  const [inputValue, setInputValue] = useState('');
+
+  //Update inputValue to user's input
+  function myChangeHandler(event) {
+    setInputValue(event);
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { value: "" };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  //Add Collection name to table
-  addToDb = async (collection) => {
-    alert(this.state.value + " has been added");
+  //Create a new category name in the Tag table, refresh the category page.
+  async function addToDB(collection) {
     try {
-      await API.graphql(
-        graphqlOperation(createCollection, { input: collection })
-      );
-    } catch (error) {
+      await API.graphql(graphqlOperation(createCollection, { input: collection }));
+      alert('A new collection was created: ' + inputValue);
+      fetchCollection();     
+    }
+    catch (error) {
       console.log(error);
     }
-  };
+    handleClose();
+  }
 
-  //Query DB using input to check if name already exists, if not add to Collections table
-  addNewCollection = async (collection) => {
+  //Query DB using input category name to check if it already exists, if not add it to the Tag table
+  async function addNewCollection(collection) {
     try {
-      const arrResult = await API.graphql(
-        graphqlOperation(collectionName, collection)
-      );
-      //{ arrResult.data.collectionName.items.length === 0 ? this.addToDb(collection) : alert('Collection ' + this.state.value + ' already exists.') };
+      const arrResult =  await API.graphql(graphqlOperation(collectionName, collection))
       if (arrResult.data.collectionName.items.length === 0) {
-        this.addToDb(collection);
-        this.s3CreateCollection();
+        addToDB(collection);
       } else {
-        alert("Collection " + this.state.value + " already exists.");
+        alert("Collection " + inputValue + " already exists.");
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  //sends to s3 after hitting submit
-  handleSubmit(event) {
-    //this.s3CreateCollection()
-
+  //Manage the flow of the Submission button
+  function handleSubmit(event) {
     const collection = {
-      name: this.state.value,
-    };
-    console.log(collection);
+      name: inputValue
+    }
+    addNewCollection(collection);
+    if (window.location.pathname.includes('collections/') === false) {
+      pagination(); 
+    } 
 
-    //push to db
-    this.addNewCollection(collection);
-
+    //Prevent Redirection to Categories Page
     event.preventDefault();
   }
 
-  //grabs user input in textbox
-  myChangeHandler = (event) => {
-    this.setState({ value: event.target.value });
-  };
+  //Manage the flow of closing the create category modal of two different paths
+  function handleClose(){
+    if(!setCreateCollection) {
+        setShowing(false);
+    }
+    else {
+        setCreateCollection(false);
+    }
+}
 
-  render() {
-    return (
-      <>
-        <div class="background">
-          <div class="container">
-            <h1>
-              Create Collection<br></br>
-            </h1>
-            <form onSubmit={this.handleSubmit}>
-              <label class="collectionName">
-                <h2>Collection Name:</h2>
-                <input
-                  type="text"
-                  value={this.state.value}
-                  onChange={this.myChangeHandler}
-                />
-              </label>
-            </form>
-            <div class="heading">Select Collection Thumbnail</div>
-            <div class="border2">
-              <img
-                class="thumbnail"
-                src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png"
-              ></img>
-              <div class="text">Drag and Drop to Upload Files</div>
-              <div class="text">OR</div>
-              <input
-                type="button"
-                class="filebutton"
-                value="Select Local File "
-              ></input>
-            </div>
-            <input
-              type="submit"
-              class="submit"
-              value="Create"
-              onClick={(e) => this.handleSubmit(e)}
-            />
-          </div>
+  return (
+    <>
+      <div class="background">
+        <div class="createColContainer">
+          <form onSubmit={handleSubmit} class='createColForm'>
+            <label class='newColLabel'>
+              New Collection Name: 
+            </label>
+            <input type="text" value={inputValue} onChange={(e)=>myChangeHandler(e.target.value)} />
+            <input type="submit" value="Submit" class='submitBtn'/>
+            <button class='cancelBtn' onClick={() => {handleClose();} }>Cancel</button>
+          </form>
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 }

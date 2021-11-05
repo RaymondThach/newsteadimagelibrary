@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import "./UserManagement.css";
 import "amazon-cognito-identity-js";
 import AddUser from "../Modal/AddUser";
+import ResetPassword from "../Modal/ResetPassword";
+import UserDetails from "../Modal/UserDetails";
+import UserDeleteConfirmation from "../Modal/UserDeleteConfirmation";
 import Amplify, { Auth, API } from "aws-amplify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Select from "react-select";
@@ -18,9 +21,9 @@ const userPoolId = process.env.REACT_APP_USERPOOL_ID;
 const region = process.env.REACT_APP_REGION;
 const accessKey = process.env.REACT_APP_ACCESS_KEY;
 const secret = process.env.REACT_APP_SECRET;
-const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({region: region, accessKeyId: accessKey, secretAccessKey: secret});
+const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({ region: region, accessKeyId: accessKey, secretAccessKey: secret });
 
-export default function UserMangement() {
+export default function UserManagement() {
   // Dropdown box value selection
   const [selected, setSelected] = useState("");
   // State handler for user creation form
@@ -28,7 +31,7 @@ export default function UserMangement() {
   //State handler for form rendering
   const [renderForm, setRenderForm] = useState(true);
   // User list array for dropdown
-  const [userOptions] = useState([]);
+  const [userOptions, setUserOptions] = useState([]);
   //Selected user current groups
   const [currentGroups, setCurrentGroups] = useState([]);
   //User group status
@@ -53,17 +56,89 @@ export default function UserMangement() {
   ]);
 
   //Current user selected
-  const[user, setUser] =useState("")
+  const [user, setUser] = useState("")
+
+
+  //State handler for password reset
+  const [showResetPassword, setShowResetPassword] = useState(false)
+  //State handler for password reset
+  const [showUserDetails, setShowUserDetails] = useState(false)
+  //State handler for password reset
+  const [showUserDelete, setShowUserDelete] = useState(false)
 
   //Store group to add user too
   const [addGroup, setAddGroup] = useState([]);
   //Store group to add user too
   const [removeGroup, setRemoveGroup] = useState([]);
 
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [jobRole, setJobRole] = useState("");
+  const [email, setEmail] = useState("");
+ 
+
+
   //Show user creation form
   const openAddUser = () => {
     setShowing(true);
+
   };
+
+  //Show user creation form
+  const resetPassword = () => {
+    setShowResetPassword(true);
+    console.log(showResetPassword)
+  };
+
+  //Show user details form
+  const userDetails = () => {
+    setShowUserDetails(true);
+
+  };
+
+  //Show user details form
+  const userDelete = () => {
+    setShowUserDelete(true);
+
+  };
+    /**
+  *
+  * Grab all user accounts in current user pool and store in array for dropdown options
+  *
+  * */
+ async function getUser(e) {
+  let apiName = "AdminQueries";
+  let path = "/getUser";
+  let myInit = {
+   queryStringParameters: {
+       username: e,
+     },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${(await Auth.currentSession())
+        .getAccessToken()
+        .getJwtToken()}`,
+    },
+  };
+  const userList = await API.get(apiName, path, myInit);
+
+  // filter through details
+  await userList.UserAttributes.map((info, i) => {
+    if ( info.Name === "custom:jobRole"){
+      setJobRole(info.Value)
+    }
+    if ( info.Name === "custom:firstname"){
+     setFirstname(info.Value)
+   }
+   if ( info.Name === "custom:lastname"){
+     setLastname(info.Value)
+   }
+   if ( info.Name === "email"){
+     setEmail(info.Value)
+   }
+  });
+
+}
 
   /**
    *
@@ -139,8 +214,14 @@ export default function UserMangement() {
     setSelected(e);
     //pass values to listUserGroups functionality to grab groups of current user
     listUserGroups(e);
+    getUser(e)
+
+    //grab selected user details
+    
 
     setUser(e)
+
+    console.log(firstname + lastname + jobRole)
   }
 
   /**
@@ -164,7 +245,7 @@ export default function UserMangement() {
   }
 
   // Add User to Group
-  async function addToGroup(user, group){
+  async function addToGroup(user, group) {
     let apiName = 'AdminQueries';
     let path = '/addUserToGroup';
     let myInit = {
@@ -179,11 +260,11 @@ export default function UserMangement() {
       }
     }
     return await API.post(apiName, path, myInit);
-  
+
   }
 
   //Remove user from group
-  async function removeFromGroup(user, group){
+  async function removeFromGroup(user, group) {
 
     let apiName = 'AdminQueries';
     let path = '/removeUserFromGroup';
@@ -199,31 +280,7 @@ export default function UserMangement() {
       }
     }
     return await API.post(apiName, path, myInit);
-  
   }
-
-  //Delete user
-
-  async function deleteUser() {
-    const params = {
-      UserPoolId: userPoolId,
-      Username: user,
-     
-      
-    };
-  
-    try {
-      const result = await cognitoIdentityServiceProvider.adminDeleteUser(params).promise();
-      console.log(`Removed ${user}`);
-      return {
-        message: `Removed ${user}`,
-      };
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  }
-
 
   /**
    *
@@ -273,102 +330,106 @@ export default function UserMangement() {
   function userForm() {
     return (
       <Form onSubmit={handleSubmit}>
-        <div class="form-group col-2">
-          <label class="">Add Item</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[0]}
-            value="addItem"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
+        <div class='rolesContainer'>
+          <div class="form-group col-2">
+            <label class="">Add Item</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[0]}
+              value="addItem"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Remove Item</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[1]}
+              value="removeItem"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Add Category</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[2]}
+              value="addCat"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Remove Category</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[3]}
+              value="removeCat"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Add Collection</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[4]}
+              value="addCollection"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Remove Collection</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[5]}
+              value="removeCollection"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group col-2">
+            <label>Admin</label>
+            <br />
+            <input
+              type="checkbox"
+              defaultChecked={accessGroup[6]}
+              value="Admin"
+              onChange={(e) => {
+                handleCheckbox(e.target.checked, e.target.value);
+              }}
+            />
+          </div>
+         
         </div>
-        <div class="form-group col-2">
-          <label>Remove Item</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[1]}
-            value="removeItem"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
+        <button
+            id="submitChanges"
+            block
+            size="lg"
+            type="submit"
+            style={{
+              fontSize: 20,
             }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Add Category</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[2]}
-            value="addCat"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Remove Category</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[3]}
-            value="removeCat"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Add Collection</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[4]}
-            value="addCollection"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Remove Collection</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[5]}
-            value="removeCollection"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <div class="form-group col-2">
-          <label>Admin</label>
-          <br />
-          <input
-            type="checkbox"
-            defaultChecked={accessGroup[6]}
-            value="Admin"
-            onChange={(e) => {
-              handleCheckbox(e.target.checked, e.target.value);
-            }}
-          />
-        </div>
-        <Button
-          block
-          size="lg"
-          type="submit"
-          style={{
-            fontSize: 20,
-          }}
-        >
-          Create Account{" "}
-        </Button>{" "}
+          >
+            Submit Changes{" "}
+          </button>{" "}
 
-        </Form>
+      </Form>
     );
   }
 
@@ -381,50 +442,35 @@ export default function UserMangement() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if(addGroup.length > 0 ){
+    if (addGroup.length > 0) {
 
-      addGroup.map((e)=>{
+      addGroup.map((e) => {
         addToGroup(user, e)
       })
 
-    }
-    if(removeGroup.length > 0){
 
-      removeGroup.map((e)=>{
+
+    }
+    if (removeGroup.length > 0) {
+
+      removeGroup.map((e) => {
         removeFromGroup(user, e)
       })
 
+
+
     }
-    if(addGroup.length < 1 && removeGroup.length < 1){
+    if (addGroup.length < 1 && removeGroup.length < 1) {
       alert("You have not made any changes")
     }
-    if(user.length < 1){
+    if (user.length < 1) {
       alert("No user has been selected")
     }
+    alert(user + ' has been updated')
 
   }
 
-  /**
-   * Delete user
-   */
 
-  async function removeUser(){
-
-      let apiName = 'AdminQueries';
-      let path = '/deleteUser';
-      let myInit = {
-        body: {
-          "username": user,
-        },
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-        }
-      }
-      return await API.post( path, myInit);
-    
-    
-  }
 
   useEffect(() => {
     listUsers();
@@ -433,44 +479,72 @@ export default function UserMangement() {
   return (
     <div className="userManagement">
       <h1>User Account Management</h1>
-
       <div className="userEditing">
         <p>
-          {" "}
           Please select one of the current users below, then edit their
           permissions.
         </p>
         <br />
-        <label input="users">Select a user:</label>&nbsp;&nbsp;
-        <Select
-          id="users"
-          name="users"
-          options={userOptions}
-          onChange={(e) => dropboxChangerHandler(e.value)}
-        ></Select>
-        &nbsp;&nbsp;&nbsp;
-        <button
-          onClick={() => {
-            openAddUser();
-          }}
-        >
-          Add User...
-        </button>
-        <p>Selected: {selected}</p>
-        <div className="buttons">
-          {renderForm ? userForm() : null}
+        <div class="inputWrapper-1">
+          <label input="users">Select a user:</label>&nbsp;&nbsp;
+          <Select
+            id="users"
+            name="users"
+            options={userOptions}
+            onChange={(e) => dropboxChangerHandler(e.value)}
+          ></Select>
         </div>
-        <button
+        <div class="editButtons">
+          <button
+            onClick={() => {
+              openAddUser();
+            }}
+          >
+            Add User...
+          </button>
+          <button
+            onClick={() => {
+              resetPassword();
+            }}
+          >
+            Reset Password
+          </button>
+          <button
+            onClick={() => {
+              userDetails();
+            }}
+          >
+            Edit User
+          </button>
+          <button
           onClick={() => {
-            deleteUser();
+            userDelete();
           }}
         >
           Delete User
         </button>
+        </div>
+        <p>Selected:</p>
+        <p>{firstname} {lastname}- {jobRole}</p>
+        
+
+        <div className="buttons">
+          {renderForm ? userForm() : null}
+        </div>
+        
       </div>
       <div class="modal-overlay">
         {showing ? (
-          <AddUser showAddUser={showing} setShowAddUser={setShowing} />
+          <AddUser showAddUser={showing} setShowAddUser={setShowing} listUsers={listUsers} userOptions={userOptions} />
+        ) : null}
+        {showResetPassword ? (
+          <ResetPassword showResetPassword={showResetPassword} setShowResetPassword={setShowResetPassword} user={user} />
+        ) : null}
+        {showUserDetails ? (
+          <UserDetails user={user} showUserDetails={showUserDetails} setShowUserDetails={setShowUserDetails} />
+        ) : null}
+        {showUserDelete ? (
+          <UserDeleteConfirmation user={user} showUserDelete={showUserDelete} setShowUserDelete={setShowUserDelete} userOptions={userOptions} />
         ) : null}
       </div>
     </div>

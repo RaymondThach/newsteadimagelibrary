@@ -15,23 +15,28 @@
     background-repeat: no-repeat;
     background-size: cover;
     margin-bottom: 25px;
-
-
 }
 
 .upload-forms{
     display: grid;
     top:0;
     overflow: auto;
-    
-    
+    border:black;
+    border-radius: 3px;
+    border-style: solid;
+    width: 1500px;
+    margin-left: 75px;
    
 }
 
 .drop-area{
     bottom: 0;
-    
-    
+    border:black;
+    border-radius: 3px;
+    border-style: dotted;
+    width: 1500px;
+    margin-left: 75px;
+    margin-top:10px;
     
 }
 .upload-button{
@@ -41,15 +46,12 @@
     position: relative;
     padding-top: 100px;
     z-index: 999;
-    
-
 }
 
 .upload-button #bsIcon{
     height: 100px;
     width: 100px;
 }
-
 
 
 
@@ -76,4 +78,52 @@ h1{
     text-align: center;
     
     
+}
+
+.submitButton{
+    background-color:rgb(96, 143, 221) ;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer; 
+    border-radius: 15px 15px; 
+}
+
+.uploadedFile{
+    padding: 40px 10px ;
+    
+}
+
+.inputWrapper label{
+    display: block;
+}
+.inputWrapper{
+    float: left;
+    margin-right: 1rem;
+}
+
+.inputWrapper input{
+    width:200px;
+    
+}
+
+.inpContainer{
+    height:38px;
+}
+#removeFile{
+    height:38px;
+}
+
+
+
+.inputWrapper .basic-multi-select{
+
+    width: 440px;
+    
+
 }

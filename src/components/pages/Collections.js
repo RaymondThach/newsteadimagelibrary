@@ -11,8 +11,12 @@ import { MdClose } from 'react-icons/md';
 import DeleteCollectionConfirmation from "../Modal/DeleteCollectionConfirmation";
 
 export default function Collections() {
+  //State variable for showing or hiding the modal for creating collection
   const [showing, setShowing] = useState(false);
- const { collectionNames, setCollectionNames } = useAppContext();
+
+  //Context state array for all collections
+  const { collectionNames, setCollectionNames, setCategories, setItems } = useAppContext();
+  
   //Use declared context variables to track delete mode
   const { deleteMode, setDeleteMode } = useAppContext();
 
@@ -25,9 +29,21 @@ export default function Collections() {
   //State variable for choosing which collection to delete
   const [ delCollection, setDelCollection ] = useState();
 
+  //Current page shown in the catalogue
+  const [ currentPage, setCurrentPage ] = useState(1);
+  //State variable for number of items shown per page
+  const [ itemsPerPage ] = useState(15);
+  //Last item index of current page
+  const lastIndex = currentPage * itemsPerPage;
+  //First item index of current page
+  const firstIndex = lastIndex - itemsPerPage;
+  //Items of the page being shown
+  const currentCollections = collectionNames.slice(firstIndex, lastIndex);
+  //State array of the page numbers
+  const [ pageNumbers, setPageNumbers ] = useState([]);
   
  
-
+  //Populate the collections array 'collectionNames'
   async function fetchCollection(){
     const collectionsArr = [];
     const results = await API.graphql(graphqlOperation(listCollections));
@@ -38,7 +54,6 @@ export default function Collections() {
       });
       setCollectionNames(collectionsArr);
     });
-
   }
 
   //Fetch photos for each collection and select a random one to represent that collection
@@ -69,16 +84,50 @@ export default function Collections() {
     return array;
   }
 
-    //Show DeletConfirmationBox modal if delConfirmation state is true, pass through the selected collection to delete
-    function showDelConfirmation(collection) {
-      setDelCollection(collection);
-      setDelConfirmation(true);
+  //Show DeletConfirmationBox modal if delConfirmation state is true, pass through the selected collection to delete
+  function showDelConfirmation(collection) {
+    setDelCollection(collection);
+    setDelConfirmation(true);
+  }
+
+  //Add the number of pages required to show all items
+  function pagination() {
+    const numbers = [];
+    for (let i = 1; i <= Math.ceil((collectionNames.length)/itemsPerPage); i++) {
+        numbers.push(i);
     }
+    setPageNumbers(numbers);
+  }
+
+  //Change the current page to the one selected
+  function changePage(pageNumber) {
+    setCurrentPage(pageNumber);
+  }
 
   //componentDidMount() for functional component
   useEffect(() => {
     fetchCollection();
+    setDeleteMode(false);
+    setCategories([]);
+    setItems([]);
   }, []);
+
+  //Call back to pagination function to re-render the page buttons initially, refresh the pagebar if the maximum item displayed it reached,
+  //or if no items are on the page. This accounts for deleting and creating collections.
+  useEffect(() => {
+    if (pageNumbers.length === 0) {
+      pagination();
+    }
+    else if (currentCollections.length === 15){
+      pagination();
+    }
+    else if (currentCollections.length === 0) {
+      if (currentPage !== 1){
+        changePage(currentPage - 1);
+        pagination();
+      }
+    }
+  }, [collectionNames]);
 
   return (
     <div class='page'>
@@ -92,7 +141,7 @@ export default function Collections() {
         <div class='collectionGrid'>
           <div class='collections'>
           {
-            collectionNames.map((listname, i) => (
+            currentCollections.map((listname, i) => (
             <div class='items' key={listname.name}>
               {
                 (deleteMode ? <MdClose id='deleteCat' onClick={() => { showDelConfirmation(listname); }} /> : null)
@@ -105,7 +154,6 @@ export default function Collections() {
                   }
                 </div>
                 {listname.name}
-               
               </a>
             </div>
             ))
@@ -115,10 +163,23 @@ export default function Collections() {
             (delConfirmation ? <DeleteCollectionConfirmation delCollection={delCollection} setDelConfirmation={setDelConfirmation} fetchCollection={fetchCollection} /> : null)
           }
           {showing
-            ? <CreateCollection class='createCollection' setShowing={setShowing} />
+            ? <CreateCollection class='createCollection' setShowing={setShowing} fetchCollection={fetchCollection} pagination={pagination}/>
             : null
           }
         </div>
+      </div>
+      <div class= 'pageBarContainerCol'>
+          <div class='pageBarCol'>
+              {
+                pageNumbers.map((number, i) => {
+                    return (
+                      <div class='pageBarBtnsCol' key={i}>
+                          <button class='pageNumberCol' onClick={() => changePage(number)}>{number}</button>
+                      </div>
+                    )
+                })
+              }
+          </div>
       </div>
     </div>
   );

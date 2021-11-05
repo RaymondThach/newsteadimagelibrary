@@ -29,6 +29,20 @@ export default function CollectionItem() {
     //Track history, used to redirect on error catch
     const history = useHistory();
 
+    //Current page shown in the catalogue
+    const [ currentPage, setCurrentPage ] = useState(1);
+    //State variable for number of items shown per page
+    const [ itemsPerPage ] = useState(15);
+    //Last item index of current page
+    const lastIndex = currentPage * itemsPerPage;
+    //First item index of current page
+    const firstIndex = lastIndex - itemsPerPage;
+    //Items of the page being shown
+    const currentItems = items.slice(firstIndex, lastIndex);
+    //State array of the page numbers
+    const [ pageNumbers, setPageNumbers ] = useState([]);
+
+
     //Show gallery on click of an item
     const openGallery = () => {
         setShowGallery(true);
@@ -63,10 +77,38 @@ export default function CollectionItem() {
         }
     }
 
+    //Add the number of pages required to show all items
+    function pagination() {
+        const numbers = [];
+        for (let i = 1; i <= Math.ceil((items.length)/itemsPerPage); i++) {
+            numbers.push(i);
+        }
+        setPageNumbers(numbers);
+    }
+
+    //Change the current page to the one selected
+    function changePage(pageNumber) {
+        setCurrentPage(pageNumber);
+    }
+
     //componentDidMount() for functional component
     useEffect(() => {
         fetchMediaFiles();
     }, []);
+
+    //Call back to pagination function to re-render the page buttons initially, refresh the pagebar if the maximum item displayed it reached,
+    //or if no items are on the page. This accounts for deleting items.
+    useEffect(() => {
+        if (pageNumbers.length === 0) {
+            pagination();
+        }
+        else if (currentItems.length === 0) {
+            if (currentPage !== 1){
+                changePage(currentPage - 1);
+                pagination();
+            }
+        }
+    }, [items]);
 
     return (
         <div class="page">
@@ -76,28 +118,29 @@ export default function CollectionItem() {
                 </h1>
             </div>
             <div class="main-content">
-                <div class='itemGrid'></div>
-                <div class="collectionItems">
-                    {
-                        items.map((item, i) => (
-                            <a class='items' key={item.name} >
-                                {
-                                    (deleteMode ? <MdClose id='deleteCollectionItem' onClick={() => { deleteFromCollection(item.id); }} /> : null)
-                                }
-                                <div class='item' onClick={() => { openGallery(); setItem(item); }}>
-                                    <div class='item_tn' >
-                                        {
-                                             videoFormat.indexOf(item.name.split('.').pop()) > -1
-                                             ? <BsCameraVideo id="video-thumbnail"/>
-                                             :<AmplifyS3Image imgKey={item.name} />
-                                        }     
+                <div class='itemGrid'>
+                    <div class="collectionItems">
+                        {
+                            currentItems.map((item, i) => (
+                                <a class='items' key={item.name} >
+                                    {
+                                        (deleteMode ? <MdClose id='deleteCollectionItem' onClick={() => { deleteFromCollection(item.id); }} /> : null)
+                                    }
+                                    <div class='item' onClick={() => { openGallery(); setItem(item); }}>
+                                        <div class='item_tn' >
+                                            {
+                                                videoFormat.indexOf(item.name.split('.').pop()) > -1
+                                                ? <BsCameraVideo id="video-thumbnail"/>
+                                                :<AmplifyS3Image imgKey={item.name} />
+                                            }     
+                                        </div>
+                                        <label class='collectionItem_name'>{item.name}</label>
                                     </div>
-                                    <label class='collectionItem_name'>{item.name}</label>
-                                </div>
 
-                            </a>
-                        ))
-                  }
+                                </a>
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
             <div class='modal-overlay'>
@@ -105,6 +148,19 @@ export default function CollectionItem() {
                     (showGallery ? <Gallery showGallery={showGallery} setShowGallery={setShowGallery} item={item} fetchMediaFiles={fetchMediaFiles} /> : null)
                 }
             </div>
-        </div> 
+            <div class= 'pageBarContainerColItem'>
+            <div class='pageBarColItem'>
+                {
+                    pageNumbers.map((number, i) => {
+                        return (
+                        <div class='pageBarBtnsColItem' key={i}>
+                            <button class='pageNumberColItem' onClick={() => changePage(number)}>{number}</button>
+                        </div>
+                        )
+                    })
+                }
+            </div>
+        </div>
+    </div> 
   );
 }
